@@ -1,0 +1,65 @@
+<!--
+  Generated template for the RmenuPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+ <ion-navbar >
+ <shrinking-segment-header [scrollArea]="myContent" headerHeight="150">
+<ion-row style="margin-bottom:0px;">
+<ion-col style="padding:0;">
+<div class="rest-details-header">
+
+<img src="assets/imgs/r2.jpg">
+</div>
+<div class="rest-details-content">
+<div class="rest-details-content-box">
+<h1>Kanha - Malviya Nagar</h1>
+<p>South Indian</p>
+<p style="margin-top:20px;"><span style="float:left;"><img src="assets/icon/time.png" style="width:16px; float:left; margin-right:5px;"> 40-50 MINS&nbsp;&nbsp; |&nbsp;&nbsp;3.4</span>  <span  style="float:left;"> <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;float:left;"> (500+)</span></p>
+</div>
+</div>
+</ion-col>
+</ion-row>
+
+</shrinking-segment-header>
+   
+</ion-navbar>
+
+
+</ion-header>
+ 
+
+<ion-content fullscreen #myContent>
+
+
+<div class="container-white mb-10">
+<div class="media p10">
+<ion-row>
+<ion-col>
+<h5 style="padding-left:10px;">Recommended</h5>
+</ion-col>
+</ion-row>
+<ion-row>
+<ion-col col-6 class="p10" *ngFor="let element of rmenu">
+<img src="assets/imgs/bottle1.jpg" style="width:100%;margin-bottom:5px;">
+<span style="font-size:12px; color:#666;">Beear</span>
+<p style="margin-top:5px;">{{element.name}}</p>
+<div class="product-footer">
+<div class="price pull-left"><span style="text-decoration: line-through; color:#666">₹60</span> ₹40</div>
+<div  class="pull-right"  style="padding: 0px 25px;font-size: 12px;height: 28px;">
+<ion-icon name="remove-circle" (click)="decrement()"></ion-icon>
+                        1
+                      <ion-icon name="add-circle" (click)="increment()"></ion-icon>
+                  </div>
+<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 12px;height: 28px;display:none">ADD</button>
+</div>
+</ion-col>
+</ion-row>
+
+</div>
+</div>
+
+</ion-content>

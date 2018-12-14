@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+  <ion-row>
+  <ion-col col-10>
+  <ion-title>NOW <img src="assets/icon/right-arrow01.png" class="arrow-icon"> <div class="loct">Malviya Nagar Industrial ...</div></ion-title>
+  </ion-col>
+  <ion-col col-2>
+  <div class="top-cart-icon" (click)="mycartMethod()">
+  <img src="assets/icon/shopping-cart.png">
+   <div class="cart-count">1</div>
+  </div>
+ 
+  </ion-col>
+    
+	</ion-row>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+<ion-slides class="color-white ">
+<ion-slide *ngFor="let n of numbers" class="ion-slide"> 
+<ion-card>
+<ion-item center text-center style="background-image:url('assets/imgs/traditional-.jpg');height:200px;color:#fff;background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;"></ion-item>
+</ion-card>
+</ion-slide>
+  
+</ion-slides>
+</ion-content>

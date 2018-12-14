@@ -1,0 +1,48 @@
+page-signupone {
+.signup-button
+{
+width:100%;
+background:#ccc;
+margin:0;
+border-radius:0px;
+height: 4.6rem;
+}
+    
+.active-button
+{
+    background:#000 !important;
+}    
+.mb-minus-2
+{
+    margin-bottom: -2px;
+	    margin-left: -1px;
+}
+.padding-20
+{
+padding:20px;
+}
+.padding-left-right
+{
+padding-left:20px;
+padding-right:20px;
+}
+ion-label[fixed] {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 100px;
+    -ms-flex: 0 0 100px;
+    flex: 0 0 100px;
+    width: 100px;
+    min-width: 20px;
+    max-width: 31px;
+}
+
+.border-bottom
+{
+border-bottom:1px solid #ccc;
+}
+.text-input-md {
+     margin: 0px; 
+    padding: 0px;
+    width: calc(100% - 8px - 8px);
+}
+}

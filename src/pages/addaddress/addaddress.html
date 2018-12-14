@@ -1,0 +1,108 @@
+<!--
+  Generated template for the AddaddressPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Address</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="container-gray">
+<form [formGroup]="addAddressForm">      
+<div class="container-white">
+<ion-list class="pl-10 pr-10 pb-10" >
+<ion-item class="p0">
+    <ion-label color="lightCCC" floating>Name</ion-label>
+    <ion-input value="{{addressInfo.ab_name}}" [formControl]="addAddressForm.controls['ab_name']">
+</ion-input>
+  </ion-item>
+  <ion-item class="p0">
+    <ion-label color="lightCCC" floating>10 digit mobile number</ion-label>
+    <ion-input value="{{addressInfo.ab_mobile_number}}" [formControl]="addAddressForm.controls['ab_mobile_number']">
+</ion-input>
+  </ion-item>
+  
+ </ion-list>
+  </div>
+<div class="container-white mt-10">
+<ion-list class="pl-10 pr-10 pb-10">
+<ion-item class="p0">
+    <ion-label color="lightCCC" floating>Pincode</ion-label>
+    <ion-input value="{{addressInfo.ab_pincode}}" [formControl]="addAddressForm.controls['ab_pincode']">
+</ion-input>
+  </ion-item>
+  <ion-item class="p0">
+    <ion-label color="lightCCC" floating>City</ion-label>
+    <ion-input value="{{addressInfo.ab_city}}" [formControl]="addAddressForm.controls['ab_city']">
+</ion-input>
+  </ion-item>
+  <ion-item class="p0">
+    <ion-label color="lightCCC" floating>State</ion-label>
+    <ion-input value="{{addressInfo.ab_state}}" [formControl]="addAddressForm.controls['ab_state']">
+</ion-input>
+  </ion-item>
+  <ion-item class="p0">
+    <ion-label color="lightCCC" floating>Address (House no. Building)</ion-label>
+    <ion-input value="{{addressInfo.ab_address}}" [formControl]="addAddressForm.controls['ab_address']">
+</ion-input>
+  </ion-item>
+   <ion-item class="p0">
+    <ion-label color="lightCCC" floating>Locality/Town</ion-label>
+    <ion-input value="{{addressInfo.ab_locality}}" [formControl]="addAddressForm.controls['ab_locality']">
+</ion-input>
+  </ion-item>
+  
+ </ion-list>
+  </div>
+
+  <div class="container-white mt-10 mb-40">
+  
+<ion-list class="pl-10 pr-10 pb-10" radio-group [formControl]="addAddressForm.controls['ab_type']">
+ <ion-list-header>
+   Type
+</ion-list-header>
+<ion-item >
+    <ion-label>Home (All Day Delivery)</ion-label>
+    <ion-radio value="1" checked></ion-radio>
+  </ion-item>
+ <ion-item >
+    <ion-label>Work (Delivery Between 10 am - 5 am)</ion-label>
+    <ion-radio value="2" ></ion-radio>
+  </ion-item> 
+  <ion-item >
+    <ion-label>Other</ion-label>
+    <ion-radio value="3" ></ion-radio>
+  </ion-item> 
+ 
+ </ion-list>
+      
+<ion-list class="pl-10 pr-10 pb-10" radio-group [formControl]="addAddressForm.controls['ab_default']">
+ <ion-list-header>
+   Default
+</ion-list-header>
+<ion-item >
+    <ion-label>Yes</ion-label>
+    <ion-radio value="1" ></ion-radio>
+  </ion-item>
+ <ion-item >
+    <ion-label>No</ion-label>
+    <ion-radio value="0" checked></ion-radio>
+ 
+</ion-item>
+ </ion-list>      
+  </div>
+  
+ 
+</form>
+</ion-content>
+<ion-footer>
+ <p ion-fixed class="fixed-bottom-button">
+<button ion-button  full [color]="primary" (click)="addUserAddress()"  class="normal-button50">Save</button>
+</p>
+</ion-footer>
