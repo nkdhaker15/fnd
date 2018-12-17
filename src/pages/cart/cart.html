@@ -23,19 +23,20 @@
 </ion-col>
 </ion-row>
 <div  class="container-white mt10 mb-10">
-<ion-row   class="border-bottom-1" *ngFor="let element of cartitem">
+<ion-row   class="border-bottom-1" *ngFor="let cItem of cartItems; let i = index">
 <ion-col col-7>
 <div class="media p10">
-<div class="mb5">Veg Grill Sandich </div>
-<span id="price" class="mt5">₹400.00</span>
+<div class="mb5">{{cItem.product.product_name}} </div>
+<span id="price" class="mt5">₹{{lineTotal(cItem)}}</span>
 </div>
 </ion-col>
 <ion-col col-5>
 <div class="qty-badge">
-<ion-icon name="remove" (click)="decrement()" ></ion-icon>
-{{currentNumber}}
-<ion-icon name="add" (click)="increment()" ></ion-icon>
+<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
+{{cItem.qty}}
+<ion-icon name="add" (click)="increment(i)" ></ion-icon>
 </div>
+<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 12px;height: 28px;" (click)="removeFromCart(cItem, i)">Remove</button>
 </ion-col>
 </ion-row>
 </div>
@@ -61,13 +62,13 @@ PRICE DETAILS
 <ion-row   class="border-bottom-1">
 <ion-col col-7>
 <div class="media p10">
-Price (5) Item 
+Price ({{totalItems}}) Item (s) 
 </div>
 </ion-col>
 <ion-col col-5>
 <div class="media p10" style="text-align:right">
 
-₹400.00
+₹{{total}}
 </div>
 </ion-col>
 </ion-row>
@@ -80,7 +81,7 @@ Delivery Charge
 <ion-col col-5>
 <div class="media p10" style="text-align:right">
 
-₹40.00
+₹{{deliveryCharge}}
 </div>
 </ion-col>
 </ion-row>
@@ -93,7 +94,7 @@ Discount
 <ion-col col-5>
 <div class="media p10" style="text-align:right">
 
-₹40.00
+₹{{totalDiscount}}
 </div>
 </ion-col>
 </ion-row>
@@ -106,7 +107,7 @@ Discount
 <ion-col col-5>
 <div class="media p10" style="text-align:right">
 
-<strong>₹400.00</strong> 
+<strong>₹{{grandTotal}}</strong> 
 </div>
 </ion-col>
 </ion-row>

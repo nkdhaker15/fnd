@@ -16,7 +16,44 @@ ion-slides {
 width: 200px;
 margin-right: -10px;
 }
+.ion-slide-category
+{
+width: 150px;
+height:150px;
+margin-right: -10px;
+}
+
 .slide-zoom{
 height:100%;
+}
+.media-circle
+{
+height: 80px;
+width: 80px;
+border-radius: 50%;
+border: 1px solid #ccc;
+}
+.ion-slide-big
+{
+width: 280px !important;
+margin-right: -10px;
+
+}
+
+.resto-meta
+{
+margin-top:10px;
+}
+.resto-meta-button
+{
+margin-top:10px;
+}
+.resto-meta-button span
+{
+background: #f5f5f5;
+padding: 6px;
+margin-top: 9px;
+margin-right: 10px;
+
 }
 }

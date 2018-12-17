@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 
+import { ApiBackendService } from '../../providers/apiBackendService';
+import { AuthUserService } from '../../providers/authUserService';
 /**
  * Generated class for the FaqPage page.
  *
@@ -16,18 +18,46 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class FaqPage {
 	  tabBarElement: any;
 shownGroup = null;
- diseases = [
-    { title: "Type 1 Diabetes", description: "Type 1 diabetes is an autoimmune disease in which the body’s immune system attacks and destroys the beta cells in the pancreas that make insulin." },
-    { title: "Multiple Sclerosis", description: "Multiple sclerosis (MS) is an autoimmune disease in which the body's immune system mistakenly attacks myelin, the fatty substance that surrounds and protects the nerve fibers in the central nervous system." },
-    { title: "Crohn's & Colitis", description: "Crohn's disease and ulcerative colitis (UC), both also known as inflammatory bowel diseases (IBD), are autoimmune diseases in which the body's immune system attacks the intestines." },
-    { title: "Lupus", description: "Systemic lupus erythematosus (lupus) is a chronic, systemic autoimmune disease which can damage any part of the body, including the heart, joints, skin, lungs, blood vessels, liver, kidneys and nervous system." },
-    { title: "Rheumatoid Arthritis", description: "Rheumatoid arthritis (RA) is an autoimmune disease in which the body's immune system mistakenly begins to attack its own tissues, primarily the synovium, the membrane that lines the joints." }
-  ];
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+ diseases = [];
+  userInfo: any = {};
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
 	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 
   }
+
+  ionViewWillEnter() {	  	 	      
+    
+      this.authUserService.getUser().then((user)=>{
+          console.log("user:: ", user);
+          if(user != null && user != undefined) {
+              this.userInfo = user;
+              this.loadFaq();
+          }         
+          
+      });
+      
+      
+
+  }
+loadFaq() {
+    
+    let user_req = {
+              user_id: this.userInfo.user_id
+          };
+         let loading = this.loadingCtrl.create({
+                content: 'Please wait...'
+              });
+              loading.present();
+         this.apiBackendService.getFaq(user_req).then((result: any) => { 
+             loading.dismiss();
+             
+            this.diseases = result.result;
+
+            }, (err) => { 
+            console.log(err); 
+             loading.dismiss();
+            });
+}
 
   ionViewDidLoad() {
 	  	      this.tabBarElement.style.display = 'none';

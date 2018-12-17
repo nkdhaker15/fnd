@@ -57,6 +57,7 @@ export class MyaccountPage {
   {
     this.navCtrl.push(OffersPage);  
   }
+    
   loadshareview()
   {
 	    this.navCtrl.push(SharePage);    

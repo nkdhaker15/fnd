@@ -12,12 +12,12 @@
 <ion-col style="padding:0;">
 <div class="rest-details-header">
 
-<img src="assets/imgs/r2.jpg">
+<img src="{{sellerInfo.seller_img_base_url}}{{sellerInfo.seller_image}}">
 </div>
 <div class="rest-details-content">
 <div class="rest-details-content-box">
-<h1>Kanha - Malviya Nagar</h1>
-<p>South Indian</p>
+<h1>{{sellerInfo.se_store_name}}</h1>
+<p>{{sellerInfo.seller_address}}</p>
 <p style="margin-top:20px;"><span style="float:left;"><img src="assets/icon/time.png" style="width:16px; float:left; margin-right:5px;"> 40-50 MINS&nbsp;&nbsp; |&nbsp;&nbsp;3.4</span>  <span  style="float:left;"> <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;float:left;"> (500+)</span></p>
 </div>
 </div>
@@ -43,18 +43,18 @@
 </ion-col>
 </ion-row>
 <ion-row>
-<ion-col col-6 class="p10" *ngFor="let element of rmenu">
-<img src="assets/imgs/bottle1.jpg" style="width:100%;margin-bottom:5px;">
-<span style="font-size:12px; color:#666;">Beear</span>
-<p style="margin-top:5px;">{{element.name}}</p>
+<ion-col col-6 class="p10" *ngFor="let productItem of productList; let i = index">
+<img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;margin-bottom:5px;">
+<span style="font-size:12px; color:#666;">{{productItem.product_brand}}</span>
+<p style="margin-top:5px;">{{productItem.product_name}}</p>
 <div class="product-footer">
-<div class="price pull-left"><span style="text-decoration: line-through; color:#666">₹60</span> ₹40</div>
+<div class="price pull-left"><span style="text-decoration: line-through; color:#666">₹{{productItem.product_selling_price}}</span> ₹{{productItem.product_net_price}}</div>
 <div  class="pull-right"  style="padding: 0px 25px;font-size: 12px;height: 28px;">
-<ion-icon name="remove-circle" (click)="decrement()"></ion-icon>
-                        1
-                      <ion-icon name="add-circle" (click)="increment()"></ion-icon>
+<ion-icon name="remove-circle" (click)="decrement(i)"></ion-icon>
+                        {{getItemQty(i)}}
+                      <ion-icon name="add-circle" (click)="increment(i)"></ion-icon>
                   </div>
-<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 12px;height: 28px;display:none">ADD</button>
+<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 12px;height: 28px;" (click)="addToCart(productItem)">ADD</button>
 </div>
 </ion-col>
 </ion-row>

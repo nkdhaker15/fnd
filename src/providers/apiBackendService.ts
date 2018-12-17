@@ -29,7 +29,7 @@ export class ApiBackendService {
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/json' );
         const requestOptions = new RequestOptions({ headers: headers });
-        this.http.post(this.apiUrl+'/slider', {}, requestOptions)
+        this.http.post(this.apiUrl+'/register/slider', {}, requestOptions)
           .subscribe(res => {
 		    let resdata: any = res;
             resolve(JSON.parse(resdata._body));
@@ -187,6 +187,81 @@ changePassword(data) {
           });
       });
     }
+
+  getFaq(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/faq', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+    }
+
+  getUserShare(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/register/sharetext', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+    }
+
+  getUserOffers(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/dashboard/offerce', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+    }
+
+	getDashbboardInfo(data) {
+		return new Promise((resolve, reject) => {
+			var headers = new Headers();
+			headers.append("Accept", 'application/json');
+			headers.append('Content-Type', 'application/json' );
+			const requestOptions = new RequestOptions({ headers: headers });
+			this.http.post(this.apiUrl+'/dashboard', data, requestOptions)
+			  .subscribe(res => {
+				resolve(this._extractData(res));
+			  }, (err) => {
+				resolve(this._handleError(err, false));
+			  });
+		  });
+    }
+	
+   getProductListInfo(data) {
+		  return new Promise((resolve, reject) => {
+			var headers = new Headers();
+			headers.append("Accept", 'application/json');
+			headers.append('Content-Type', 'application/json' );
+			const requestOptions = new RequestOptions({ headers: headers });
+			this.http.post(this.apiUrl+'/product/index/'+data.seller_id, data, requestOptions)
+			  .subscribe(res => {
+				resolve(this._extractData(res));
+			  }, (err) => {
+				resolve(this._handleError(err, false));
+			  });
+		  });
+    }	
   addUserAddresses(data) {
       return new Promise((resolve, reject) => {
         var headers = new Headers();

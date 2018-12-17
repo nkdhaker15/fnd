@@ -16,16 +16,16 @@
 <ion-content >
 <img src="assets/imgs/sharearn.jpg">
 <h5>Tell your friend about F & D</h5>
-<p class="textshare">Invite your friend on f & d app using your referral code and you both get 50 RS.</p>
+<p class="textshare" [innerHtml]="userShareInfo.text_share_screen"></p>
 <ion-row>
 <ion-col style="text-align:center;">
 <div class="refferal-code">
-YMCDMG
+ {{userShareInfo.user_share_code}}
 </div>
 </ion-col>
 </ion-row>
 <p  ion-fixed class="fixed-bottom-button">
-<button ion-button  full [color]="primary"  class="normal-button50">Share & Earn</button>
+<button ion-button  (click)="shareApp()" full [color]="primary"  class="normal-button50">Share & Earn</button>
 </p>
 
 </ion-content>

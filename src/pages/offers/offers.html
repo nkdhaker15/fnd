@@ -25,36 +25,15 @@
 </div>
 <p class="p10" style="background:#000;color:#fff;margin:0px">AVAILABLE OFFERS</p>
 <div class="container-white">
-<ion-row class="p10" style="border-bottom:1px solid #eee">
+<ion-row class="p10" style="border-bottom:1px solid #eee" *ngFor="let offer of userOffers; ">
 <ion-col col-12>
 <div class="promo-code">
-<div class="promo-code-number">FIRST50</div>
+<div class="promo-code-number">{{offer.coupon_code}}</div>
 <a href="#" style="float:right; text-decoration:none;margin-top:15px">APPLY</a>
 </div>
-<h6>Get 25% discount on your first order</h6>
-<p style="color:#666;font-size:12px;margin-top:0px;">Use code FIRST50 & get 25% discount up to 60 on your first order.</p>
+<h6>{{offer.coupon_title}}</h6>
+<p style="color:#666;font-size:12px;margin-top:0px;">{{offer.coupon_conditions}}</p>
 </ion-col>
 </ion-row>
-<ion-row class="p10" style="border-bottom:1px solid #eee">
-<ion-col col-12>
-<div class="promo-code">
-<div class="promo-code-number">FIRST50</div>
-<a href="#" style="float:right; text-decoration:none;margin-top:15px">APPLY</a>
-</div>
-<h6>Get 25% discount on your first order</h6>
-<p style="color:#666;font-size:12px;margin-top:0px;">Use code FIRST50 & get 25% discount up to 60 on your first order.</p>
-</ion-col>
-</ion-row>
-<ion-row class="p10" style="border-bottom:1px solid #eee">
-<ion-col col-12>
-<div class="promo-code">
-<div class="promo-code-number">FIRST50</div>
-<a href="#" style="float:right; text-decoration:none;margin-top:15px">APPLY</a>
-</div>
-<h6>Get 25% discount on your first order</h6>
-<p style="color:#666;font-size:12px;margin-top:0px;">Use code FIRST50 & get 25% discount up to 60 on your first order.</p>
-</ion-col>
-</ion-row>
-
 </div>
 </ion-content>
