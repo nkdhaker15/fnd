@@ -19,6 +19,7 @@ import { OffersPage } from '../offers/offers';
 export class CartPage {
 private currentNumber = 1;
   cartItems: any = [];
+   tabBarElement: any;
   total: any =0;
   grandTotal: any=0;
   totalItems: number = 0;
@@ -29,7 +30,7 @@ private currentNumber = 1;
  = [{ name: "Manish Garg"},{ name: "Ram Kumar"},{ name: "Rakesh"},{ name: "Mohan"},{ name: "Amit Sharma"}];
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController) {
 	     this.total = 0.0;
-    
+    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.storage.ready().then(()=>{
 
       this.storage.get("cart").then( (data)=>{
@@ -74,6 +75,7 @@ private currentNumber = 1;
 	 return (item.amount * item.qty);
   }
   ionViewDidLoad() {
+	  this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad CartPage');
   }
    removeFromCart(item, i){
@@ -145,6 +147,10 @@ private currentNumber = 1;
 clickaddadress()
 {
 	this.navCtrl.push(AddaddressPage);
+	
+}
+
+checkout() {
 	
 }
 clickpromocode()

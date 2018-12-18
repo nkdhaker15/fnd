@@ -21,14 +21,21 @@ export class RmenuPage {
 rmenu
  = [{ name: "Signature Premier Grain"},{ name: "All Seasons"},{ name: "Heineken Lager Beer Wit"},{ name: "Signature Premier Grain"},{ name: "All Seasons"}];
  userInfo: any = {};
+ tabBarElement: any;
  productList: any = [];
  sellerInfo: any = {};
  product_image_path: any = '';
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController) {
      this.sellerInfo = this.navParams.get("sellerInfo");
+	 this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
  }
 
   ionViewDidLoad() {
+	  this.tabBarElement.style.display = 'none';
+    console.log('ionViewDidLoad RmenuPage');
+  }
+    ionViewWillUnload() {
+	  //this.tabBarElement.style.display = 'block';
     console.log('ionViewDidLoad RmenuPage');
   }
   ionViewWillEnter() {	  	 	      

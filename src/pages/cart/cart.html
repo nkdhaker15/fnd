@@ -117,15 +117,15 @@ Discount
 
 
 <p  ion-fixed class="fixed-bottom-button">
-<ion-row class="container-white border-bottom-1" (click)="clickaddadress()">
+<ion-row class="container-white border-bottom-1">
 <ion-col col-6>
 <div class="media p10">
-₹400.00<br>
+₹{{grandTotal}}<br>
 <span style="line-height:22px;">View Detailed Bill</span>
 </div>
 </ion-col>
 <ion-col col-6 class="pr-20">
-<button ion-button   [color]="primary"  class="checkout-button m-10">Update</button>
+<button ion-button   [color]="primary"  class="checkout-button m-10" (click)="checkout()">Checkout</button>
 </ion-col>
 
 

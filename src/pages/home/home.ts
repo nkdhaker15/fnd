@@ -17,7 +17,7 @@ export class HomePage {
     numbers = [0,1,2,3];
    dashboardData: any = {};
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
-
+     
   }
   ionViewWillEnter() {	  	 	      
     
