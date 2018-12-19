@@ -21,6 +21,7 @@ import { SignupfinalPage } from '../pages/signupfinal/signupfinal';
 import { MyaccountPage } from '../pages/myaccount/myaccount';
 import { OrderdetailPage } from '../pages/orderdetail/orderdetail';
 import { RmenuPage } from '../pages/rmenu/rmenu';
+//import { SearchdataPage } from '../pages/searchdata/searchdata';
 
 import { AddressbookPage } from '../pages/addressbook/addressbook';
 import { CartPage } from '../pages/cart/cart';
@@ -36,6 +37,7 @@ import { ExplorePage } from '../pages/explore/explore';
 import { AddaddressPage } from '../pages/addaddress/addaddress';
 import { ApiBackendService } from '../providers/apiBackendService';
 import { AuthUserService } from '../providers/authUserService';
+//import { DetectlocationPage } from '../pages/detectlocation/detectlocation';
 
 import { AndroidFullScreen } from '@ionic-native/android-full-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -69,6 +71,7 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	RmenuPage,
     TabsPage,
 	ExplorePage,
+	
 	ShrinkingSegmentHeader
   ],
   imports: [

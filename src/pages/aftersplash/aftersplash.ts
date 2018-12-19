@@ -7,6 +7,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
+//import { DetectlocationPage } from '../detectlocation/detectlocation';
+
 
 import { TabsPage } from '../tabs/tabs';
 /**
@@ -83,5 +85,8 @@ export class AftersplashPage {
          // data.coords.longitude
         });*/
   }    
-  
+opendetectlocation()
+  {
+   //this.navCtrl.push(DetectlocationPage);	    
+  }  
 }

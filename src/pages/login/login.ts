@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController ,AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SignuponePage } from '../signupone/signupone';
 import { TabsPage } from '../tabs/tabs';
@@ -10,6 +10,8 @@ import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 
 import { ForgotpasswordPage } from '../forgotpassword/forgotpassword';
+
+
 /**
  * Generated class for the LoginPage page.
  *
@@ -25,7 +27,7 @@ import { ForgotpasswordPage } from '../forgotpassword/forgotpassword';
 export class LoginPage {
   credentialsForm: FormGroup;
   loginErrorMsg: any = '';    
-  constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, public apiBackendService: ApiBackendService, private formBuilder: FormBuilder, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, public apiBackendService: ApiBackendService, private formBuilder: FormBuilder, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
     this.credentialsForm = this.formBuilder.group({
       email: [''],
       password: ['']
@@ -61,7 +63,8 @@ ionViewWillEnter() {
         loading.dismiss();
           this.loginErrorMsg = '';
           if(result.message == 'failed') {
-              this.loginErrorMsg = result.notification;
+              //this.loginErrorMsg = result.notification;
+			  this.showAlert(result.notification);
           }else if(result.message == 'ok') {
               this.authUserService.saveUser(result.results).then((status)=>{
                   this.navCtrl.setRoot(TabsPage);
@@ -86,6 +89,20 @@ ionViewWillEnter() {
   logindata()
   {
 	      this.navCtrl.setRoot(TabsPage);
+	  
+  }
+  showAlert(message) {
+    const alert = this.alertCtrl.create({
+      title: 'Error!',
+      subTitle: message,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+  directhome()
+  {
+	 	      this.navCtrl.setRoot(TabsPage);
+ 
 	  
   }
 }
