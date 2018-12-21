@@ -27,6 +27,7 @@ rmenu
  sellerInfo: any = {};
  product_image_path: any = '';
  cartItemsIds: any = [];
+ cartItems: any = [];
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController) {
      this.sellerInfo = this.navParams.get("sellerInfo");
 	 this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -88,7 +89,7 @@ rmenu
 				data.push({
 				  "product": product,
 				  "qty": product.qty,
-				  "amount": parseFloat(product.product_net_price)
+				  "amount": parseFloat(product.pmp_net_price)
 				});
 		   }else {
 			   let foundStatus: boolean = false;
@@ -104,7 +105,7 @@ rmenu
 					   data.push({
 						  "product": product,
 						  "qty": product.qty,
-						  "amount": parseFloat(product.product_net_price)
+						  "amount": parseFloat(product.pmp_net_price)
 						});
 				   }else {
 					   
