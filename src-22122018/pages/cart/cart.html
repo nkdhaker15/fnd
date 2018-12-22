@@ -1,0 +1,136 @@
+<!--
+  Generated template for the CartPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Cart</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="container-gray">
+<ion-row class="container-white border-bottom-1" (click)="clickaddadress()">
+<ion-col>
+<div class="media p10">
+<img src="assets/icon/circle-plus.png" class="w20 pull-left mr10">
+<span style="line-height:22px;">Add New Address</span>
+</div>
+</ion-col>
+</ion-row>
+<div  class="container-white mt10 mb-10">
+<ion-row   class="border-bottom-1" *ngFor="let cItem of cartItems; let i = index">
+<ion-col col-9>
+<div class="media p10">
+<img class="pull-left mr10" style="width:44px;" src="http://shopkiee.com/project/fandd/webroot/img/uploads/product_image/{{cItem.product.product_image1}}">
+<div class="mb5">{{cItem.product.product_name}} </div>
+<span id="price" class="mt5">₹{{lineTotal(cItem)}}</span>
+</div>
+</ion-col>
+<ion-col col-3 class="p10">
+<div class="qty-badge">
+<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
+{{cItem.qty}}
+<ion-icon name="add" (click)="increment(i)" ></ion-icon>
+</div>
+</ion-col>
+</ion-row>
+</div>
+
+<ion-row class="container-white" (click)="clickpromocode()">
+<ion-col>
+<div class="media p10">
+<img src="assets/icon/discount.png" class="w20 pull-left mr10">
+<span style="line-height:22px;">Apply Promocode/offers</span>
+</div>
+</ion-col>
+</ion-row>
+
+
+<div  class="container-white mt10 mb-100">
+<ion-row   class="border-bottom-1">
+<ion-col col-7>
+<div class="media p10">
+PRICE DETAILS 
+</div>
+</ion-col>
+</ion-row>
+<ion-row   class="border-bottom-1">
+<ion-col col-7>
+<div class="media p10">
+Price ({{totalItems}}) Item (s) 
+</div>
+</ion-col>
+<ion-col col-5>
+<div class="media p10" style="text-align:right">
+
+₹{{total}}
+</div>
+</ion-col>
+</ion-row>
+<ion-row   class="border-bottom-1">
+<ion-col col-7>
+<div class="media p10">
+Delivery Charge 
+</div>
+</ion-col>
+<ion-col col-5>
+<div class="media p10" style="text-align:right">
+
+₹{{deliveryCharge}}
+</div>
+</ion-col>
+</ion-row>
+<ion-row   class="border-bottom-1">
+<ion-col col-7>
+<div class="media p10">
+Discount 
+</div>
+</ion-col>
+<ion-col col-5>
+<div class="media p10" style="text-align:right">
+
+₹{{totalDiscount}}
+</div>
+</ion-col>
+</ion-row>
+<ion-row   class="border-bottom-1">
+<ion-col col-7>
+<div class="media p10">
+<strong>Payable Amount</strong> 
+</div>
+</ion-col>
+<ion-col col-5>
+<div class="media p10" style="text-align:right">
+
+<strong>₹{{grandTotal}}</strong> 
+</div>
+</ion-col>
+</ion-row>
+
+</div>
+
+
+
+<p  ion-fixed class="fixed-bottom-button">
+<ion-row class="container-white border-bottom-1">
+<ion-col col-6>
+<div class="media p10">
+₹{{grandTotal}}<br>
+<span style="line-height:22px;">View Detailed Bill</span>
+</div>
+</ion-col>
+<ion-col col-6 class="pr-20">
+<button ion-button   [color]="primary"  class="checkout-button m-10" (click)="checkout()">Checkout</button>
+</ion-col>
+
+
+</ion-row>
+</p>
+
+
+</ion-content>

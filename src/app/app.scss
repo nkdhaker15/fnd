@@ -133,7 +133,7 @@ height:auto;
 }
 .rest-details-content{
 width: 100%;
-padding: 0px 15px;
+padding: 0px 30px;
 position: absolute;
 bottom: -70px;
 }
@@ -177,18 +177,18 @@ top: 10px;
 margin-left: 25px;
 display: inline-block;
 }
-.cart-count {
-    position: absolute;
-    top: -5px;
-    background: #f08221;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    color: #fff;
-    text-align: center;
-    right: -5px;
-    font-size: 10px;
-    padding-top: 1px;
+.cart-count{
+position: absolute;
+top: -5px;
+background: #f08221;
+width: 15px;
+height: 15px;
+border-radius: 50%;
+color: #fff;
+text-align: center;
+right: -5px;
+font-size: 10px;
+padding-top: 1px;
 }
 .tabs-md .tab-button {
     min-height: 6.6rem;
@@ -440,41 +440,22 @@ width:100%
 .ion-md-remove::before {
 
     content: "\f368";
-	margin-right: 11px;
+	margin-right: 6px;
  color: #ccc;
 }
 .ion-md-add::before {
 
     content: "\f273";
-	margin-left: 15px;
- color: #7daf6a;
+	margin-left: 6px;
+ color: #ccc;
 }
 .qty-badge
 {
 width: 77px;
-border: 1px solid #d8d8d8;
+border: 1px solid #eee;
 padding: 5px;
 float: right;
-}
-.back-button-md {
-
-    margin: 0 0px;
-    min-width: 44px;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-
-}
-.ion-slide-brand {
-
-    width: 100px !important;
-    margin-right: -10px;
-
-}
-.ion-slide-category
-{
-width: 150px !important;
-height:100px;
-margin-right: -10px;
+margin: 10px;
 }
 .error {
     color: red !important;

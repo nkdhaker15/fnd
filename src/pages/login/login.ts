@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController ,AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SignuponePage } from '../signupone/signupone';
 import { TabsPage } from '../tabs/tabs';
 import { FormBuilder, FormGroup } from '@angular/forms';
-/*import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';*/
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { SignupfinalPage } from '../signupfinal/signupfinal';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 
 import { ForgotpasswordPage } from '../forgotpassword/forgotpassword';
-
-
 /**
  * Generated class for the LoginPage page.
  *
@@ -27,7 +26,7 @@ import { ForgotpasswordPage } from '../forgotpassword/forgotpassword';
 export class LoginPage {
   credentialsForm: FormGroup;
   loginErrorMsg: any = '';    
-  constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, public apiBackendService: ApiBackendService, private formBuilder: FormBuilder, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, public apiBackendService: ApiBackendService, private formBuilder: FormBuilder, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public fb: Facebook) {
     this.credentialsForm = this.formBuilder.group({
       email: [''],
       password: ['']
@@ -63,8 +62,7 @@ ionViewWillEnter() {
         loading.dismiss();
           this.loginErrorMsg = '';
           if(result.message == 'failed') {
-              //this.loginErrorMsg = result.notification;
-			  this.showAlert(result.notification);
+              this.loginErrorMsg = result.notification;
           }else if(result.message == 'ok') {
               this.authUserService.saveUser(result.results).then((status)=>{
                   this.navCtrl.setRoot(TabsPage);
@@ -74,11 +72,39 @@ ionViewWillEnter() {
         console.log(err); 
         });
   }
+  
+    loginUserUsingFacebook(facebook_id) {
+      let credentials = {
+          user_facebook_id: facebook_id
+      };
+      let loading = this.loadingCtrl.create({
+        content: 'Please wait...'
+      });
+      loading.present();
+      this.apiBackendService.loginUserViaFacebook(credentials).then((result: any) => { 
+        loading.dismiss();
+          this.loginErrorMsg = '';
+          if(result.message == 'failed') {
+              let user_data: any = {user_id: result.result.user_id, phoneno: '', user_facebook_id: facebook_id};
+                this.navCtrl.push(SignupfinalPage, {user_data: user_data}); 
+          }else if(result.message == 'ok') {
+              this.authUserService.saveUser(result.result).then((status)=>{
+                  this.navCtrl.setRoot(TabsPage);
+              });
+          } 
+        }, (err) => { 
+        console.log(err); 
+        });
+  }
     
   loginViaFacebook() {
-      /*this.fb.login(['public_profile', 'user_friends', 'email'])
-    .then((res: FacebookLoginResponse) => console.log('Logged into Facebook!', res))
-  .catch(e => console.log('Error logging into Facebook', e));*/
+      this.fb.login(['public_profile', 'user_friends', 'email'])
+		.then((res: FacebookLoginResponse) => {
+			this.loginUserUsingFacebook(res.authResponse.userID);
+		})
+	  .catch(e => { 
+			console.log('Error logging into Facebook', e) 
+	  });
   } 
   forgotbutton() {
 	  this.navCtrl.push(ForgotpasswordPage);  
@@ -89,20 +115,6 @@ ionViewWillEnter() {
   logindata()
   {
 	      this.navCtrl.setRoot(TabsPage);
-	  
-  }
-  showAlert(message) {
-    const alert = this.alertCtrl.create({
-      title: 'Error!',
-      subTitle: message,
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-  directhome()
-  {
-	 	      this.navCtrl.setRoot(TabsPage);
- 
 	  
   }
 }

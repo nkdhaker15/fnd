@@ -18,7 +18,7 @@
     <ion-list>
       <ion-item class="p0">
         <ion-label color="lightCCC" floating>10 digit mobile number</ion-label>
-        <ion-input type="text"  [readonly]="true" value="{{userData.phoneno}}">
+        <ion-input type="text" [formControl]="registerForm.controls['user_mobile_number']" [readonly]="userData.phoneno!=''" value="{{userData.phoneno}}">
     </ion-input>
       </ion-item>
       <ion-item class="p0">

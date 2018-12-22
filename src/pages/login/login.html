@@ -4,7 +4,7 @@
 <ion-grid>
 <ion-row >
 <ion-navbar>
-<span class="skip-right" (click)="directhome()">SKIP</span>
+<span class="skip-right">SKIP</span>
 </ion-navbar>
 </ion-row>
 <ion-list style="margin-left:10px;margin-right:10px;">
@@ -30,7 +30,7 @@
     <ion-input type="password"  class="login-input" [formControl]="credentialsForm.controls['password']" placeholder="Password"></ion-input>
     </ion-col>
     </ion-row>
-    <ion-row class="mt10">
+    <ion-row>
     <ion-col text-center>
     <button ion-button  [color]="primary" (click)="loginUser()" class="login-button">Login</button>
     </ion-col>
@@ -56,7 +56,7 @@ Google</button>
 <button ion-button  class="facebook" (click)="loginViaFacebook()"> <img src="assets/icon/facebook.png" style="width:15px;margin-right:5px"> Facebook</button>
 </ion-col>
 </ion-row>
-<ion-row class="mt10">
+<ion-row>
 <ion-col text-center>
 <a  (click)="openstepone()">Don't have account? <span style="color:#000000">Signup</span> Now</a>
 </ion-col>

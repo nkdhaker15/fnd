@@ -28,6 +28,7 @@ export class SignupfinalPage {
       user_first_name: [''],
       user_last_name: [''],
       user_email: [''],
+      user_mobile_number: [''],
       user_password: [''],
       user_ref_id: ['']
     });
@@ -39,8 +40,12 @@ export class SignupfinalPage {
   }
 
   registerUser() {
+  console.log("this.userData:: ", this.userData);
       let credentials = this.registerForm.value;
      credentials['user_id'] = this.userData.user_id;
+	 if(this.userData['user_facebook_id'] != null && this.userData['user_facebook_id'] != undefined) {
+		 credentials['user_facebook_id'] = this.userData['user_facebook_id'];
+	 }
      this.apiBackendService.registerUserFinalStep(credentials).then((result: any) => {         
          this.registerErrorMsg = '';
          if(result.message == 'failed') {

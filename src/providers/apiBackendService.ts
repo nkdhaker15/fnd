@@ -53,6 +53,36 @@ export class ApiBackendService {
           });
       });
     }
+	
+ loginUserViaFacebook(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/register/facebooklogincheck', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+    }
+	
+    loginUserViaGoogle(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/register/googlepluslogincheck', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+    }	
   updateUser(data) {
       return new Promise((resolve, reject) => {
         var headers = new Headers();
