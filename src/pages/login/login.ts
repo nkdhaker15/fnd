@@ -5,6 +5,8 @@ import { SignuponePage } from '../signupone/signupone';
 import { TabsPage } from '../tabs/tabs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { GooglePlus } from '@ionic-native/google-plus';
+
 import { SignupfinalPage } from '../signupfinal/signupfinal';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
@@ -26,7 +28,7 @@ import { ForgotpasswordPage } from '../forgotpassword/forgotpassword';
 export class LoginPage {
   credentialsForm: FormGroup;
   loginErrorMsg: any = '';    
-  constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, public apiBackendService: ApiBackendService, private formBuilder: FormBuilder, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public fb: Facebook) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, public apiBackendService: ApiBackendService, private formBuilder: FormBuilder, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public fb: Facebook, private googlePlus: GooglePlus) {
     this.credentialsForm = this.formBuilder.group({
       email: [''],
       password: ['']
@@ -98,14 +100,23 @@ ionViewWillEnter() {
   }
     
   loginViaFacebook() {
-      this.fb.login(['public_profile', 'user_friends', 'email'])
+
+      this.fb.login(['public_profile', 'email'])
 		.then((res: FacebookLoginResponse) => {
 			this.loginUserUsingFacebook(res.authResponse.userID);
 		})
 	  .catch(e => { 
-			console.log('Error logging into Facebook', e) 
+			console.log('Error logging into Facebook', e); 
 	  });
   } 
+  loginViaGoogle() {
+	  console.log('Error logging into Google');
+	  this.googlePlus.login({})
+  .then(res =>{
+	  console.log(res)
+  })
+  .catch(err =>{ console.error(err); });
+  }
   forgotbutton() {
 	  this.navCtrl.push(ForgotpasswordPage);  
   }
