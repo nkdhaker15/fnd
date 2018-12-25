@@ -12,6 +12,9 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
+import { DetectlocationPage } from '../pages/detectlocation/detectlocation';
+import { SearchdataPage } from '../pages/searchdata/searchdata';
+
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AftersplashPage } from '../pages/aftersplash/aftersplash';
@@ -63,6 +66,7 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	ForgotpasswordPage,
 	OffersPage,
 	OrdersPage,
+	SearchdataPage,
 	SharePage,
 	FaqPage,
 	OrderdetailPage,
@@ -70,6 +74,7 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	RmenuPage,
     TabsPage,
 	ExplorePage,
+	DetectlocationPage,
 	ShrinkingSegmentHeader
   ],
   imports: [
@@ -96,10 +101,12 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	EditprofilePage,
 	ChangepasswordPage,
 	ForgotpasswordPage,
+	SearchdataPage,
 	OffersPage,
 	OrdersPage,
 	SharePage,
 	OrderdetailPage,
+	DetectlocationPage,
 	FaqPage,
 	AddaddressPage,
 	RmenuPage,

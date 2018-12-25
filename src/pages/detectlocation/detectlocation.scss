@@ -1,0 +1,29 @@
+page-detectlocation {
+ .searchbar-search-icon { display:none; width:0; height:0; }
+ .toolbar .searchbar-md {
+
+    padding: 0px;
+
+}
+.searchbar-md .searchbar-input {
+
+    padding: 6px 10px;
+    border-radius: 2px;
+    background-position: left 8px center;
+    height: auto;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 3rem;
+    color: #141414;
+    background-color: #fff;
+    -webkit-box-shadow:none;
+    box-shadow: none;
+
+}
+.mute-text
+{
+color: #ccc;
+font-size: 12px;
+text-transform: uppercase;
+}
+}

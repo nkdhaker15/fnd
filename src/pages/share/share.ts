@@ -63,7 +63,7 @@ loadShare() {
       let loading = this.loadingCtrl.create({
                 content: 'Please wait...'
               });
-              loading.present();
+             // loading.present();
       this.socialSharing.share(this.userShareInfo.text_share_message, 'Food and drink').then(() => {
           // Sharing via email is possible
            loading.dismiss();

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { StatusBar } from '@ionic-native/status-bar';
+
 /*import { Geolocation } from '@ionic-native/geolocation';*/
 /*import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';*/
 
@@ -9,6 +10,8 @@ import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 
 import { TabsPage } from '../tabs/tabs';
+import { DetectlocationPage } from '../detectlocation/detectlocation';
+
 /**
  * Generated class for the AftersplashPage page.
  *
@@ -83,5 +86,8 @@ export class AftersplashPage {
          // data.coords.longitude
         });*/
   }    
-  
+entermanuallocation()
+  {
+   this.navCtrl.push(DetectlocationPage);	    
+  }    
 }

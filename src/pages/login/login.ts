@@ -128,4 +128,5 @@ ionViewWillEnter() {
 	      this.navCtrl.setRoot(TabsPage);
 	  
   }
+
 }

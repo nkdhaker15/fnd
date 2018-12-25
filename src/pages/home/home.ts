@@ -6,6 +6,7 @@ import { AuthUserService } from '../../providers/authUserService';
 
 import { CartPage } from '../cart/cart';
 import { RmenuPage } from '../rmenu/rmenu';
+import { SearchdataPage } from '../searchdata/searchdata';
 
 @Component({
   selector: 'page-home',
@@ -17,20 +18,27 @@ export class HomePage {
     numbers = [0,1,2,3];
    dashboardData: any = {};
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
-     
+     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+				  if (this.tabBarElement) {
+		      this.tabBarElement.style.display = 'flex';
+				  }
   }
   ionViewWillEnter() {	  	 	      
     
+	   this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+				  if (this.tabBarElement) {
+		      this.tabBarElement.style.display = 'flex';
+				  }
       this.authUserService.getUser().then((user)=>{
           console.log("user:: ", user);
           if(user != null && user != undefined) {
               this.userInfo = user;
-              this.loadDashboardInfo();
           }         
           
       });
       
-      
+                    this.loadDashboardInfo();
+
 
   }
    filterRestrauntByTypeAndPopular(type: any) {
@@ -95,4 +103,18 @@ export class HomePage {
 	      //console.log('click OrdersPage');
 
   } 
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
+  showsearchdata()
+  {
+	  	  	   this.navCtrl.push(SearchdataPage);    
+
+	  
+  }
 }

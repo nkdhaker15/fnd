@@ -24,19 +24,19 @@
 </ion-row>
 <div  class="container-white mt10 mb-10">
 <ion-row   class="border-bottom-1" *ngFor="let cItem of cartItems; let i = index">
-<ion-col col-7>
+<ion-col col-9>
 <div class="media p10">
+<img class="pull-left mr10" style="width:44px;" src="http://shopkiee.com/project/fandd/webroot/img/uploads/product_image/{{cItem.product.product_image1}}">
 <div class="mb5">{{cItem.product.product_name}} </div>
 <span id="price" class="mt5">₹{{lineTotal(cItem)}}</span>
 </div>
 </ion-col>
-<ion-col col-5>
+<ion-col col-3 class="p10">
 <div class="qty-badge">
 <ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
 {{cItem.qty}}
 <ion-icon name="add" (click)="increment(i)" ></ion-icon>
 </div>
-<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 12px;height: 28px;" (click)="removeFromCart(cItem, i)">Remove</button>
 </ion-col>
 </ion-row>
 </div>
