@@ -16,9 +16,24 @@ export class AuthUserService {
       });
   } 
     
+  getUserLocation() {
+      return new Promise(resolve => {
+        this.storage.get('current_user_location').then(data => {
+			    resolve(data);
+        });
+      });
+  } 	
   saveUser(user_data: any) {    
     return new Promise(resolve => {  
         this.storage.set('current_user', user_data);  
+        resolve(true);
+    });    
+  } 
+  
+  saveUserLocation(user_location_data: any) {    
+    return new Promise(resolve => {  
+	console.log("user_location_data:: ", user_location_data);
+        this.storage.set('current_user_location', user_location_data);  
         resolve(true);
     });    
   } 

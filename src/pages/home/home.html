@@ -2,7 +2,8 @@
   <ion-navbar>
   <ion-row>
   <ion-col col-10>
-  <ion-title>NOW <img src="assets/icon/right-arrow01.png" class="arrow-icon"> <div class="loct">Malviya Nagar Industrial ... <img src="assets/icon/pencil.png" class="arrow-icon"></div></ion-title>
+  <ion-title *ngIf="!userLocationInfo.address">Home</ion-title>
+  <ion-title *ngIf="userLocationInfo.address">NOW <img src="assets/icon/right-arrow01.png" class="arrow-icon"> <div class="loct">{{userLocationInfo.address}} <img src="assets/icon/pencil.png" class="arrow-icon"></div></ion-title>
   </ion-col>
   <ion-col col-2>
   <div class="top-cart-icon" (click)="mycartMethod()">

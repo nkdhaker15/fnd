@@ -113,10 +113,35 @@ ionViewWillEnter() {
 	  console.log('Error logging into Google');
 	  this.googlePlus.login({})
   .then(res =>{
-	  console.log(res)
+	  this.loginUserUsingGooglePlus(res.userId,res.email,res.givenName);
   })
   .catch(err =>{ console.error(err); });
   }
+  
+   loginUserUsingGooglePlus(facebook_id,email,first_name) {
+      let credentials = {
+          user_googleplus_id: facebook_id
+      };
+      let loading = this.loadingCtrl.create({
+        content: 'Please wait...'
+      });
+      loading.present();
+      this.apiBackendService.loginUserViaGoogle(credentials).then((result: any) => { 
+        loading.dismiss();
+          this.loginErrorMsg = '';
+          if(result.message == 'failed') {
+              let user_data: any = {user_id: result.result.user_id, user_email:email ,user_first_name:first_name,phoneno: '', user_googleplus_id: facebook_id};
+                this.navCtrl.push(SignupfinalPage, {user_data: user_data}); 
+          }else if(result.message == 'ok') {
+              this.authUserService.saveUser(result.result).then((status)=>{
+                  this.navCtrl.setRoot(TabsPage);
+              });
+          } 
+        }, (err) => { 
+        console.log(err); 
+        });
+  }
+  
   forgotbutton() {
 	  this.navCtrl.push(ForgotpasswordPage);  
   }

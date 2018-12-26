@@ -4,8 +4,8 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
 import { SocialSharing } from '@ionic-native/social-sharing';
-/*import { Geolocation } from '@ionic-native/geolocation';
-import { NativeGeocoder } from '@ionic-native/native-geocoder';*/
+import { Geolocation } from '@ionic-native/geolocation';
+/*import { NativeGeocoder } from '@ionic-native/native-geocoder';*/
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 
@@ -123,6 +123,7 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
       SocialSharing,
 	  Facebook,
 	  GooglePlus,
+	  Geolocation,
    /* Geolocation,  
     NativeGeocoder,  
       */

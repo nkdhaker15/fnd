@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { StatusBar } from '@ionic-native/status-bar';
-
+import { Geolocation } from '@ionic-native/geolocation';
 /*import { Geolocation } from '@ionic-native/geolocation';*/
 /*import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';*/
 
@@ -18,7 +18,7 @@ import { DetectlocationPage } from '../detectlocation/detectlocation';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+declare var google: any;
 @IonicPage()
 @Component({
   selector: 'page-aftersplash',
@@ -26,18 +26,25 @@ import { DetectlocationPage } from '../detectlocation/detectlocation';
 })
 export class AftersplashPage {
   imageBaseUrl: any;
+  GoogleAutocomplete: any;
+  geocoder: any;
+  userLocationInfo: any = {};
    slideImages: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, public apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, private authUserService: AuthUserService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, public apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, private authUserService: AuthUserService, private geolocation: Geolocation) {
 	     statusBar.hide();
+
   }
  
   ionViewDidLoad() {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-    loading.present();  
+    loading.present();
+
+ 
       this.authUserService.getUser().then((user)=>{
           console.log("user:: ", user);
+		  		   this.geocoder = new google.maps.Geocoder();
           if(user != null && user != undefined) {
               this.navCtrl.setRoot(TabsPage);
           }         
@@ -64,10 +71,14 @@ export class AftersplashPage {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-   // loading.present();
-      /*this.geolocation.getCurrentPosition().then((resp: any) => {
-          console.log("resp latitude:: ", resp.coords.latitude);
-          console.log("resp longitude:: ", resp.coords.longitude);
+    loading.present();
+      this.geolocation.getCurrentPosition().then((resp: any) => {
+          let pos = {
+			  lat: resp.coords.latitude,
+			  lng: resp.coords.longitude
+			};
+			let place_data: any = {'location': pos};
+		  this.geocodeUserAddress(place_data);
           
           
             
@@ -77,7 +88,7 @@ export class AftersplashPage {
         }).catch((error) => {
           console.log('Error getting location', error);
           loading.dismiss();
-        });*/
+        });
 
         /*let watch = this.geolocation.watchPosition();
         watch.subscribe((data) => {
@@ -86,6 +97,28 @@ export class AftersplashPage {
          // data.coords.longitude
         });*/
   }    
+  setUserLocation() {
+	  this.authUserService.saveUserLocation(this.userLocationInfo).then((status)=>{
+                  this.navCtrl.setRoot(TabsPage);
+              });
+	  
+  }
+  
+ geocodeUserAddress(addressSource: any) {
+	 this.geocoder.geocode(addressSource, (results, status) => {
+    if(status === 'OK' && results[0]){
+      let position = {
+          lat: results[0].geometry.location.lat,
+          lng: results[0].geometry.location.lng
+      };
+	   
+	  this.userLocationInfo = {address: results[0].formatted_address, lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng()};
+		  this.setUserLocation();
+	  
+    }
+  });
+ }
 entermanuallocation()
   {
    this.navCtrl.push(DetectlocationPage);	    
