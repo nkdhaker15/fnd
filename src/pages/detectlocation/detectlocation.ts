@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { AuthUserService } from '../../providers/authUserService';
@@ -25,7 +25,7 @@ export class DetectlocationPage {
   map: any;
   currentSelectedAddress: any ='';
   userLocationInfo: any = {};
-  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone,  public loadingCtrl: LoadingController) {
 	  this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
 	  this.autocomplete = { input: '' };
 	  this.autocompleteItems = [];
@@ -35,8 +35,10 @@ export class DetectlocationPage {
   }
  tryGeolocation(){
   this.clearMarkers();
+ 
   this.geolocation.getCurrentPosition().then((resp) => {
     let pos = {
+		
       lat: resp.coords.latitude,
       lng: resp.coords.longitude
     };
@@ -62,7 +64,12 @@ export class DetectlocationPage {
 } 
 
  geocodeUserAddress(addressSource: any) {
+	  let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
 	 this.geocoder.geocode(addressSource, (results, status) => {
+		 loading.dismiss();
     if(status === 'OK' && results[0]){
       let position = {
           lat: results[0].geometry.location.lat,

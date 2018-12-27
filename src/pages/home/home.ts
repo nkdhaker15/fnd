@@ -18,6 +18,7 @@ export class HomePage {
     numbers = [0,1,2,3];
    dashboardData: any = {};
    userLocationInfo: any = {address: ''};
+   loading: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 				  if (this.tabBarElement) {
@@ -35,14 +36,14 @@ export class HomePage {
           if(userLocationInfo != null && userLocationInfo != undefined) {
               this.userLocationInfo = userLocationInfo;
           }         
-          this.loadDashboardInfo();
+          
       });			  
       this.authUserService.getUser().then((user)=>{
           console.log("user:: ", user);
           if(user != null && user != undefined) {
               this.userInfo = user;
           }         
-          
+          this.loadDashboardInfo();
       });
       
                     
@@ -79,22 +80,26 @@ export class HomePage {
   loadDashboardInfo() {
 		
 		let user_req = {
-				  user_id: this.userInfo.user_id,
+				  
 				  lat: this.userLocationInfo.lat,
 				  lng: this.userLocationInfo.lng
 			  };
-			 let loading = this.loadingCtrl.create({
+			  if(this.userInfo  != null) {
+				  user_req['user_id'] = this.userInfo.user_id;
+			  }
+			 this.loading = this.loadingCtrl.create({
 					content: 'Please wait...'
+					
 				  });
-				  loading.present();
+				  this.loading.present();
 			 this.apiBackendService.getDashbboardInfo(user_req).then((result: any) => { 
-				 loading.dismiss();
+				 this.loading.dismiss();
 				 
 				this.dashboardData = result;
                  console.log("this.dashboardData:: ", this.dashboardData);
 				}, (err) => { 
 				console.log(err); 
-				 //loading.dismiss();
+				 this.loading.dismiss();
 				});
    }
     

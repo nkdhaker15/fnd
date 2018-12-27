@@ -73,6 +73,7 @@ export class AftersplashPage {
     });
     loading.present();
       this.geolocation.getCurrentPosition().then((resp: any) => {
+		  loading.dismiss();
           let pos = {
 			  lat: resp.coords.latitude,
 			  lng: resp.coords.longitude

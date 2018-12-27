@@ -81,21 +81,29 @@ rmenu
 	  
 	  this.navCtrl.push(CartPage);
   }
-  addToCart(product) {
+   openProductChild(product) {
+	   console.log("Modal will open here");
+   }
+  addToCart(product, amount, variationId, variationLabel) {
 	  this.storage.get("cart").then((data) => {
+		  if(product.qty == undefined) {
+			  product.qty = 1;
+		  }
 		   if (data == undefined || data.length == 0) {
 				data = [];
 
 				data.push({
 				  "product": product,
+				  'variation_id': variationId, 
+				  'variation_label': variationLabel, 
 				  "qty": product.qty,
-				  "amount": parseFloat(product.product_net_price)
+				  "amount": parseFloat(amount)
 				});
 		   }else {
 			   let foundStatus: boolean = false;
 			   let foundIndex = 0;
 			   for(let d=0; d < data.length; d++) {
-				   if(data[d].product.product_id == product.product_id) {
+				   if(data[d].product.product_id == product.product_id  && variationId == data[d].variation_id) {
 					   foundStatus = true;
 					   foundIndex = d;
 				   }
@@ -104,12 +112,15 @@ rmenu
 			   if(!foundStatus) {
 					   data.push({
 						  "product": product,
+						  'variation_id': variationId,
+						  'variation_label': variationLabel, 
 						  "qty": product.qty,
-						  "amount": parseFloat(product.product_net_price)
+						  "amount": parseFloat(amount)
 						});
 				   }else {
 					   
 					  data[foundIndex].qty = product.qty;
+					  data[foundIndex].amount = parseFloat(amount);
 					   
 				   }
 		   }
