@@ -21,13 +21,26 @@
 <ion-content >
   <ion-list [hidden]="autocompleteItems.length == 0">
   <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-    {{ item.description }}
-  </ion-item>
-  </ion-list>
+  <div class="media">
 
-  <div id='map'></div>
+   <img src="assets/icon/location-pin.png" class="w20 pull-left mr10 ">
+ <span style="line-height:22px;">{{ item.description }}</span>
+ </div>
+  </ion-item>
+   
+  </ion-list>
+    <ion-list [hidden]="autocompleteItems.length != 0">
+
+<ion-item (click)="tryGeolocation()">
+<div class="media">
+<img src="assets/icon/targetb.png" class="w20 pull-left mr10 mt10">
+<span style="line-height:22px;">Current Location<br><font class="mute-text">Using GPS</font></span>
+</div>
+    </ion-item>
+	</ion-list>
+  <div id='map' style="display:none"></div>
 </ion-content>
-<ion-footer>
+<ion-footer style="display:none">
 <ion-list>
 
     <ion-item *ngIf="currentSelectedAddress" class="address-selected">
@@ -36,12 +49,7 @@
 	<ion-item *ngIf="currentSelectedAddress" class="address-selected">
 	   <button ion-button  [color]="primary" (click)="setUserLocation()">Select</button>
 	</ion-item>
-	 <ion-item (click)="tryGeolocation()">
-<div class="media">
-<img src="assets/icon/targetb.png" class="w20 pull-left mr10 mt10">
-<span style="line-height:22px;">Current Location<br><font class="mute-text">Using GPS</font></span>
-</div>
-    </ion-item>
+	
   </ion-list>
 </ion-footer>
 

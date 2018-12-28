@@ -1,0 +1,78 @@
+<!--
+  Generated template for the RmenuPage page.
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+ <ion-navbar >
+<ion-title>{{sellerInfo.se_store_name}}</ion-title>
+</ion-navbar>
+</ion-header>
+
+
+
+<ion-content fullscreen #myContent>
+
+
+
+  <ion-row  class="mb-60">
+<ion-col style="padding:0;">
+<div class="rest-details-header">
+
+<img src="{{sellerInfo.seller_img_base_url}}{{sellerInfo.seller_image}}" *ngIf="sellerInfo.seller_image != ''">
+<img src="assets/imgs/r2.jpg" *ngIf="sellerInfo.seller_image == ''">
+</div>
+<div class="rest-details-content">
+<div class="rest-details-content-box">
+<h1>{{sellerInfo.se_store_name}}</h1>
+<p>{{sellerInfo.seller_address}}</p>
+<p style="margin-top:20px;"><span style="float:left;"><img src="assets/icon/time.png" style="width:16px; float:left; margin-right:5px;"> 40-50 MINS&nbsp;&nbsp; |&nbsp;&nbsp;3.4</span>  <span  style="float:left;"> <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;float:left;"> (500+)</span></p>
+</div>
+</div>
+</ion-col>
+</ion-row>
+ 
+
+<div class="container-white mb-60">
+<div class="media p10">
+<ion-row>
+<ion-col>
+<h5 style="padding-left:10px;">Recommended</h5>
+</ion-col>
+</ion-row>
+
+
+
+<ion-row>
+<ion-col col-6 class="p5 " style="margin-bottom:15px" *ngFor="let productItem of productList; let i = index"  #slidingItem>
+<img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;margin-bottom:5px;">
+<span style="font-size:9px; color:#666;">{{productItem.brand_name}}</span>
+<p style="margin-top:3px;font-weight:500">{{productItem.product_name}}</p>
+<div class="product-footer">
+<div class=" pull-left " style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span><br> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
+<div class="qty-badge" *ngIf="isItemQty(productItem)"  >
+<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
+{{getItemQty(i)}}
+<ion-icon name="add" (click)="increment(i)" ></ion-icon>
+</div> 
+<button *ngIf="productItem.child.length==0 && !isItemQty(productItem)" ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</button>
+<button *ngIf="productItem.child.length>0" ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" (click)="openProductChild(productItem)">ADD+</button>
+</div>
+</ion-col>
+</ion-row>
+</div>
+</div>
+ <ion-row ion-fixed class="fixed-bottom-button bottom-cart-detail" (click)="viewcart()">
+ <ion-col col-6 style="padding:21px;font-weight:500">
+ 
+ </ion-col>
+ 
+ <ion-col col-6 style="padding:21px;font-weight:500;text-align:right">
+ VIEW CART   
+  <ion-icon name="ios-cart-outline" style="font-size: 1.3em;"></ion-icon>
+
+ </ion-col>
+ </ion-row>
+ 
+</ion-content>

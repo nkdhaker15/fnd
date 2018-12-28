@@ -1,14 +1,14 @@
 <ion-header>
   <ion-navbar>
   <ion-row>
-  <ion-col col-10>
+  <ion-col col-10 (click)="opendetectlocation()">
   <ion-title *ngIf="!userLocationInfo.address">Home</ion-title>
-  <ion-title *ngIf="userLocationInfo.address">NOW <img src="assets/icon/right-arrow01.png" class="arrow-icon"> <div class="loct">{{userLocationInfo.address}} <img src="assets/icon/pencil.png" class="arrow-icon"></div></ion-title>
+  <ion-title *ngIf="userLocationInfo.address">NOW <img src="assets/icon/right-arrow01.png" class="arrow-icon"> <div class="loct Open_Sans_Bold">{{userLocationInfo.address}} <img src="assets/icon/pencil.png" class="arrow-icon"></div></ion-title>
   </ion-col>
   <ion-col col-2>
   <div class="top-cart-icon" (click)="mycartMethod()">
   <ion-icon name="ios-cart-outline" style="font-size: 1.7em;"></ion-icon>
-   <div class="cart-count">1</div>
+   <div class="cart-count" *ngIf="cartcount != 0">{{cartcount}}</div>
   </div>
  
   </ion-col>
@@ -57,7 +57,8 @@
 <ion-slides class="color-white ">
 <ion-slide *ngFor="let brandItem of dashboardData.brand"  (click)="showsearchdata()" class="ion-slide-brand"> 
  <img src="{{dashboardData.brand_url}}{{brandItem.brand_icon}}"  *ngIf="brandItem.brand_icon != ''" class="media-circle ml10" style=""> 
-<div style="font-size:14px;margin-top:10px;font-weight:500">{{brandItem.brand_name}}</div>
+ <img src="../assets/icon/placeholder.jpg"  *ngIf="brandItem.brand_icon == ''" class="media-circle ml10" style=""> 
+ <div style="font-size:14px;margin-top:10px;font-weight:500">{{brandItem.brand_name}}</div>
 </ion-slide>
   
 </ion-slides>

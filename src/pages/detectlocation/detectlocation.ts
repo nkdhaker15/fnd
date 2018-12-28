@@ -35,8 +35,12 @@ export class DetectlocationPage {
   }
  tryGeolocation(){
   this.clearMarkers();
- 
+  let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
   this.geolocation.getCurrentPosition().then((resp) => {
+	  loading.dismiss();
     let pos = {
 		
       lat: resp.coords.latitude,
@@ -52,6 +56,7 @@ export class DetectlocationPage {
     this.markers.push(marker);
     this.map.setCenter(pos);*/
   }).catch((error) => {
+	  loading.dismiss();
     console.log('Error getting location', error);
   });
 } 
@@ -77,6 +82,7 @@ export class DetectlocationPage {
       };
 	  this.ngZone.run(()=>{
 		this.currentSelectedAddress = results[0].formatted_address;  
+		
 	  });
 	  
 	  this.userLocationInfo = {address: results[0].formatted_address, lat: results[0].geometry.location.lat(),
@@ -88,6 +94,7 @@ export class DetectlocationPage {
       });
       this.markers.push(marker);
       this.map.setCenter(results[0].geometry.location);
+	  this.setUserLocation();
     }
   });
  }

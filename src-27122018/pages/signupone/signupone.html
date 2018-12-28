@@ -1,0 +1,33 @@
+<!--
+  Generated template for the SignuponePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Create Account</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="container-gray">
+<form [formGroup]="registerForm">      
+<ion-card>
+    <ion-card-content text-center style="padding:0px;">
+        <ion-row *ngIf="registerErrorMsg != ''">
+            <ion-col text-center><p class="error">{{registerErrorMsg}}</p></ion-col>
+        </ion-row>    
+        <p class="padding-10 mt-25">We will send an SMS with a confirmation <br> code to this number</p>
+        <div style="margin-bottom: 15px;margin-top: 15px;">
+           <span style="width: 31px;border-bottom:1px solid #ccc;padding:7px">+91</span>
+            <ion-input type="tel"  placeholder="Phone Number" style="width:122px;display:inline-block;border-bottom:1px solid #ccc;padding:5px" class="login-input" [formControl]="registerForm.controls['phoneno']" (keyup)="_onKeyup($event)"></ion-input>
+        </div>
+
+        <button ion-button [color]="primary" [class.active-button]="phoneLength" (click)="openotp()" class="mb-minus-2 signup-button">Next</button>
+    </ion-card-content>
+</ion-card>
+</form>
+</ion-content>

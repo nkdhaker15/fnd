@@ -1,0 +1,49 @@
+<!--
+  Generated template for the DetectlocationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+ <ion-searchbar
+  [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()"
+  placeholder="Search for area,street name..."
+  [showCancelButton]="shouldShowCancel"
+  >
+</ion-searchbar>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+  <ion-list [hidden]="autocompleteItems.length == 0">
+  <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+    {{ item.description }}
+  </ion-item>
+  </ion-list>
+
+  <div id='map'></div>
+</ion-content>
+<ion-footer>
+<ion-list>
+
+    <ion-item *ngIf="currentSelectedAddress" class="address-selected">
+	  {{currentSelectedAddress}} 
+	</ion-item>
+	<ion-item *ngIf="currentSelectedAddress" class="address-selected">
+	   <button ion-button  [color]="primary" (click)="setUserLocation()">Select</button>
+	</ion-item>
+	 <ion-item (click)="tryGeolocation()">
+<div class="media">
+<img src="assets/icon/targetb.png" class="w20 pull-left mr10 mt10">
+<span style="line-height:22px;">Current Location<br><font class="mute-text">Using GPS</font></span>
+</div>
+    </ion-item>
+  </ion-list>
+</ion-footer>
+
+
+

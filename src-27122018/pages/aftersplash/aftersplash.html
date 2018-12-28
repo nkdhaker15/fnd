@@ -1,0 +1,49 @@
+<ion-content class="no-scroll">
+<div ion-fixed>
+<div class="header-user-login">
+<ion-grid>
+<ion-row >
+<ion-col text-center>
+<ion-slides   loop="true" speed="500" class="bannerstyle" pager>
+<ion-slide *ngFor="let slideitem of slideImages">
+<img src="{{imageBaseUrl}}{{slideitem.slider_image}}" style="width:80%">
+<div class="slider-caption">
+<h4>{{slideitem.slider_title}}</h4>
+<p>{{slideitem.slider_desc}}</p>
+</div>
+</ion-slide>
+
+</ion-slides>
+</ion-col>
+</ion-row>
+</ion-grid>
+</div>
+<div class="footer-user-login">
+<ion-grid >
+<ion-row>
+<ion-col text-center>
+<button ion-button  class="google" (click)="detectLocation()">
+<img src="assets/icon/target.png" style="width:25px;margin-right:5px">
+<span class="mt-3">Detect my location</span>
+</button>
+</ion-col>
+</ion-row>
+<ion-row class="mt-10">
+<ion-col text-center >
+<h6 style="width:85%; text-align:center; border-bottom: 1px solid #ccc; line-height:0.1em; margin:0 auto 20px;"><span style="background:#fff; padding:0 10px;">OR</span></h6>
+
+
+</ion-col>
+</ion-row>
+<ion-row >
+<ion-col text-center style="border-right: 1px solid #ccc;font-size:13px" (click)="entermanuallocation()">
+Enter your location <br>manually
+</ion-col>
+<ion-col text-center (click)="openlogin()" style="font-size:13px">
+Login to use saved <br>address
+</ion-col>
+</ion-row>
+</ion-grid>
+</div>
+</div>
+</ion-content>

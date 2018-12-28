@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 import { CartPage } from '../cart/cart';
+import { ProductChildPage } from '../product-child/product-child';
 
 /**
  * Generated class for the RmenuPage page.
@@ -27,8 +28,9 @@ rmenu
  sellerInfo: any = {};
  product_image_path: any = '';
  cartItemsIds: any = [];
- cartItems: any = [];
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController) {
+ cartItems: any = []; 
+ carttotalamount: any =0;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController) {
      this.sellerInfo = this.navParams.get("sellerInfo");
 	 this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
  }
@@ -42,28 +44,7 @@ rmenu
     console.log('ionViewDidLoad RmenuPage');
   }
   ionViewWillEnter() {	  	 	      
-    this.storage.ready().then(()=>{
-
-      this.storage.get("cart").then( (data)=>{
-		  if(data == null) {
-			  data = [];
-		  }
-		  this.cartItemsIds = [];
-        this.cartItems = data;
-        console.log(this.cartItems);
-
-        if(this.cartItems.length > 0){
-
-          this.cartItems.forEach( (item, index)=> {
-             this.cartItemsIds.push(item.product.product_id);
-
-
-		});
-		}
-
-    });
-    });
-	
+       this.getCartItems();
       this.authUserService.getUser().then((user)=>{
           console.log("user:: ", user);
           if(user != null && user != undefined) {
@@ -80,10 +61,19 @@ rmenu
   {
 	  
 	  this.navCtrl.push(CartPage);
-  }
-   openProductChild(product) {
-	   console.log("Modal will open here");
-   }
+  } 
+  
+  openProductChildModal(product) {
+   let childModal = this.modalCtrl.create(ProductChildPage, { productInfo: product });
+   childModal.onDidDismiss(data => {
+     console.log(data);
+	 if(data != null) {
+		this.addToCart(product, data.pmp_net_price, data.pmp_id, data.unit_name); 
+	 }
+   });
+   childModal.present();
+ }
+   
   addToCart(product, amount, variationId, variationLabel) {
 	  this.storage.get("cart").then((data) => {
 		  if(product.qty == undefined) {
@@ -131,18 +121,44 @@ rmenu
 				console.log("Cart Updated");
 				console.log(data);
 
-				this.toastController.create({
+				/*this.toastController.create({
 				  message: "Cart Updated",
 				  duration: 3000
 				}).present();
+*/
+	              this.getCartItems();
 
 			  });
 	  });
   }
+  
+  getCartItems() {
+	    this.storage.ready().then(()=>{
+
+      this.storage.get("cart").then( (data)=>{
+		  if(data == null) {
+			  data = [];
+		  }
+		  this.cartItemsIds = [];
+        this.cartItems = data;
+        console.log(this.cartItems);
+
+        if(this.cartItems.length > 0){
+
+          this.cartItems.forEach( (item, index)=> {
+             this.cartItemsIds.push(item.product.product_id);
+this.carttotalamount =parseFloat(parseFloat(this.carttotalamount)+parseFloat(item.product.pmb_selling_price));
+
+		});
+		}
+
+    });
+    });
+  }
   increment(index) {
 	  
 		this.productList[index].qty++;
-		this.addToCart(this.productList[index]);
+	this.addToCart(this.productList[index],this.productList[index].pmp_net_price,0,'');
     
  }
   decrement(index) {
@@ -150,7 +166,8 @@ rmenu
 		this.productList[index].qty--;
 		
 	}
-	this.addToCart(this.productList[index]);
+//	this.addToCart(productItem,productItem.pmp_net_price, 0, '')
+	this.addToCart(this.productList[index],this.productList[index].pmp_net_price,0,'');
  }
 getItemQty(index: any) {
 	if(this.productList[index].qty == undefined) {
@@ -186,5 +203,7 @@ loadProducts() {
              loading.dismiss();
             });
 }
-
+backButtonAction(){
+     this.navCtrl.pop();
+	}
 }

@@ -1,0 +1,39 @@
+<!--
+  Generated template for the OffersPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Offers</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+<div class="container-gray">
+<ion-row class="p10">
+<ion-col col-12>
+<div class="offer-search">
+<input type="text" style="width:100%;border:1px solid #eee; height:45px;padding:10px;" placeholder="Enter Promo Code">
+<a href="#" class="apply">APPLY</a>
+</div>
+</ion-col>
+</ion-row>
+</div>
+<p class="p10" style="background:#000;color:#fff;margin:0px">AVAILABLE OFFERS</p>
+<div class="container-white">
+<ion-row class="p10" style="border-bottom:1px solid #eee" *ngFor="let offer of userOffers; ">
+<ion-col col-12>
+<div class="promo-code">
+<div class="promo-code-number">{{offer.coupon_code}}</div>
+<a href="#" style="float:right; text-decoration:none;margin-top:15px">APPLY</a>
+</div>
+<h6>{{offer.coupon_title}}</h6>
+<p style="color:#666;font-size:12px;margin-top:0px;">{{offer.coupon_conditions}}</p>
+</ion-col>
+</ion-row>
+</div>
+</ion-content>

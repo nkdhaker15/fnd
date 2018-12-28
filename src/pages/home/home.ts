@@ -7,6 +7,8 @@ import { AuthUserService } from '../../providers/authUserService';
 import { CartPage } from '../cart/cart';
 import { RmenuPage } from '../rmenu/rmenu';
 import { SearchdataPage } from '../searchdata/searchdata';
+import { DetectlocationPage } from '../detectlocation/detectlocation';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
@@ -17,9 +19,11 @@ export class HomePage {
   userInfo: any = {};
     numbers = [0,1,2,3];
    dashboardData: any = {};
+    cartItems: any = [];
+    cartcount:any =0;
    userLocationInfo: any = {address: ''};
    loading: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public storage: Storage) {
      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 				  if (this.tabBarElement) {
 		      this.tabBarElement.style.display = 'flex';
@@ -31,6 +35,18 @@ export class HomePage {
 				  if (this.tabBarElement) {
 		      this.tabBarElement.style.display = 'flex';
 				  }
+				  	    this.storage.ready().then(()=>{
+
+      this.storage.get("cart").then( (data)=>{
+		  if(data == null) {
+			  data = [];
+		  }
+        this.cartItems = data;
+          this.cartcount=  this.cartItems.length;
+        
+
+    });
+    });
 	this.authUserService.getUserLocation().then((userLocationInfo)=>{
           console.log("userLocationInfo:: ", userLocationInfo);
           if(userLocationInfo != null && userLocationInfo != undefined) {
@@ -131,5 +147,9 @@ export class HomePage {
 	  	  	   this.navCtrl.push(SearchdataPage);    
 
 	  
+  }
+   opendetectlocation()
+  {  
+	 	  	  	   this.navCtrl.push(DetectlocationPage);     
   }
 }

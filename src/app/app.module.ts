@@ -36,6 +36,7 @@ import { OrdersPage } from '../pages/orders/orders';
 import { SharePage } from '../pages/share/share';
 import { FaqPage } from '../pages/faq/faq';
 import { ExplorePage } from '../pages/explore/explore';
+import { ProductChildPage } from '../pages/product-child/product-child';
 
 import { AddaddressPage } from '../pages/addaddress/addaddress';
 import { ApiBackendService } from '../providers/apiBackendService';
@@ -74,6 +75,7 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	RmenuPage,
     TabsPage,
 	ExplorePage,
+	ProductChildPage,
 	DetectlocationPage,
 	ShrinkingSegmentHeader
   ],
@@ -111,7 +113,8 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	AddaddressPage,
 	RmenuPage,
     TabsPage,
-	ExplorePage
+	ExplorePage,
+	ProductChildPage
 	
   ],
   providers: [
