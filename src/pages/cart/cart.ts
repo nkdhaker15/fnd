@@ -107,9 +107,14 @@ private currentNumber = 1;
       price = parseFloat(item.amount);
     
     let  qty = item.qty;
-
+    if(change == -2) {
+		this.removeFromCart(item, i);
+		return ;
+	}
     if(change < 0 && item.qty == 1){
-      return;
+      return ;
+	  
+
     }
 
     qty = qty + change;
@@ -141,8 +146,12 @@ private currentNumber = 1;
     
  }
   decrement(index) {
+	if(this.cartItems[index].qty <= 1) {
+		this.changeQty(this.cartItems[index], index, -2);
+	}else {
+		this.changeQty(this.cartItems[index], index, -1);
+	}
 	
-	this.changeQty(this.cartItems[index], index, -1);
  }
 clickaddadress()
 {

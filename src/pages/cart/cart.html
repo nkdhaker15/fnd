@@ -27,7 +27,7 @@
 <ion-col col-9>
 <div class="media p10">
 <img class="pull-left mr10" style="width:44px;height: 44px;"  src="http://shopkiee.com/project/fandd/webroot/img/uploads/product_image/{{cItem.product.product_image1}}">
-<div class="mb5">{{cItem.product.product_name}} </div>
+<div class="mb5">{{cItem.product.product_name}} <span *ngIf="cItem.variation_label">({{cItem.variation_label}})</span>  </div>
 <span id="price" class="mt5">₹{{lineTotal(cItem)}}</span>
 </div>
 </ion-col>

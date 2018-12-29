@@ -65,7 +65,7 @@
 <ion-icon name="add" (click)="increment(i)" ></ion-icon>
 </div> 
 <button *ngIf="productItem.child.length==0 && !isItemQty(productItem)" ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</button>
-<button *ngIf="productItem.child.length>0" ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" (click)="openProductChildModal(productItem)">ADD+</button>
+<button *ngIf="productItem.child.length>0 && !isItemQty(productItem)" ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" (click)="openProductChildModal(productItem)">ADD+</button>
 </div>
 </ion-col>
 </ion-row>

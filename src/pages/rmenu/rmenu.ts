@@ -76,7 +76,7 @@ rmenu
    
   addToCart(product, amount, variationId, variationLabel) {
 	  this.storage.get("cart").then((data) => {
-		  if(product.qty == undefined) {
+		  if(product.qty == undefined || product.qty < 1) {
 			  product.qty = 1;
 		  }
 		   if (data == undefined || data.length == 0) {
@@ -147,8 +147,8 @@ rmenu
 
           this.cartItems.forEach( (item, index)=> {
              this.cartItemsIds.push(item.product.product_id);
-this.carttotalamount =parseFloat(parseFloat(this.carttotalamount)+parseFloat(item.product.pmb_selling_price));
-
+this.carttotalamount =this.carttotalamount+ parseFloat(item.amount);
+console.log("this.cartItemsIds:: ", this.cartItemsIds);
 		});
 		}
 
@@ -162,13 +162,51 @@ this.carttotalamount =parseFloat(parseFloat(this.carttotalamount)+parseFloat(ite
     
  }
   decrement(index) {
-	  if(this.productList[index].qty > 1) {
+	  /*if(this.productList[index].qty > 1) {*/
 		this.productList[index].qty--;
 		
-	}
+	/*}*/
 //	this.addToCart(productItem,productItem.pmp_net_price, 0, '')
-	this.addToCart(this.productList[index],this.productList[index].pmp_net_price,0,'');
+    if(this.productList[index].qty < 1) {
+		this.removeFromCart(this.productList[index], index);
+	}else {
+		this.addToCart(this.productList[index],this.productList[index].pmp_net_price,0,'');
+	}
+	
  }
+   removeFromCart(product, i){
+
+    let price;    
+     
+    this.cartItems.splice(i, 1);
+	this.storage.get("cart").then( (data)=>{
+		let cartItemsInfo: any = [];
+		this.cartItems = [];
+        if(data != null) {
+			this.cartItems = data;
+		}
+		this.cartItemsIds = [];
+		 this.cartItems.forEach( (item, index)=> {
+			 if(product.product_id == item.product.product_id) {
+				 
+			 }else {
+				this.cartItemsIds.push(item.product.product_id);
+				this.carttotalamount =this.carttotalamount+ parseFloat(item.amount);
+				cartItemsInfo.push(item);
+			 }
+			 if(index == (this.cartItems.length-1)) {
+				this.storage.set("cart", cartItemsInfo).then( ()=> {
+					this.cartItems = cartItemsInfo;
+					
+				});
+			 }
+
+		});
+		
+    });
+
+   
+} 
 getItemQty(index: any) {
 	if(this.productList[index].qty == undefined) {
 		this.productList[index].qty = 1;
@@ -176,8 +214,7 @@ getItemQty(index: any) {
 	return this.productList[index].qty;
 } 
 isItemQty(product: any) {
-    let status = false;
-	
+    let status = false;	
 	if(this.cartItemsIds.indexOf(product.product_id) !=-1) {
 		status = true;
 	}
