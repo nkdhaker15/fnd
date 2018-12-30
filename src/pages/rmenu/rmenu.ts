@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController, ModalController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 import { CartPage } from '../cart/cart';
 import { ProductChildPage } from '../product-child/product-child';
-
+import { TabsPage } from '../tabs/tabs';
 /**
  * Generated class for the RmenuPage page.
  *
@@ -30,9 +30,19 @@ rmenu
  cartItemsIds: any = [];
  cartItems: any = []; 
  carttotalamount: any =0;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController, private alertCtrl: AlertController) {
      this.sellerInfo = this.navParams.get("sellerInfo");
 	 this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+	 this.storage.get("sellerInfo").then( (data)=> {
+		if(data != null) {
+			if(data.seller_id != this.sellerInfo.seller_id) {
+				this.presentConfirm(this.sellerInfo,  data);
+			}
+		}else {
+			this.storage.set("sellerInfo",  this.sellerInfo);
+		}
+		
+	});
  }
 
   ionViewDidLoad() {
@@ -220,6 +230,35 @@ isItemQty(product: any) {
 	}
 	return status;
 }
+presentConfirm(currentSeller, previousSeller) {
+  let alert = this.alertCtrl.create({
+    title: 'Confirm',
+    message: 'Your previous cart will empty. Do you want to proceed?',
+    buttons: [
+      {
+        text: 'No',
+        role: 'cancel',
+        handler: () => {
+          this.sellerInfo = previousSeller;
+		   this.loadProducts();
+        }
+      },
+      {
+        text: 'Yes',
+        handler: () => {
+		     this.cartItemsIds = [];
+		     this.carttotalamount = [];
+		     this.cartItems = [];
+			this.storage.set("cart", this.cartItems);
+          this.sellerInfo = currentSeller;
+		  this.storage.set("sellerInfo",  this.sellerInfo);
+        }
+      }
+    ]
+  });
+  alert.present();
+}
+
 loadProducts() {
     
     let user_req = {

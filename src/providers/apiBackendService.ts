@@ -306,7 +306,34 @@ changePassword(data) {
           });
       });
     }
-
+	getCartAddon(data) {
+		  return new Promise((resolve, reject) => {
+			var headers = new Headers();
+			headers.append("Accept", 'application/json');
+			headers.append('Content-Type', 'application/json' );
+			const requestOptions = new RequestOptions({ headers: headers });
+			this.http.post(this.apiUrl+'/cart', data, requestOptions)
+			  .subscribe(res => {
+				resolve(this._extractData(res));
+			  }, (err) => {
+				resolve(this._handleError(err, false));
+			  });
+		  });
+	}
+		processCartDetails(data) {
+		  return new Promise((resolve, reject) => {
+			var headers = new Headers();
+			headers.append("Accept", 'application/json');
+			headers.append('Content-Type', 'application/json' );
+			const requestOptions = new RequestOptions({ headers: headers });
+			this.http.post(this.apiUrl+'/order/createTransactionOnCartId', data, requestOptions)
+			  .subscribe(res => {
+				resolve(this._extractData(res));
+			  }, (err) => {
+				resolve(this._handleError(err, false));
+			  });
+		  });
+	}
  removeUserAddresses(data) {
       return new Promise((resolve, reject) => {
         var headers = new Headers();

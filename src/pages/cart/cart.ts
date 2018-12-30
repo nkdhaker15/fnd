@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ToastController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AddaddressPage } from '../addaddress/addaddress';
 import { OffersPage } from '../offers/offers';
 
+import { ApiBackendService } from '../../providers/apiBackendService';
+import { AuthUserService } from '../../providers/authUserService';
 /**
  * Generated class for the CartPage page.
  *
@@ -19,20 +21,38 @@ import { OffersPage } from '../offers/offers';
 export class CartPage {
 private currentNumber = 1;
   cartItems: any = [];
+  addonItems: any = [];
+  cartAddonItems: any = [];
+  addonImagePath: any = '';
    tabBarElement: any;
   total: any =0;
+  addonTotal: any =0;
   grandTotal: any=0;
   totalItems: number = 0;
   deliveryCharge: any = 0;
   totalDiscount: any = 0;
+  cartAddontotalamount: any = 0;
+  sellerInfo: any = {};
+  userInfo: any = {};
   showEmptyCartMessage: boolean = false;
  cartitem
  = [{ name: "Manish Garg"},{ name: "Ram Kumar"},{ name: "Rakesh"},{ name: "Mohan"},{ name: "Amit Sharma"}];
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
 	     this.total = 0.0;
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.storage.ready().then(()=>{
-
+	  this.storage.get("sellerInfo").then( (data)=> {
+		if(data != null) {
+			this.sellerInfo = data;
+		}
+		console.log("this.sellerInfo :: ", this.sellerInfo);
+	});
+	this.storage.get("cartAddonItems").then( (data)=> {
+		if(data != null) {
+			this.cartAddonItems = data;
+		}
+		console.log("this.cartAddonItems :: ", this.cartAddonItems);
+	});
       this.storage.get("cart").then( (data)=>{
 		if(data == null) {
 			data = [];
@@ -56,9 +76,101 @@ private currentNumber = 1;
     }); 
 	  
   }
+  addAddonToCart(addon, amount, index) {
+	  this.storage.get("cartAddonItems").then((data) => {
+		  if(addon.qty == undefined || addon.qty < 1) {
+			  addon.qty = 1;
+		  }
+		   if (data == undefined || data.length == 0) {
+				data = [];
+
+				data.push({
+				  "addon": addon,				  
+				  "qty": addon.qty,
+				  "amount": parseFloat(amount)
+				});
+		   }else {
+			   let foundStatus: boolean = false;
+			   let foundIndex = 0;
+			   for(let d=0; d < data.length; d++) {
+				   if(data[d].addon.ap_id == addon.ap_id) {
+					   foundStatus = true;
+					   foundIndex = d;
+				   }
+			   }
+			   
+			   if(!foundStatus) {
+					   data.push({
+						  "addon": addon,						  
+						  "qty": addon.qty,
+						  "amount": parseFloat(amount)
+						});
+				   }else {
+					   
+					  data[foundIndex].qty = addon.qty;
+					  data[foundIndex].amount = parseFloat(amount);
+					   
+				   }
+		   }
+		   this.addonItems[index] = addon;
+		     this.cartAddonItems = data;
+			 console.log("this.cartAddonItems:: ", this.cartAddonItems);
+		     this.storage.set("cartAddonItems", data).then(() => {
+                this.calculateTotals();
+                  
+			  });
+	  });
+  }
+  addonInCart(item: any) {
+	  let status: any = false;
+		for(let i = 0; i < this.cartAddonItems.length; i++) {
+			if(this.cartAddonItems[i].addon.ap_id == item.ap_id) {
+				status = true;
+			}
+		}
+		return status;
+  }
+  loadAddons() {
+    
+    let user_req = {
+              seller_type: this.sellerInfo.seller_type			 
+             // seller_id: 46 
+          };
+		  if(this.userInfo != null) {
+			user_req['user_id'] = this.userInfo.user_id;  
+		  }
+		   
+         let loading = this.loadingCtrl.create({
+                content: 'Please wait...'
+              });
+              loading.present();
+         this.apiBackendService.getCartAddon(user_req).then((result: any) => { 
+				 loading.dismiss();
+				 this.addonImagePath = '';
+				this.addonItems = result.addons;
+				if(this.addonItems.length == 0) {
+					 this.addonTotal = 0; 
+				}else {
+						this.cartAddonItems.forEach( (item, index)=> {
+							 this.addonItems.forEach( (addonItem, addonItemIndex)=> {
+								 if(addonItem.ap_id == item.addon.ap_id) {
+									  this.addonItems[addonItemIndex].qty = item.qty;
+								}
+							
+							});
+						});
+						this.calculateTotals();
+						console.log("this.addonItems:: ", this.addonItems);
+				}
+            }, (err) => { 
+            console.log(err); 
+             loading.dismiss();
+            });
+}
   calculateTotals() {
 	  this.totalItems = this.cartItems.length;
 	  this.total = 0;
+	  this.addonTotal = 0;
 	  this.deliveryCharge = 0;
 	  this.totalDiscount = 0;
 	  this.grandTotal = 0;
@@ -70,6 +182,11 @@ private currentNumber = 1;
 
           });
 		  
+		   this.cartAddonItems.forEach( (item, index)=> {            
+              this.addonTotal = this.addonTotal + (item.amount * item.qty)
+            this.grandTotal = this.total + this.deliveryCharge - this.totalDiscount + this.addonTotal;
+
+          });
   }
   lineTotal(item: any) {
 	 return (item.amount * item.qty);
@@ -77,6 +194,14 @@ private currentNumber = 1;
   ionViewDidLoad() {
 	  this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad CartPage');
+	     this.authUserService.getUser().then((user)=>{
+          console.log("user:: ", user);
+          if(user != null && user != undefined) {
+              this.userInfo = user;
+          }
+          this.loadAddons();		  
+          
+      });
   }
    removeFromCart(item, i){
 
@@ -153,6 +278,72 @@ private currentNumber = 1;
 	}
 	
  }
+ 
+ addonCartQty(index) {
+	 //console.log("this.addonItems[index]:: ", this.addonItems[index]);
+	  if(this.addonItems[index] == undefined) {
+		 return 1;
+	 }else {
+		 if(this.addonItems[index].qty == undefined) {
+			 this.addonItems[index].qty = 1;
+		 }
+		 
+		 return this.addonItems[index].qty;
+	 }
+ }
+ incrementAddon(addon, index) {
+	 if(addon.qty == undefined) {
+		 addon.qty = 1;
+	 }
+	 
+	 addon.qty++;
+	
+	 this.addAddonToCart(addon, addon.ap_price, index);
+ }
+decrementAddon(addon, index) {
+	 
+	 addon.qty--;
+	 if(addon.qty < 1) {
+			this.removeAddonFromCart(addon, index);
+	 }else {
+		 this.addAddonToCart(addon, addon.ap_price, index);
+	 }
+	 
+ }
+ 
+   removeAddonFromCart(addon, i){
+
+    let price;    
+     
+    
+	this.storage.get("cartAddonItems").then( (data)=>{
+		let cartAddonItemsInfo: any = [];
+		this.cartAddonItems = [];
+        if(data != null) {
+			this.cartAddonItems = data;
+		}
+		
+		 this.cartAddonItems.forEach( (item, index)=> {
+			 if(addon.ap_id == item.addon.ap_id) {
+				 
+			 }else {
+				
+				this.cartAddontotalamount = this.cartAddontotalamount+ parseFloat(item.amount);
+				cartAddonItemsInfo.push(item);
+			 }
+			 if(index == (this.cartAddonItems.length-1)) {
+				this.storage.set("cartAddonItems", cartAddonItemsInfo).then( ()=> {
+					this.cartAddonItems = cartAddonItemsInfo;
+					this.calculateTotals();
+				});
+			 }
+
+		});
+		
+    });
+
+   
+}
 clickaddadress()
 {
 	this.navCtrl.push(AddaddressPage);
@@ -160,7 +351,18 @@ clickaddadress()
 }
 
 checkout() {
-	
+	 let cartInfo = {
+		 user_id: this.userInfo.user_id, ab_id: 1,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
+		 cartItems: this.cartItems, 
+		 cartAddons: this.cartAddonItems 
+	 };
+    console.log("cartInfo:: ", cartInfo);
+     this.apiBackendService.processCartDetails(cartInfo).then((result: any) => {         
+        
+          
+        }, (err) => { 
+        console.log(err); 
+        });
 }
 clickpromocode()
 {

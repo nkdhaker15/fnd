@@ -14,14 +14,27 @@
 
 
 <ion-content class="container-gray">
-<ion-row class="container-white border-bottom-1" (click)="clickaddadress()">
+<ion-row class="container-white mt10"  >
+<ion-col>
+<div class="media p10">
+<div class="adress-type">Home</div>
+
+<h4>Manish Garg</h4>
+<p>B-351 Hari Marg Malviya Nagar, Jaipur, Rajasthan, 303108</p>
+<p><strong>Mobile No:</strong> 7610022611</p>
+
+<button ion-button full (click)="clickaddadress()" >Change or Add Address</button>
+</div>
+</ion-col>
+</ion-row>
+<!-- <ion-row class="container-white border-bottom-1" (click)="clickaddadress()">
 <ion-col>
 <div class="media p10">
 <img src="assets/icon/circle-plus.png" class="w20 pull-left mr10">
 <span style="line-height:22px;">Add New Address</span>
 </div>
 </ion-col>
-</ion-row>
+</ion-row> -->
 <div  class="container-white mt10 mb-10">
 <ion-row   class="border-bottom-1" *ngFor="let cItem of cartItems; let i = index">
 <ion-col col-9>
@@ -44,58 +57,23 @@
 <div  class="container-white mt10 mb-10">
 <p class="ml10" style="font-size: 18px;font-weight:500;margin-bottom:10px;padding-top: 13px;">ADD-ONS </p>
 <ion-slides class="color-white ">
-<ion-slide  class="ion-slide-addon"> 
+<ion-slide  class="ion-slide-addon" *ngFor="let addonItem of addonItems; let i = index"> 
 <ion-card style="height: 260px;color: #fff;text-align: left;box-shadow: none" >
 
 <img src="../assets/imgs/bottle1.jpg" style="width:100%;margin-bottom:5px;height:160px">
-<p style="margin-top:3px;font-weight:500">Bisleri 1L</p>
+<p style="margin-top:3px;font-weight:500">{{addonItem.ap_title}}</p>
 <div class="product-footer">
-<div class=" pull-left " style="margin-top: 5px;"><span style="font-weight:bold;font-size:13px;color:#333">₹20</span> </div>
-<div class="qty-badge" style="display:none">
-<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
-1
-<ion-icon name="add" (click)="increment(i)" ></ion-icon>
+<div class=" pull-left " style="margin-top: 5px;"><span style="font-weight:bold;font-size:13px;color:#333">₹{{addonItem.ap_price}}</span> </div>
+<div class="qty-badge addon-qty-color" *ngIf="addonInCart(addonItem)">
+<ion-icon name="remove" (click)="decrementAddon(addonItem, i)" ></ion-icon>
+{{addonCartQty(i)}}
+<ion-icon name="add" (click)="incrementAddon(addonItem, i)" ></ion-icon>
 </div> 
-<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" >ADD</button>
+<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" *ngIf="!addonInCart(addonItem)" (click)="addAddonToCart(addonItem, addonItem.ap_price, i)">ADD</button>
 </div>
 </ion-card>
 </ion-slide>
-  
-  <ion-slide  class="ion-slide-addon"> 
-<ion-card style="height: 260px;color: #fff;text-align: left;box-shadow: none" >
-
-<img src="../assets/imgs/bottle1.jpg" style="width:100%;margin-bottom:5px;height:160px">
-<p style="margin-top:3px;font-weight:500">Bisleri 1L</p>
-<div class="product-footer">
-<div class=" pull-left " style="margin-top: 5px;"><span style="font-weight:bold;font-size:13px;color:#333">₹20</span> </div>
-<div class="qty-badge" style="display:none">
-<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
-1
-<ion-icon name="add" (click)="increment(i)" ></ion-icon>
-</div> 
-<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" >ADD</button>
-</div>
-</ion-card>
-</ion-slide>
-  
-  <ion-slide  class="ion-slide-addon"> 
-<ion-card style="height: 260px;color: #fff;text-align: left;box-shadow: none" >
-
-<img src="../assets/imgs/bottle1.jpg" style="width:100%;margin-bottom:5px;height:160px">
-<p style="margin-top:3px;font-weight:500">Bisleri 1L</p>
-<div class="product-footer">
-<div class=" pull-left " style="margin-top: 5px;"><span style="font-weight:bold;font-size:13px;color:#333">₹20</span> </div>
-<div class="qty-badge" style="display:none">
-<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
-1
-<ion-icon name="add" (click)="increment(i)" ></ion-icon>
-</div> 
-<button ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" >ADD</button>
-</div>
-</ion-card>
-</ion-slide>
-  
-</ion-slides>
+ </ion-slides>
 
 </div>
 
@@ -129,6 +107,18 @@ Price ({{totalItems}}) Item (s)
 <div class="media p10" style="text-align:right">
 
 ₹{{total}}
+</div>
+</ion-col>
+</ion-row>
+<ion-row   class="border-bottom-1">
+<ion-col col-7>
+<div class="media p10">
+Addon(s) Total
+</div>
+</ion-col>
+<ion-col col-5>
+<div class="media p10" style="text-align:right">
+₹{{addonTotal}}
 </div>
 </ion-col>
 </ion-row>
