@@ -8,6 +8,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 /*import { NativeGeocoder } from '@ionic-native/native-geocoder';*/
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { AndroidPermissions} from '@ionic-native/android-permissions';
 
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
@@ -127,6 +128,7 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	  Facebook,
 	  GooglePlus,
 	  Geolocation,
+	  AndroidPermissions,  
    /* Geolocation,  
     NativeGeocoder,  
       */

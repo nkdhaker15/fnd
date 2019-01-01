@@ -33,16 +33,7 @@ rmenu
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController, private alertCtrl: AlertController) {
      this.sellerInfo = this.navParams.get("sellerInfo");
 	 this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-	 this.storage.get("sellerInfo").then( (data)=> {
-		if(data != null) {
-			if(data.seller_id != this.sellerInfo.seller_id) {
-				this.presentConfirm(this.sellerInfo,  data);
-			}
-		}else {
-			this.storage.set("sellerInfo",  this.sellerInfo);
-		}
-		
-	});
+	
  }
 
   ionViewDidLoad() {
@@ -85,6 +76,16 @@ rmenu
  }
    
   addToCart(product, amount, variationId, variationLabel) {
+	   this.storage.get("sellerInfo").then( (data)=> {
+		if(data != null) {
+			if(data.seller_id != this.sellerInfo.seller_id) {
+				this.presentConfirm(this.sellerInfo,  data);
+			}
+		}else {
+			this.storage.set("sellerInfo",  this.sellerInfo);
+		}
+		
+	});
 	  this.storage.get("cart").then((data) => {
 		  if(product.qty == undefined || product.qty < 1) {
 			  product.qty = 1;

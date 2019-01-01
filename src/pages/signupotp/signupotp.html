@@ -33,7 +33,7 @@
         </ion-row>
         <p class="padding-10 mt-25">Please enter activation code manually</p>
         <div style="margin-bottom: 15px;margin-top: 15px;">
-            <ion-input type="tel"   placeholder="Enter OTP" style="width:100px;display:inline-block;border-bottom:1px solid #ccc;padding:5px" class="login-input" [formControl]="registerForm.controls['user_otp']" (keyup)="_onKeyup($event)" ></ion-input>
+            <ion-input type="password"   placeholder="Enter OTP" style="width:100px;display:inline-block;border-bottom:1px solid #ccc;padding:5px" class="login-input" [formControl]="registerForm.controls['user_otp']" (keyup)="_onKeyup($event)" ></ion-input>
         </div>
 
         <button ion-button [color]="primary"  [class.active-button]="otpLength" (click)="verifyOtp()" class="mb-minus-2 signup-button">Next</button>

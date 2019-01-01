@@ -391,7 +391,6 @@ background:#fff;
 }
 
 .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
-
     left: 0;
     bottom: 0px;
     background-position: left 0 top -2px;
@@ -458,11 +457,31 @@ width:100%
 }
 .qty-badge
 {
-width: 77px;
-border: 1px solid #d8d8d8;
-padding: 5px;
-float: right;
-margin-top: 10px;
+margin-top: 0px;
+padding:5px;
+height: 26px;
+}
+.plus-icon{
+font-size: 13px;
+color: #7BC242;
+position: absolute;
+right: 5px;
+top: 1px;
+}
+.add-on-img-box{
+position:relative;
+}
+.add-on-text{
+padding: 10px;
+position: absolute;
+width: 100%;
+bottom: -5px;
+color: #fff;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,0.65+100 */
+background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
 }
 .back-button-md {
 
@@ -508,4 +527,12 @@ color:red;
 
 ion-modal {
 background: #d2cece7a;
+}
+.ion-slide-see-more
+{
+width:200px;
+}
+.active-button
+{
+    background:#000 !important;
 }

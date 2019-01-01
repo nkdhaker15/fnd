@@ -17,6 +17,7 @@ import { Storage } from '@ionic/storage';
 export class HomePage {
   tabBarElement: any;
   userInfo: any = {};
+  searchdataobj: any = {};
     numbers = [0,1,2,3];
    dashboardData: any = {};
     cartItems: any = [];
@@ -142,14 +143,29 @@ export class HomePage {
       refresher.complete();
     }, 2000);
   }
-  showsearchdata()
-  {
-	  	  	   this.navCtrl.push(SearchdataPage);    
-
-	  
-  }
+  
    opendetectlocation()
   {  
 	 	  	  	   this.navCtrl.push(DetectlocationPage);     
+  }
+  
+  showsearchdata(strtype,strdataobject)
+  {
+	  this.searchdataobj.type = strtype;
+	  if(strtype==0)
+	  {
+		  	  this.searchdataobj.title = strdataobject.category_name; 
+	  this.searchdataobj.id = strdataobject.category_id;
+			  
+	  }else  if(strtype==1)
+	  {
+	  this.searchdataobj.title = strdataobject;
+	  	  this.searchdataobj.id = 0;	  
+	  }else{
+	  this.searchdataobj.title = '';
+ 	  this.searchdataobj.id = 0;		  
+	  }
+		  	  	   this.navCtrl.push(SearchdataPage,{searchdataobj:this.searchdataobj});    
+  
   }
 }

@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Component, NgZone } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController,Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+
 import { SignupfinalPage } from '../signupfinal/signupfinal';
 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiBackendService } from '../../providers/apiBackendService';
-
+declare var SMS:any;
 /**
  * Generated class for the SignupotpPage page.
  *
@@ -24,7 +26,7 @@ export class SignupotpPage {
   registerErrorMsg: any = '';    
   registerSuccessMsg: any = ''; 
   otpLength: boolean = false;    
-  constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, private formBuilder: FormBuilder, public apiBackendService: ApiBackendService, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, private formBuilder: FormBuilder, public apiBackendService: ApiBackendService, public loadingCtrl: LoadingController, public androidPermissions: AndroidPermissions, public platform:Platform, private ngZone: NgZone) {
 	  this.registerForm = this.formBuilder.group({
       user_otp: ['']
     });
@@ -34,7 +36,61 @@ export class SignupotpPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupotpPage');
   }
-    
+  ionViewWillEnter()
+ {
+     
+	this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.READ_SMS).then(
+	  success => console.log('Permission granted'),
+	err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_SMS)
+	);
+
+	this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.READ_SMS]);
+	this.readOtpSms();
+ }
+   _onKeyup(e) {
+      
+	const limit = 6;
+	if (e.target.value.length > limit) {
+	e.target.value = e.target.value.substring(0, 6);
+	this.ngZone.run(()=>{
+		this.otpLength = true;
+	});
+	}else if (e.target.value.length==6) {
+		this.ngZone.run(()=>{
+		this.otpLength = true;
+	});
+			console.log('ionViewDidLoad SignuponePage');
+
+		
+	}else {
+		this.ngZone.run(()=>{
+		this.otpLength = false;
+	});
+	}
+};
+  readOtpSms() {
+	  this.platform.ready().then((readySource) => {
+
+			if(SMS){ SMS.startWatch(()=>{
+					   console.log('watching started');
+					}, Error=>{
+				   console.log('failed to start watching');
+			   });
+
+			  document.addEventListener('onSMSArrive', (e:any)=>{
+				   var sms = e.data;
+				    
+				    let messageStr: string = sms.body;
+					 if(messageStr.indexOf('Your one Time Password (OTP) for E-Comm') != -1) {
+						this.ngZone.run(()=>{ this.otpLength = true;});
+						let numbersOtp: any = messageStr.match(/\d+/g).map(Number);
+						this.registerForm.patchValue({user_otp: numbersOtp});
+					 }
+
+				   });
+			}
+			});
+  }  
   verifyOtp(){
       if(this.registerForm.value.user_otp == '') {
           this.registerErrorMsg = "Please enter otp.";
@@ -99,17 +155,5 @@ export class SignupotpPage {
 	  this.navCtrl.push(SignupfinalPage);  
   }
     
-    _onKeyup(e) {
-        this.otpLength = false;
-        const limit = 6;
-        if (e.target.value.length > limit) {
-        e.target.value = e.target.value.substring(0, 6);
-            this.otpLength = true;
-        }else if (e.target.value.length==6) {
-            this.otpLength = true;
-                console.log('ionViewDidLoad SignuponePage');
-
-
-        }
-};    
+   
 }

@@ -35,6 +35,7 @@ private currentNumber = 1;
   sellerInfo: any = {};
   userInfo: any = {};
   showEmptyCartMessage: boolean = false;
+ showaddadressbutton:boolean=false;
  cartitem
  = [{ name: "Manish Garg"},{ name: "Ram Kumar"},{ name: "Rakesh"},{ name: "Mohan"},{ name: "Amit Sharma"}];
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
@@ -112,7 +113,7 @@ private currentNumber = 1;
 					   
 				   }
 		   }
-		   this.addonItems[index] = addon;
+		   //this.addonItems[index] = addon;
 		     this.cartAddonItems = data;
 			 console.log("this.cartAddonItems:: ", this.cartAddonItems);
 		     this.storage.set("cartAddonItems", data).then(() => {
@@ -146,7 +147,15 @@ private currentNumber = 1;
               loading.present();
          this.apiBackendService.getCartAddon(user_req).then((result: any) => { 
 				 loading.dismiss();
-				 this.addonImagePath = '';
+				     console.log('manish:',result);
+
+				 this.addonImagePath = result.addon_image_url;
+				 if(result.address_status==0)
+				 {
+									 this.showaddadressbutton = true;
+ 
+					 
+				 }
 				this.addonItems = result.addons;
 				if(this.addonItems.length == 0) {
 					 this.addonTotal = 0; 
@@ -189,6 +198,10 @@ private currentNumber = 1;
           });
   }
   lineTotal(item: any) {
+	 return (item.amount * item.qty);
+  }
+
+  addonLineTotal(item: any) {
 	 return (item.amount * item.qty);
   }
   ionViewDidLoad() {
@@ -292,26 +305,45 @@ private currentNumber = 1;
 	 }
  }
  incrementAddon(addon, index) {
-	 if(addon.qty == undefined) {
-		 addon.qty = 1;
-	 }
-	 
-	 addon.qty++;
-	
-	 this.addAddonToCart(addon, addon.ap_price, index);
+	 this.changeAddonQty(addon, index, 1);
  }
-decrementAddon(addon, index) {
-	 
-	 addon.qty--;
-	 if(addon.qty < 1) {
-			this.removeAddonFromCart(addon, index);
+decrementAddon(addon, index) { 
+	 console.log("addon:: ", addon);
+	 if(addon.qty <= 1) {
+			this.changeAddonQty(addon, index, -2);
 	 }else {
-		 this.addAddonToCart(addon, addon.ap_price, index);
+		 this.changeAddonQty(addon, index, -1);
 	 }
 	 
  }
  
-   removeAddonFromCart(addon, i){
+ changeAddonQty(item, i, change){ 
+    if(change == -2) {
+		this.removeAddonFromCart(item, i);
+		return ;
+	}
+	let  qty = item.qty;
+    if(change < 0 && item.qty == 1){
+      return ;
+	  
+
+    }
+
+    qty = qty + change;
+    item.qty = qty;
+    //item.amount = qty * price;
+
+    this.cartAddonItems[i] = item;
+
+    this.storage.set("cartAddonItems", this.cartAddonItems).then( ()=> {      
+
+    });
+
+    this.calculateTotals();
+
+
+}
+   removeAddonFromCart(addonItem, i){
 
     let price;    
      
@@ -324,7 +356,7 @@ decrementAddon(addon, index) {
 		}
 		
 		 this.cartAddonItems.forEach( (item, index)=> {
-			 if(addon.ap_id == item.addon.ap_id) {
+			 if(addonItem.addon.ap_id == item.addon.ap_id) {
 				 
 			 }else {
 				

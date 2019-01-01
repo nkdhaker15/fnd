@@ -13,15 +13,12 @@
 
 
 
-<ion-content fullscreen #myContent>
-
-
+<ion-content fullscreen #myContent class="container-gray">
 <ion-row style="position: absolute;top: 10px;z-index: 999999999999999999;">
 <ion-col (click)="backButtonAction()">
-
 <ion-buttons left >
-                <ion-icon name="arrow-back" style="margin-top: 0px;font-size: 25px;margin-left: 13px;color: #fff;"></ion-icon>
-        </ion-buttons>
+<ion-icon name="arrow-back" style="margin-top: 0px;font-size: 25px;margin-left: 13px;color: #fff;"></ion-icon>
+</ion-buttons>
 </ion-col>
 </ion-row>
   <ion-row  class="mb-60">
@@ -42,11 +39,11 @@
 </ion-row>
  
 
-<div class="container-white mb-60">
+<div class="container-white">
 <div class="media p10">
 <ion-row>
 <ion-col>
-<h5 style="padding-left:10px;">Recommended</h5>
+<h5>Recommended</h5>
 </ion-col>
 </ion-row>
 
@@ -54,33 +51,83 @@
 
 <ion-row>
 <ion-col col-6 class="p5 " style="margin-bottom:15px" *ngFor="let productItem of productList; let i = index"  #slidingItem>
-<img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;160pxmargin-bottom:5px;">
+<img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;height:160px;margin-bottom:5px;">
 <span style="font-size:9px; color:#666;">{{productItem.brand_name}}</span>
-<p style="margin-top:3px;font-weight:500">{{productItem.product_name}}</p>
+<p style="margin-top:3px;font-weight:500;height: 30px;">{{productItem.product_name}}</p>
 <div class="product-footer">
 <div class=" pull-left " style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span><br> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
+<div style="border: 1px solid #d8d8d8; width:75px" class="pull-right">
 <div class="qty-badge" *ngIf="isItemQty(productItem)"  >
 <ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
 {{getItemQty(i)}}
 <ion-icon name="add" (click)="increment(i)" ></ion-icon>
-</div> 
-<button *ngIf="productItem.child.length==0 && !isItemQty(productItem)" ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</button>
-<button *ngIf="productItem.child.length>0 && !isItemQty(productItem)" ion-button color="secondary" outline class="pull-right" style="padding: 0px 25px;font-size: 13px;height: 30px;font-weight: bold;" (click)="openProductChildModal(productItem)">ADD+</button>
+</div>
+<div  *ngIf="productItem.child.length==0 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</div>
+<div *ngIf="productItem.child.length>0 && !isItemQty(productItem)"    style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px; position:relative;" (click)="openProductChildModal(productItem)">ADD<span class="plus-icon">+</span></div>
+
+</div>
+
 </div>
 </ion-col>
 </ion-row>
 </div>
 </div>
- <ion-row ion-fixed class="fixed-bottom-button bottom-cart-detail" (click)="viewcart()" *ngIf="cartItems.length>0">
- <ion-col col-6 style="padding:21px;font-weight:500">
- {{cartItems.length}} Item | ₹{{carttotalamount}}
- </ion-col>
- 
- <ion-col col-6 style="padding:21px;font-weight:500;text-align:right">
- VIEW CART   
-<img src="assets/icon/package.png" style="width:13px">
 
- </ion-col>
- </ion-row>
+
+<div class="container-white mt10 mb-60">
+<div class="media p10">
+<ion-row>
+<ion-col>
+<h5 style="margin:5px 0px 10px">Beers</h5>
+</ion-col>
+</ion-row> 
+
+<ion-row  *ngFor="let productItem of productList; let i = index" class="border-bottom-1" style="padding:10px 0px">
+<ion-col col-9>
+<span style="font-size:9px; color:#666;">{{productItem.brand_name}}</span>
+<p style="font-weight:500; margin-top:3px;margin-bottom:10px;">{{productItem.product_name}}</p>
+<div style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
+<div style="border: 1px solid #d8d8d8; width:75px;margin-top:10px">
+<div class="qty-badge" *ngIf="isItemQty(productItem)"  >
+<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
+{{getItemQty(i)}}
+<ion-icon name="add" (click)="increment(i)" ></ion-icon>
+</div>
+<div  *ngIf="productItem.child.length==0 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</div>
+<div *ngIf="productItem.child.length>0 && !isItemQty(productItem)"    style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px; position:relative;" (click)="openProductChildModal(productItem)">ADD<span class="plus-icon">+</span></div>
+</div>
+</ion-col>
+<ion-col col-3>
+<img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;height:80px;">
+</ion-col>
+</ion-row>
+</div>
+</div>
+
+
+
+
+
+
+<p  ion-fixed class="fixed-bottom-button" (click)="viewcart()" *ngIf="cartItems.length>0">
+<ion-row class="container-white border-bottom-1" style="-webkit-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
+-moz-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
+box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);">
+<ion-col col-6>
+<div class="media p10">
+{{cartItems.length}} Item <br>
+<span style="line-height:22px;">₹{{carttotalamount}}</span>
+</div>
+</ion-col>
+<ion-col col-6 class="pr-20">
+<button ion-button   [color]="primary"  class="checkout-button m-10"> VIEW CART <img src="assets/icon/shopping-bags.png" style="width:16px;margin-left:5px;">
+</button>
+</ion-col>
+
+
+</ion-row>
+</p>
+
+ 
  
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SignupotpPage } from '../signupotp/signupotp';
@@ -23,7 +23,7 @@ export class SignuponePage {
   registerForm: FormGroup;
   registerErrorMsg = ''; 
   phoneLength: boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, private formBuilder: FormBuilder, public apiBackendService: ApiBackendService, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, private formBuilder: FormBuilder, public apiBackendService: ApiBackendService, public loadingCtrl: LoadingController, private ngZone: NgZone) {
 	  this.registerForm = this.formBuilder.group({
       phoneno: ['']
     });
@@ -63,16 +63,24 @@ export class SignuponePage {
      }
   }
   _onKeyup(e) {
-      this.phoneLength = false;
-const limit = 10;
-if (e.target.value.length > limit) {
-e.target.value = e.target.value.substring(0, 10);
-    this.phoneLength = true;
-}else if (e.target.value.length==10) {
-    this.phoneLength = true;
-	    console.log('ionViewDidLoad SignuponePage');
+      
+	const limit = 10;
+	if (e.target.value.length > limit) {
+	e.target.value = e.target.value.substring(0, 10);
+	this.ngZone.run(()=>{
+		this.phoneLength = true;
+	});
+	}else if (e.target.value.length==10) {
+		this.ngZone.run(()=>{
+		this.phoneLength = true;
+	});
+			console.log('ionViewDidLoad SignuponePage');
 
-	
-}
+		
+	}else {
+		this.ngZone.run(()=>{
+		this.phoneLength = false;
+	});
+	}
 };
 }
