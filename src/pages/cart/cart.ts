@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ModalController, ToastController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { AddaddressPage } from '../addaddress/addaddress';
+import { AddressbookPage } from '../addressbook/addressbook';
 import { OffersPage } from '../offers/offers';
+import { LoginPage } from '../login/login';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -34,11 +35,13 @@ private currentNumber = 1;
   cartAddontotalamount: any = 0;
   sellerInfo: any = {};
   userInfo: any = {};
+    userAddressInfo: any = {};
+
   showEmptyCartMessage: boolean = false;
  showaddadressbutton:boolean=false;
  cartitem
  = [{ name: "Manish Garg"},{ name: "Ram Kumar"},{ name: "Rakesh"},{ name: "Mohan"},{ name: "Amit Sharma"}];
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public modalCtrl: ModalController) {
 	     this.total = 0.0;
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.storage.ready().then(()=>{
@@ -150,11 +153,11 @@ private currentNumber = 1;
 				     console.log('manish:',result);
 
 				 this.addonImagePath = result.addon_image_url;
-				 if(result.address_status==0)
+				 if(result.address_status>0)
 				 {
 									 this.showaddadressbutton = true;
  
-					 
+					 this.userAddressInfo =result.address_result;
 				 }
 				this.addonItems = result.addons;
 				if(this.addonItems.length == 0) {
@@ -378,11 +381,21 @@ decrementAddon(addon, index) {
 }
 clickaddadress()
 {
-	this.navCtrl.push(AddaddressPage);
+	let childModal = this.modalCtrl.create(AddressbookPage, { userAddressInfo: this.userAddressInfo, 'from':'cart' });
+   childModal.onDidDismiss(data => {
+     console.log(data);
+	 if(data != null) {
+		this.userAddressInfo = data;
+	 }
+   });
+   childModal.present();
+	//this.navCtrl.push(AddressbookPage,{'from':'cart'});
 	
 }
 
 checkout() {
+	if(this.userInfo.user_id>0)
+	{
 	 let cartInfo = {
 		 user_id: this.userInfo.user_id, ab_id: 1,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
 		 cartItems: this.cartItems, 
@@ -395,6 +408,11 @@ checkout() {
         }, (err) => { 
         console.log(err); 
         });
+	}else{
+			this.navCtrl.push(LoginPage);
+
+		
+	}
 }
 clickpromocode()
 {

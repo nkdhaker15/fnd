@@ -152,14 +152,14 @@ rmenu
 		  }
 		  this.cartItemsIds = [];
         this.cartItems = data;
-        console.log(this.cartItems);
+        
 
         if(this.cartItems.length > 0){
 
           this.cartItems.forEach( (item, index)=> {
              this.cartItemsIds.push(item.product.product_id);
-this.carttotalamount =this.carttotalamount+ parseFloat(item.amount);
-console.log("this.cartItemsIds:: ", this.cartItemsIds);
+this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
+
 		});
 		}
 

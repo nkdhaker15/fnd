@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ViewController } from 'ionic-angular';
 
 import { AddaddressPage } from '../addaddress/addaddress';
 
@@ -25,9 +25,20 @@ export class AddressbookPage {
       userInfo: any = {};
       userAddresses: any = [];
       registerErrorMsg = '';
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder, private alertCtrl: AlertController) {
+	  userAddressInfo: any = {};
+	    showAddressbookSelect: boolean = false;
+       selectedChildId: number = 0;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder, private alertCtrl: AlertController, public viewCtrl: ViewController) {
 	  	  	  	  	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-      
+      if(this.navParams.get('from')=='cart')
+	  {
+		  this.userAddressInfo = this.navParams.get('userAddressInfo');
+		  this.selectedChildId = this.userAddressInfo.ab_id; 
+		 this.showAddressbookSelect=true; 
+	  }else{
+		  
+		  this.showAddressbookSelect=false; 
+	  }
       
   }
 
@@ -70,7 +81,7 @@ loadAddresses() {
             });
 }
   editAddress(address) {
-      this.navCtrl.push(AddaddressPage, {addressInfo: address});
+      this.navCtrl.push(AddaddressPage, {addressInfo: address,'from':'address'});
   } 
 
   removeAddress(address_id) {
@@ -136,8 +147,21 @@ loadAddresses() {
 
   clickaddadress()
   { 
-	  this.navCtrl.push(AddaddressPage);
+	  this.navCtrl.push(AddaddressPage,{'from':'address'});
   }
-
+  selectAddressForCart(element: any) {
+	  this.userAddressInfo = element;
+	  
+  }
+selectdefaultAddress()
+{
+	this.dismiss();
+	
+	
+}
+dismiss() {
+   
+   this.viewCtrl.dismiss(this.userAddressInfo);
+  }
   
 }

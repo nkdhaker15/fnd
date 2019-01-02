@@ -17,11 +17,14 @@
 <ion-row class="container-white"  *ngIf="showaddadressbutton">
 <ion-col>
 <div class="media p10">
-<div class="adress-type">Home</div>
+<div class="adress-type" *ngIf="userAddressInfo.ab_type == 1">Home</div>
+<div class="adress-type" *ngIf="userAddressInfo.ab_type == 2">Work (Delivery Between 10 am - 5 am)</div>
+<div class="adress-type" *ngIf="userAddressInfo.ab_type == 3">Other</div>
 
-<h4>Manish Garg</h4>
-<p>B-351 Hari Marg Malviya Nagar, Jaipur, Rajasthan, 303108</p>
-<p><strong>Mobile No:</strong> 7610022611</p>
+
+<h4>{{userAddressInfo.ab_name}}</h4>
+<p>{{userAddressInfo.ab_address}}, {{userAddressInfo.ab_city}}, {{userAddressInfo.ab_state}}, {{userAddressInfo.ab_pincode}}</p>
+<p><strong>Mobile No:</strong> {{userAddressInfo.ab_mobile_number}}</p>
 
 <button ion-button full (click)="clickaddadress()" class="checkout-button" >Change or Add Address</button>
 </div>

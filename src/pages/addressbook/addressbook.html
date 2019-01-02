@@ -22,9 +22,12 @@
 </div>
 </ion-col>
 </ion-row>
-<ion-row class="container-white mt10"  *ngFor="let element of userAddresses">
+<div radio-group [(ngModel)]="selectedChildId">
+<ion-row class="container-white mt10"  *ngFor="let element of userAddresses" >
 <ion-col>
 <div class="media p10">
+<ion-radio *ngIf="showAddressbookSelect"  class="radio radio-inline radio-blue" (click)="selectAddressForCart(element)" value="{{element.ab_id}}">  </ion-radio> &nbsp;&nbsp;
+
 <div class="adress-type" *ngIf="element.ab_type == 1">Home</div>
 <div class="adress-type" *ngIf="element.ab_type == 2">Work (Delivery Between 10 am - 5 am)</div>
 <div class="adress-type" *ngIf="element.ab_type == 3">Other</div>
@@ -37,4 +40,11 @@
 </div>
 </ion-col>
 </ion-row>
+</div>
+
 </ion-content>
+<ion-footer *ngIf="showAddressbookSelect">
+ <p ion-fixed class="fixed-bottom-button">
+<button ion-button  full [color]="primary" (click)="selectdefaultAddress()"  class="normal-button50">SELECT</button>
+</p>
+</ion-footer>

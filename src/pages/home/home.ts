@@ -161,6 +161,14 @@ export class HomePage {
 	  {
 	  this.searchdataobj.title = strdataobject;
 	  	  this.searchdataobj.id = 0;	  
+	  }else if(strtype==3)
+	  {
+	  this.searchdataobj.title = strdataobject;
+	  	  this.searchdataobj.id = 0;	  
+	  }else if(strtype==2)
+	  {
+	  this.searchdataobj.title = strdataobject.brand_name;
+	  	  this.searchdataobj.id = strdataobject.brand_id;	  
 	  }else{
 	  this.searchdataobj.title = '';
  	  this.searchdataobj.id = 0;		  
