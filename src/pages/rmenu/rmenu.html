@@ -13,15 +13,15 @@
 
 
 
-<ion-content fullscreen #myContent class="container-white">
-<ion-row style="position: absolute;top: 10px;z-index: 999999999999999999;">
+<ion-content fullscreen #myContent class="container-white" (ionScroll)="onPageScroll($event)">
+<ion-row style="position: absolute;top: 10px;z-index: 999999999999999999;" [class.show-sub-header]="subHeaderShow">
 <ion-col (click)="backButtonAction()">
 <ion-buttons left >
 <ion-icon name="arrow-back" style="margin-top: 0px;font-size: 25px;margin-left: 13px;color: #fff;"></ion-icon>
 </ion-buttons>
 </ion-col>
 </ion-row>
-  <ion-row  class="mb-60">
+  <ion-row  class="mb-60" [class.show-sub-header]="subHeaderShow">
 <ion-col style="padding:0;">
 <div class="rest-details-header">
 
@@ -41,8 +41,12 @@
 
 <div class="container-white">
 <div class="media p10">
-<ion-row>
+<ion-row *ngIf="subHeaderShow">
 <ion-col>
+<h5>Recommended</h5>
+</ion-col><ion-col>
+<h5>Recommended</h5>
+</ion-col><ion-col>
 <h5>Recommended</h5>
 </ion-col>
 </ion-row>

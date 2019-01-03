@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController, ModalController, AlertController } from 'ionic-angular';
+import { Component, NgZone  } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController, ModalController, AlertController, Content  } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -19,6 +19,7 @@ import { TabsPage } from '../tabs/tabs';
   templateUrl: 'rmenu.html',
 })
 export class RmenuPage {
+ 
 
 rmenu
  = [{ name: "Signature Premier Grain"},{ name: "All Seasons"},{ name: "Heineken Lager Beer Wit"},{ name: "Signature Premier Grain"},{ name: "All Seasons"}];
@@ -30,7 +31,8 @@ rmenu
  cartItemsIds: any = [];
  cartItems: any = []; 
  carttotalamount: any =0;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController, private alertCtrl: AlertController) {
+ subHeaderShow: boolean = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController, private alertCtrl: AlertController, public zone: NgZone) {
      this.sellerInfo = this.navParams.get("sellerInfo");
 	 this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 	
@@ -40,6 +42,21 @@ rmenu
 	  this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad RmenuPage');
   }
+   onPageScroll(event) {
+	   this.subHeaderShow = false;
+	   if(event.scrollTop > 30) {
+		   this.zone.run(()=>{
+				   this.subHeaderShow = true;		   
+		   });
+	   }else {
+		   this.zone.run(()=>{
+				   this.subHeaderShow = false;		   
+		   });
+	   }
+        //console.log("event.target:: ", event);
+    }
+
+    
     ionViewWillUnload() {
 	  //this.tabBarElement.style.display = 'block';
     console.log('ionViewDidLoad RmenuPage');
