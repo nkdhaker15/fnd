@@ -13,12 +13,12 @@
 </ion-header>
 
 
-<ion-content class="container-gray">
+<ion-content class="container-gray" style="padding: 20px;">
 <form [formGroup]="registerForm">      
 <ion-card>
-    <ion-card-content text-center style="padding:0px;">
-        <ion-row *ngIf="registerErrorMsg != ''">
-            <ion-col text-center><p class="error">{{registerErrorMsg}}</p></ion-col>
+    <ion-card-content text-center>
+        <ion-row *ngIf="registerErrorMsg != ''" class="mt5">
+            <ion-col text-center  class="error">{{registerErrorMsg}}</ion-col>
         </ion-row>    
         <p class="padding-10 mt-25">We will send an SMS with a confirmation <br> code to this number</p>
         <div style="margin-bottom: 15px;margin-top: 15px;">

@@ -168,14 +168,33 @@ width:20px;
 border-color: #f5f5f5;
 background: #fff !important;
 }
+.now{
+float: left;
+font-weight: bold;
+color: #666;
+margin-right: 5px;
+font-size:18px;
+}
 .arrow-icon {
 width: 14px;
-position: absolute;
-top: 10px;
+float:left;
+margin-top:3px;
 }
 .loct{
-margin-left: 25px;
-display: inline-block;
+margin-left: 10px;
+font-size: 16px;
+font-weight: 500;
+}
+.search-result{
+background: url(../assets/icon/placeholder-outline.png) no-repeat;
+    background-position-x: 0%;
+    background-position-y: 0%;
+    background-size: auto auto;
+padding: 15px 15px 15px 50px;
+border-bottom: 1px solid #f5f5f5;
+font-size: 13px;
+background-size: 20px;
+background-position: 4% 55%;
 }
 .cart-count {
     position: absolute;
@@ -535,4 +554,13 @@ width:200px;
 .active-button
 {
     background:#000 !important;
+}
+.giveMeEllipsis {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 1; 
+   line-height: 20px;        
+   max-height: 20px;     
 }

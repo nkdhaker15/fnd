@@ -31,6 +31,8 @@ rmenu
  cartItemsIds: any = [];
  cartItems: any = []; 
  carttotalamount: any =0;
+ category_list:any=[];
+ allresult:any = [];
  subHeaderShow: boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController, private alertCtrl: AlertController, public zone: NgZone) {
      this.sellerInfo = this.navParams.get("sellerInfo");
@@ -44,7 +46,7 @@ rmenu
   }
    onPageScroll(event) {
 	   this.subHeaderShow = false;
-	   if(event.scrollTop > 30) {
+	   if(event.scrollTop > 20) {
 		   this.zone.run(()=>{
 				   this.subHeaderShow = true;		   
 		   });
@@ -291,7 +293,9 @@ loadProducts() {
              loading.dismiss();
              this.product_image_path = result.product_image;
             this.productList = result.result;
-				console.log("this.productList:: ", this.productList);
+			this.category_list = result.category;
+			this.allresult=result;
+				console.log("this.catorye:: ",this.allresult);
             }, (err) => { 
             console.log(err); 
              loading.dismiss();

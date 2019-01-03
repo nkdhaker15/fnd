@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
+import { RmenuPage } from '../rmenu/rmenu';
 
 /**
  * Generated class for the SearchdataPage page.
@@ -74,5 +75,13 @@ export class SearchdataPage {
       
 
   }
+  
+   productListPage(sellerInfo: any)
+  {         sellerInfo.seller_img_base_url = this.dashboardData.seller_url;
+	  	   this.navCtrl.push(RmenuPage, {sellerInfo: sellerInfo});    
+	 // let nav = this.app.getRootNav(); 
+	      //console.log('click OrdersPage');
+
+  } 
 
 }

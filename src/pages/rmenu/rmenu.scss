@@ -1,5 +1,10 @@
 page-rmenu {
-
+ .header {
+  background: #fff;
+   .toolbar-title {
+      color: #424242;
+   }
+ }
 .button-outline-md-secondary
 {
 border-color: #d8d8d8;
@@ -20,5 +25,17 @@ color:#fff;
 .show-sub-header {
   visibility: hidden;
   height: 30px;
+}
+.menu-list-top ul
+{
+margin:0px;
+padding:0px;
+list-style:none;
+
+}
+.menu-list-top ul li
+{
+display:table-cell;
+padding:5px;
 }
 }

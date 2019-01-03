@@ -25,12 +25,15 @@ export class DetectlocationPage {
   map: any;
   currentSelectedAddress: any ='';
   userLocationInfo: any = {};
+  tabBarElement: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone,  public loadingCtrl: LoadingController) {
 	  this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
 	  this.autocomplete = { input: '' };
 	  this.autocompleteItems = [];
 	  this.geocoder = new google.maps.Geocoder();
 	this.markers = [];
+	    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+
 
   }
  tryGeolocation(){
@@ -132,6 +135,8 @@ export class DetectlocationPage {
   }
   ionViewDidEnter(){
 	//Set latitude and longitude of some place
+		  this.tabBarElement.style.display = 'none';
+
 	this.map = new google.maps.Map(document.getElementById('map'), {
 		center: { lat: -34.9011, lng: -56.1645 },
 		zoom: 15

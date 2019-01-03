@@ -14,6 +14,16 @@
 
 
 <ion-content class="container-gray">
+
+<div style="height:100%;text-align:center;" class="container-white" *ngIf="showEmptyCartMessage">
+<div>
+<img src="assets/imgs/empty_cart.png" style="margin-top: 40px;padding: 30px;">
+<h6 class="Open_Sans_Bold">GOOD FOOD AND WINE IS WAITING FOR YOU</h6>
+<p class="open-sans-normal" style="color:#ccc">Your cart is empty, Add something from the menu.</p>
+</div>
+</div>
+
+<div *ngIf="!showEmptyCartMessage">
 <ion-row class="container-white"  *ngIf="showaddadressbutton">
 <ion-col>
 <div class="media p10">
@@ -225,5 +235,7 @@ box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);">
 </ion-row>
 </p>
 
+
+</div>
 
 </ion-content>

@@ -19,17 +19,12 @@
 
 
 <ion-content >
-  <ion-list [hidden]="autocompleteItems.length == 0">
-  <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-  <div class="media">
-
-   <img src="assets/icon/location-pin.png" class="w20 pull-left mr10 ">
- <span style="line-height:22px;">{{ item.description }}</span>
- </div>
-  </ion-item>
-   
-  </ion-list>
-    <ion-list [hidden]="autocompleteItems.length != 0">
+<div [hidden]="autocompleteItems.length == 0">
+<div class="search-result" *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">{{ item.description }}</div>
+ 
+</div>
+ 
+<ion-list [hidden]="autocompleteItems.length != 0">
 
 <ion-item (click)="tryGeolocation()">
 <div class="media">
