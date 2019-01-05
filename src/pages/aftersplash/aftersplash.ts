@@ -105,16 +105,59 @@ export class AftersplashPage {
 	  
   }
   
+ placeToAddress(place){
+        var address: any = {};
+        place.address_components.forEach(function(c) {
+			let types: any = c.types; 
+			let lastType: any = types[types.length-1];
+			address[types[0]] = c;
+			address[lastType] = c;
+            /*switch(c.types[0]){
+                case 'street_number':
+                    address.StreetNumber = c;
+                    break;
+                case 'route':
+                    address.StreetName = c;
+                    break;
+                case 'neighborhood': case 'locality':    // North Hollywood or Los Angeles?
+                    address.City = c;
+                    break;
+                case 'administrative_area_level_1':     //  Note some countries don't have states
+                    address.State = c;
+                    break;
+                case 'postal_code':
+                    address.Zip = c;
+                    break;
+                case 'country':
+                    address.Country = c;
+                    break;
+               
+            }*/
+        });
+		address['address']= '';
+		if(address['sublocality_level_1'] != '') {
+			if(address['sublocality_level_2'] != '') {
+		     	address['address'] += address['sublocality_level_2'].long_name+', ';
+		    }
+			address['address'] += address['sublocality_level_1'].long_name;
+		}
+		
+        return address;
+    } 
  geocodeUserAddress(addressSource: any) {
 	 this.geocoder.geocode(addressSource, (results, status) => {
+		 
     if(status === 'OK' && results[0]){
       let position = {
           lat: results[0].geometry.location.lat,
           lng: results[0].geometry.location.lng
       };
-	   
-	  this.userLocationInfo = {address: results[0].formatted_address, lat: results[0].geometry.location.lat(),
+	  let address: any = this.placeToAddress(results[0]);
+	   console.log("address:: ", address);
+	   console.log("results:: ", results);
+	  this.userLocationInfo = {address: address['address'], fullAddress: results[0].formatted_address, lat: results[0].geometry.location.lat(),
           lng: results[0].geometry.location.lng()};
+		  
 		  this.setUserLocation();
 	  
     }

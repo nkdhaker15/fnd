@@ -3,7 +3,7 @@
   <ion-row>
   <ion-col col-10 (click)="opendetectlocation()">
   <ion-title *ngIf="!userLocationInfo.address">Home</ion-title>
-  <ion-title *ngIf="userLocationInfo.address"><span class="now Open_Sans_Bold">NOW</span> <img src="assets/icon/right-arrow01.png" class="arrow-icon"> <span class="loct open_sans_semi">{{userLocationInfo.address.substring(1,60)}}...</span></ion-title>
+  <ion-title *ngIf="userLocationInfo.address"><span class="now Open_Sans_Bold">NOW</span> <img src="assets/icon/right-arrow01.png" class="arrow-icon"> <span class="loct open_sans_semi">{{userLocationInfo.address.substring(0,60)}}...</span></ion-title>
   </ion-col>
   <ion-col col-2>
   <div class="top-cart-icon" (click)="mycartMethod()">
@@ -18,9 +18,6 @@
 </ion-header>
 
 <ion-content >
- <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
 
 <div *ngIf="dashboardData.length != 0">

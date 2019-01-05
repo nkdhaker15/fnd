@@ -38,13 +38,7 @@ export class SignupotpPage {
   }
   ionViewWillEnter()
  {
-     
-	this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.READ_SMS).then(
-	  success => console.log('Permission granted'),
-	err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_SMS)
-	);
-
-	this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.READ_SMS]);
+    
 	this.readOtpSms();
  }
    _onKeyup(e) {
@@ -70,7 +64,13 @@ export class SignupotpPage {
 };
   readOtpSms() {
 	  this.platform.ready().then((readySource) => {
+			 console.log('Permission check')
+	this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.READ_SMS).then(
+	  success => console.log('Permission granted'),
+	err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_SMS)
+	);
 
+	this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.READ_SMS]);
 			if(SMS){ SMS.startWatch(()=>{
 					   console.log('watching started');
 					}, Error=>{

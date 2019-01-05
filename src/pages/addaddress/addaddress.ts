@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component ,NgZone} from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Geolocation } from '@ionic-native/geolocation';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -12,6 +13,7 @@ import { AuthUserService } from '../../providers/authUserService';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+declare var google: any;
 
 @IonicPage()
 @Component({
@@ -24,7 +26,12 @@ export class AddaddressPage {
    userAddresses: any = [];
    registerErrorMsg: string = ''; 
    addressInfo: any = {};
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder) {
+     geocoder: any;
+  markers: any = [];
+  map: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder,private ngZone: NgZone, private geolocation: Geolocation) {
+	  	  this.geocoder = new google.maps.Geocoder();
+
     this.addAddressForm = this.formBuilder.group({
       ab_name: [''],
       ab_mobile_number: [''],
@@ -57,6 +64,37 @@ export class AddaddressPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddaddressPage');
+	this.map = new google.maps.Map(document.getElementById('map'), {
+		center: { lat: -34.9011, lng: -56.1645 },
+		zoom: 15,
+		            mapTypeId: google.maps.MapTypeId.ROADMAP,
+		 disableDefaultUI: true
+	});
+	/*
+	this.map.addMarker({
+                  title: 'Ionic',
+                  icon: 'blue',
+                  animation: 'DROP',
+                  draggable:true,
+                  position: {
+                    lat: -34.9011,
+                    lng: -56.1645
+                  }
+                })
+                .then(marker => {
+                  marker.on(GoogleMapsEvent.MARKER_DRAG_END)
+                    .subscribe(() => {
+                      marker.getCurrentPosition().then((resp) => {
+
+                           console.log(resp);
+
+                          }).catch((error) => {
+                            console.log('Error getting location', error);
+                          });
+                    });
+                });*/
+
+             
   }
     
   ionViewWillEnter() {	  	 	      
@@ -109,4 +147,7 @@ export class AddaddressPage {
         });
 	  
   }
+  backButtonAction(){
+     this.navCtrl.pop();
+	}
 }
