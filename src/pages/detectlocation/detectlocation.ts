@@ -1,7 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-import { AndroidPermissions } from '@ionic-native/android-permissions';
+
 
 import { AuthUserService } from '../../providers/authUserService';
 import { TabsPage } from '../tabs/tabs';
@@ -27,7 +27,7 @@ export class DetectlocationPage {
   currentSelectedAddress: any ='';
   userLocationInfo: any = {};
   tabBarElement: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone,  public loadingCtrl: LoadingController, public androidPermissions: AndroidPermissions) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone,  public loadingCtrl: LoadingController) {
 	  this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
 	  this.autocomplete = { input: '' };
 	  this.autocompleteItems = [];
@@ -43,13 +43,7 @@ export class DetectlocationPage {
       content: 'Please wait...'
     });
     loading.present();
-	this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
-	  success => console.log('Permission granted'),
-	err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
-	);
-
-	this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION]);
-  this.geolocation.getCurrentPosition().then((resp) => {
+	this.geolocation.getCurrentPosition().then((resp) => {
 	  loading.dismiss();
     let pos = {
 		

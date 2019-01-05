@@ -1,4 +1,4 @@
-import { Component, NgZone  } from '@angular/core';
+import { Component, NgZone, Content, ChangeDetectorRef, ViewChild, Slides    } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController, ModalController, AlertController, Content  } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ApiBackendService } from '../../providers/apiBackendService';
@@ -19,7 +19,8 @@ import { TabsPage } from '../tabs/tabs';
   templateUrl: 'rmenu.html',
 })
 export class RmenuPage {
- 
+ @ViewChild('Content') content: Content;
+ @ViewChild('catTabSlides') catSlides: Slides;
 
 rmenu
  = [{ name: "Signature Premier Grain"},{ name: "All Seasons"},{ name: "Heineken Lager Beer Wit"},{ name: "Signature Premier Grain"},{ name: "All Seasons"}];
@@ -30,11 +31,12 @@ rmenu
  product_image_path: any = '';
  cartItemsIds: any = [];
  cartItems: any = []; 
+ selectedCategoryId: any =0;
  carttotalamount: any =0;
- category_list:any=[];
+ category_list:any= [];
  allresult:any = [];
  subHeaderShow: boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController, private alertCtrl: AlertController, public zone: NgZone) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController, private alertCtrl: AlertController, public zone: NgZone, private cd: ChangeDetectorRef) {
      this.sellerInfo = this.navParams.get("sellerInfo");
 	 this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 	
@@ -43,20 +45,47 @@ rmenu
   ionViewDidLoad() {
 	  this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad RmenuPage');
+	
+  }
+  filterData(catId) {
+	  this.selectedCategoryId = catId;
+	  let todayItem = document.getElementById('cat_div_'+catId);
+	  
+	  if(this.content != null && this.content != undefined && this.content != '') {
+		  if(catId ==0) {
+			  this.content.scrollTo(0, (todayItem.offsetTop-19), 800);
+		  }else {
+			this.content.scrollTo(0, (todayItem.offsetTop-150), 800);  
+		  }
+			
+	  }
+	  
+	
   }
    onPageScroll(event) {
-	   this.subHeaderShow = false;
-	   if(event.scrollTop > 20) {
-		   this.zone.run(()=>{
-				   this.subHeaderShow = true;		   
-		   });
-	   }else {
-		   this.zone.run(()=>{
-				   this.subHeaderShow = false;		   
-		   });
+	   if(event != null && event != undefined) {
+		   this.subHeaderShow = false;
+		   if(event.scrollTop > 20) {
+			   this.zone.run(()=>{
+					   this.subHeaderShow = true;		   
+					   
+			   });
+		   }else {
+			   this.zone.run(()=>{
+					   this.subHeaderShow = false;		   
+					   
+			   });
+		   }
+			   
+			   this.cd.detectChanges();
+			   if(this.subHeaderShow){
+			   setTimeout(()=>{
+				this.calculateCatContent(event.scrollTop);
+			   }, 300);
+			   }
 	   }
-        //console.log("event.target:: ", event);
-    }
+	 }
+	   
 
     
     ionViewWillUnload() {
@@ -186,13 +215,37 @@ this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
     });
     });
   }
+  
+   incrementCatItem(index, catId) {
+	  
+		this.allresult[catId][index].qty++;
+	this.changeProductQtyToCart(this.allresult[catId][index]);
+    
+ }
+ 
   increment(index) {
 	  
 		this.productList[index].qty++;
 	this.changeProductQtyToCart(this.productList[index]);
     
  }
-  decrement(index) {
+  decrementCatItem(index, catId) {
+	  /*if(this.productList[index].qty > 1) {*/
+		this.allresult[catId][index].qty--;
+		
+	/*}*/
+//	this.addToCart(productItem,productItem.pmp_net_price, 0, '')
+    if(this.allresult[catId][index].qty < 1) {
+		this.removeFromCart(this.allresult[catId][index], index);
+		this.allresult[catId][index].qty = 1;
+	}else {
+
+		this.changeProductQtyToCart(this.allresult[catId][index]);
+	}
+	
+ }
+ 
+ decrement(index) {
 	  /*if(this.productList[index].qty > 1) {*/
 		this.productList[index].qty--;
 		
@@ -263,7 +316,7 @@ this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
 				 
 			 }else {
 				this.cartItemsIds.push(item.product.product_id);
-				this.carttotalamount =this.carttotalamount+ parseFloat(item.amount);
+				this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
 				cartItemsInfo.push(item);
 			 }
 			 if(index == (this.cartItems.length-1)) {
@@ -284,7 +337,13 @@ getItemQty(index: any) {
 		this.productList[index].qty = 1;
 	}
 	return this.productList[index].qty;
-} 
+}
+getCatItemQty(index: any, cat_id: any) {
+	if(this.allresult[cat_id][index].qty == undefined) {
+		this.allresult[cat_id][index].qty = 1;
+	}
+	return this.allresult[cat_id][index].qty;
+}  
 isItemQty(product: any) {
     let status = false;	
 	if(this.cartItemsIds.indexOf(product.product_id) !=-1) {
@@ -342,6 +401,26 @@ loadProducts() {
             console.log(err); 
              loading.dismiss();
             });
+}
+
+calculateCatContent(currentTop) {
+	let lastMatchIndex: any = 0;
+	let lastMatchCatId: any = 0;
+	if(this.category_list != undefined) {
+		for(let i = 0; i < this.category_list.length; i++) {
+			 let todayItem = document.getElementById('cat_div_'+this.category_list[i].category_id);
+			 if((todayItem.offsetTop-150) <= currentTop) {
+				 lastMatchIndex = (i+1);
+				 lastMatchCatId = this.category_list[i].category_id;
+			 }
+		}
+	}
+	if(this.catSlides != undefined) {
+		
+		this.selectedCategoryId = lastMatchCatId;
+	   this.catSlides.slideTo((lastMatchIndex), 500);
+	}
+	
 }
 backButtonAction(){
      this.navCtrl.pop();

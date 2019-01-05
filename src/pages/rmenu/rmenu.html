@@ -8,13 +8,19 @@
  
 <ion-title><ion-icon (click)="backButtonAction()" name="arrow-back" style="margin-top: 0px;font-size: 25px;margin-left: 13px;color: #424242;"></ion-icon> {{sellerInfo.se_store_name}}</ion-title>
 </ion-navbar>
-<ion-row *ngIf="subHeaderShow">
+<ion-row *ngIf="subHeaderShow && category_list.length > 1">
+
 <ion-col style="overflow-x:scroll;position:relative;">
-<div class="menu-list-top">
-<ul>
-<li *ngFor="let category_tab of category_list; let k= index">{{category_tab.category_name}}</li>
-</ul>
-</div>
+<ion-slides slidesPerView="3" #catTabSlides>
+                    <ion-slide (click)="filterData(0)">
+                        <p [class.tabcat-selected]="selectedCategoryId === 0">Recommended</p>
+                    </ion-slide>
+                    <ion-slide (click)="filterData(category_tab.category_id)" *ngFor="let category_tab of category_list; let k= index">
+                        <p [class.tabcat-selected]="selectedCategoryId === category_tab.category_id">{{category_tab.category_name}}</p>
+                    </ion-slide>
+					
+                </ion-slides>
+
 </ion-col>
 </ion-row>
 </ion-header>
@@ -23,7 +29,7 @@
 
 
 
-<ion-content fullscreen #myContent class="container-white" (ionScroll)="onPageScroll($event)">
+<ion-content fullscreen #Content class="container-white" (ionScroll)="onPageScroll($event)">
 
 <ion-row style="position: absolute;top: 10px;z-index: 999999999999999999;" [class.show-sub-header]="subHeaderShow">
 <ion-col (click)="backButtonAction()">
@@ -50,9 +56,9 @@
   
 
 
-<div class="container-white">
+<div class="container-white" >
 <div class="media p10">
-<ion-row>
+<ion-row id="cat_div_0">
 <ion-col>
 <h5 style="padding-left:10px;">Recommended</h5>
 </ion-col>
@@ -90,7 +96,7 @@
 
 <div class="container-white mb-60" >
 <div class="media p10">
-<ion-row>
+<ion-row id="cat_div_{{category.category_id}}">
 <ion-col>
 <h5 style="margin:5px 0px 10px">{{category.category_name}}</h5>
 </ion-col>
@@ -103,9 +109,9 @@
 <div style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
 <div style="border: 1px solid #d8d8d8; width:75px;margin-top:10px">
 <div class="qty-badge" *ngIf="isItemQty(productItem)"  >
-<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
-{{getItemQty(i)}}
-<ion-icon name="add" (click)="increment(i)" ></ion-icon>
+<ion-icon name="remove" (click)="decrementCatItem(i, category.category_id)" ></ion-icon>
+{{getCatItemQty(i, category.category_id)}}
+<ion-icon name="add" (click)="incrementCatItem(i, category.category_id)" ></ion-icon>
 </div>
 <div  *ngIf="productItem.child.length==0 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</div>
 <div  *ngIf="productItem.child.length==1 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.child[0].pmp_net_price, productItem.child[0].pmp_id, productItem.child[0].unit_name)" >ADD</div>

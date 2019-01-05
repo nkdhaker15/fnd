@@ -103,5 +103,5 @@
     </plugin>
     <plugin name="cordova-plugin-android-permissions" spec="1.0.0" />
     <plugin name="cordova-plugin-sms" spec="1.0.5" />
-    <engine name="android" spec="7.1.4" />
+    <engine name="android" spec="6.4.0" />
 </widget>

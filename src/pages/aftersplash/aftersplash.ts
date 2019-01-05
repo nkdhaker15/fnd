@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { LoginPage } from '../login/login';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
-import { AndroidPermissions } from '@ionic-native/android-permissions';
+
 /*import { Geolocation } from '@ionic-native/geolocation';*/
 /*import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';*/
 
@@ -31,7 +31,7 @@ export class AftersplashPage {
   geocoder: any;
   userLocationInfo: any = {};
    slideImages: any;
-  constructor(public navCtrl: NavController, public androidPermissions: AndroidPermissions, public navParams: NavParams,public statusBar: StatusBar, public apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, private authUserService: AuthUserService, private geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, public apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, private authUserService: AuthUserService, private geolocation: Geolocation) {
 	     statusBar.hide();
 
   }
@@ -73,12 +73,6 @@ export class AftersplashPage {
       content: 'Please wait...'
     });
     loading.present();
-	this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
-	  success => console.log('Permission granted'),
-	err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
-	);
-
-	this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION]);
 	
       this.geolocation.getCurrentPosition().then((resp: any) => {
 		  loading.dismiss();
