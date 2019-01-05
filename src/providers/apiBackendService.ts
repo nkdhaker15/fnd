@@ -326,7 +326,7 @@ changePassword(data) {
 			headers.append("Accept", 'application/json');
 			headers.append('Content-Type', 'application/json' );
 			const requestOptions = new RequestOptions({ headers: headers });
-			this.http.post(this.apiUrl+'/orders/createTransactionOnCartId', data, requestOptions)
+			this.http.post(this.apiUrl+'/orders/createTransactionOnCartId', JSON.stringify(data), requestOptions)
 			  .subscribe(res => {
 				resolve(this._extractData(res));
 			  }, (err) => {

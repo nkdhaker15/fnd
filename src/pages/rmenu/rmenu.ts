@@ -123,7 +123,8 @@ rmenu
 			   let foundStatus: boolean = false;
 			   let foundIndex = 0;
 			   for(let d=0; d < data.length; d++) {
-				   if(data[d].product.product_id == product.product_id  && variationId == data[d].variation_id) {
+				  /* if(data[d].product.product_id == product.product_id  && variationId == data[d].variation_id) {*/
+				   if(data[d].product.product_id == product.product_id) {
 					   foundStatus = true;
 					   foundIndex = d;
 				   }
@@ -188,7 +189,7 @@ this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
   increment(index) {
 	  
 		this.productList[index].qty++;
-	this.addToCart(this.productList[index],this.productList[index].pmp_net_price,0,'');
+	this.changeProductQtyToCart(this.productList[index]);
     
  }
   decrement(index) {
@@ -199,11 +200,52 @@ this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
 //	this.addToCart(productItem,productItem.pmp_net_price, 0, '')
     if(this.productList[index].qty < 1) {
 		this.removeFromCart(this.productList[index], index);
+		this.productList[index].qty = 1;
 	}else {
-		this.addToCart(this.productList[index],this.productList[index].pmp_net_price,0,'');
+
+		this.changeProductQtyToCart(this.productList[index]);
 	}
 	
  }
+   changeProductQtyToCart(product) {
+	   this.storage.get("cart").then((data) => {
+		  if(product.qty == undefined || product.qty < 1) {
+			  product.qty = 1;
+		  }
+		   
+			   let foundStatus: boolean = false;
+			   let foundIndex = 0;
+			   for(let d=0; d < data.length; d++) {
+				   if(data[d].product.product_id == product.product_id) {
+					   foundStatus = true;
+					   foundIndex = d;
+				   }
+			   }
+			   
+			   if(foundStatus) {				   
+					   
+					  data[foundIndex].qty = product.qty;
+					
+					   
+				   }
+		   
+		      if(this.cartItemsIds.indexOf(product.product_id)==-1) {
+				  this.cartItemsIds.push(product.product_id);
+			  }
+		     this.storage.set("cart", data).then(() => {
+				console.log("Cart Updated");
+				console.log(data);
+
+				/*this.toastController.create({
+				  message: "Cart Updated",
+				  duration: 3000
+				}).present();
+*/
+	              this.getCartItems();
+
+			  });
+	  });
+   }
    removeFromCart(product, i){
 
     let price;    

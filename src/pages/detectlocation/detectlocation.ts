@@ -1,6 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 import { AuthUserService } from '../../providers/authUserService';
 import { TabsPage } from '../tabs/tabs';
@@ -26,13 +27,13 @@ export class DetectlocationPage {
   currentSelectedAddress: any ='';
   userLocationInfo: any = {};
   tabBarElement: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone,  public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone,  public loadingCtrl: LoadingController, public androidPermissions: AndroidPermissions) {
 	  this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
 	  this.autocomplete = { input: '' };
 	  this.autocompleteItems = [];
 	  this.geocoder = new google.maps.Geocoder();
 	this.markers = [];
-	    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+	    
 
 
   }
@@ -42,6 +43,12 @@ export class DetectlocationPage {
       content: 'Please wait...'
     });
     loading.present();
+	this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+	  success => console.log('Permission granted'),
+	err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+	);
+
+	this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION]);
   this.geolocation.getCurrentPosition().then((resp) => {
 	  loading.dismiss();
     let pos = {
@@ -101,7 +108,7 @@ export class DetectlocationPage {
         });
 		address['address']= '';
 		if(address['sublocality_level_1'] != '') {
-			if(address['sublocality_level_2'] != '') {
+			if(address['sublocality_level_2'] != '' && address['sublocality_level_2'] != undefined && address['sublocality_level_2'] != null) {
 		     	address['address'] += address['sublocality_level_2'].long_name+', ';
 		    }
 			address['address'] += address['sublocality_level_1'].long_name;
@@ -131,12 +138,7 @@ export class DetectlocationPage {
 	  this.userLocationInfo = {address: address['address'], fullAddress: results[0].formatted_address, lat: results[0].geometry.location.lat(),
           lng: results[0].geometry.location.lng()};
 	  console.log("results:: ", results);
-      let marker = new google.maps.Marker({
-        position: results[0].geometry.location,
-        map: this.map,
-      });
-      this.markers.push(marker);
-      this.map.setCenter(results[0].geometry.location);
+      
 	  this.setUserLocation();
     }
   });
@@ -175,12 +177,9 @@ export class DetectlocationPage {
   }
   ionViewDidEnter(){
 	//Set latitude and longitude of some place
-		  this.tabBarElement.style.display = 'none';
+		  
 
-	this.map = new google.maps.Map(document.getElementById('map'), {
-		center: { lat: -34.9011, lng: -56.1645 },
-		zoom: 15
-	});
+	
 }
 
   ionViewDidLoad() {

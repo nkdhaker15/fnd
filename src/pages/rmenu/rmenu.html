@@ -72,7 +72,8 @@
 <ion-icon name="add" (click)="increment(i)" ></ion-icon>
 </div>
 <div  *ngIf="productItem.child.length==0 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</div>
-<div *ngIf="productItem.child.length>0 && !isItemQty(productItem)"    style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px; position:relative;" (click)="openProductChildModal(productItem)">ADD<span class="plus-icon">+</span></div>
+<div  *ngIf="productItem.child.length==1 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.child[0].pmp_net_price, productItem.child[0].pmp_id, productItem.child[0].unit_name)" >ADD</div>
+<div *ngIf="productItem.child.length>1 && !isItemQty(productItem)"    style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px; position:relative;" (click)="openProductChildModal(productItem)">ADD<span class="plus-icon">+</span></div>
 
 </div>
 
@@ -107,7 +108,9 @@
 <ion-icon name="add" (click)="increment(i)" ></ion-icon>
 </div>
 <div  *ngIf="productItem.child.length==0 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</div>
-<div *ngIf="productItem.child.length>0 && !isItemQty(productItem)"    style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px; position:relative;" (click)="openProductChildModal(productItem)">ADD<span class="plus-icon">+</span></div>
+<div  *ngIf="productItem.child.length==1 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.child[0].pmp_net_price, productItem.child[0].pmp_id, productItem.child[0].unit_name)" >ADD</div>
+<div *ngIf="productItem.child.length>1 && !isItemQty(productItem)"    style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px; position:relative;" (click)="openProductChildModal(productItem)">ADD<span class="plus-icon">+</span></div>
+
 </div>
 </ion-col>
 <ion-col col-3>
