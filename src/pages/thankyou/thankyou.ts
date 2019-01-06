@@ -28,7 +28,7 @@ export class ThankyouPage {
 	userInfo: any = {};
 	markers = [];
 	ref = firebase.database().ref('geolocations/');
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public platform: Platform, private device: Device) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public platform: Platform, private device: Device, private geolocation: Geolocation) {
 	  	    this.platform.ready().then(() => {
 				this.initMap();
 			});

@@ -9,18 +9,19 @@ import { LoginPage } from '../pages/login/login';
 
 import * as firebase from 'firebase';
 
-@Component({
-  templateUrl: 'app.html'
-})
-export class MyApp {
-  const config = {
+const configFirebase = {
     apiKey: "AIzaSyCeHvdXiSNzIHpyYIy33aYA1CszI-V1mlU",
     authDomain: "food-and-drink-226310.firebaseapp.com",
     databaseURL: "https://food-and-drink-226310.firebaseio.com",
     projectId: "food-and-drink-226310",
     storageBucket: "food-and-drink-226310.appspot.com",
     messagingSenderId: "932547603099"
-  };	
+  };
+@Component({
+  templateUrl: 'app.html'
+})
+export class MyApp {
+  	
   rootPage:any = AftersplashPage;
   //rootPage:any = LoginPage;
 
@@ -31,6 +32,6 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
-	firebase.initializeApp(config);
+	firebase.initializeApp(configFirebase);
   }
 }
