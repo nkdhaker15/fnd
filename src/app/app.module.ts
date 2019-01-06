@@ -49,7 +49,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StarRatingModule } from 'ionic3-star-rating';
 import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/shrinking-segment-header';
-
+import { ThankyouPage } from '../pages/thankyou/thankyou';
 @NgModule({
   declarations: [
     MyApp,
@@ -80,7 +80,8 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	ProductChildPage,
 	DetectlocationPage,
 	ShrinkingSegmentHeader,
-	PaymentsPage
+	PaymentsPage,
+	ThankyouPage
   ],
   imports: [
     BrowserModule,
@@ -118,7 +119,8 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
     TabsPage,
 	ExplorePage,
 	ProductChildPage,
-	PaymentsPage
+	PaymentsPage,
+	ThankyouPage
 	
   ],
   providers: [

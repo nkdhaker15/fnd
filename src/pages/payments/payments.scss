@@ -2,6 +2,13 @@ page-payments {
 .paytitle{
 padding:10px 15px;
 }
+.selected-method {
+   background: #32db64 !important;
+   color: #fff !important;
+   p {
+	color: #fff !important;
+   }
+}
 .textmuthed{
 color:#666;
 }

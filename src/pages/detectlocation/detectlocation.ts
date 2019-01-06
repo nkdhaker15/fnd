@@ -101,11 +101,14 @@ export class DetectlocationPage {
             }*/
         });
 		address['address']= '';
-		if(address['sublocality_level_1'] != '') {
+		
+		if(address['sublocality_level_1'] != null && address['sublocality_level_1'] != undefined) {
 			if(address['sublocality_level_2'] != '' && address['sublocality_level_2'] != undefined && address['sublocality_level_2'] != null) {
 		     	address['address'] += address['sublocality_level_2'].long_name+', ';
 		    }
 			address['address'] += address['sublocality_level_1'].long_name;
+		}else if(address['locality'] != null && address['locality'] != undefined) {
+			address['address'] += address['locality'].long_name;
 		}
 		
         return address;

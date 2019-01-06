@@ -52,7 +52,10 @@ export class HomePage {
           console.log("userLocationInfo:: ", userLocationInfo);
           if(userLocationInfo != null && userLocationInfo != undefined) {
               this.userLocationInfo = userLocationInfo;
-          }         
+          }else {
+			  
+			  this.navCtrl.push(DetectlocationPage);	  
+		  }         
           
       });			  
       this.authUserService.getUser().then((user)=>{

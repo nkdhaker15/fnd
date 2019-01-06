@@ -17,19 +17,38 @@
 <div class="paytitle">Wallets</div>
 <div class="payment-list">
 <ul>
-<li><div class="payicon"><img src="assets/imgs/phonepe.png"></div>PhonePe (Wallet/UPI/Cards)<span>LINK ACCOUNT</span></li>
-<li><div class="payicon"><img src="assets/imgs/paytm-512.png"></div>PayTM<span>LINK ACCOUNT</span></li>
-<li><div class="payicon"><img src="assets/imgs/amazon-pay.png"></div>Amazon Pay<span>LINK ACCOUNT</span></li>
-<li><div class="payicon"><img src="assets/imgs/freecharge.png"></div>Freecharge<span>LINK ACCOUNT</span></li>
-<li><div class="payicon"><img src="assets/imgs/Mobikwik.png"></div>Mobikwik<span>LINK ACCOUNT</span></li>
+<li [class.selected-method]="selectedPaymentMethod == 'phonepe'" (click)="selectPayMethod('phonepe')"><div class="payicon"><img src="assets/imgs/phonepe.png"></div>PhonePe (Wallet/UPI/Cards)<span>LINK ACCOUNT</span></li>
+<li [class.selected-method]="selectedPaymentMethod == 'paytm'" (click)="selectPayMethod('paytm')"><div class="payicon"><img src="assets/imgs/paytm-512.png"></div>PayTM<span>LINK ACCOUNT</span></li>
+<li [class.selected-method]="selectedPaymentMethod == 'amazonpay'" (click)="selectPayMethod('amazonpay')"><div class="payicon"><img src="assets/imgs/amazon-pay.png"></div>Amazon Pay<span>LINK ACCOUNT</span></li>
+<li [class.selected-method]="selectedPaymentMethod == 'freecharge'" (click)="selectPayMethod('freecharge')"><div class="payicon"><img src="assets/imgs/freecharge.png"></div>Freecharge<span>LINK ACCOUNT</span></li>
+<li [class.selected-method]="selectedPaymentMethod == 'mobikwik'" (click)="selectPayMethod('mobikwik')"><div class="payicon"><img src="assets/imgs/Mobikwik.png"></div>Mobikwik<span>LINK ACCOUNT</span></li>
 </ul>
 </div>
 <div class="paytitle">Pay On Delivery</div>
 <div class="payment-list">
 <ul>
-<li><div class="payicon"><img src="assets/imgs/cash.png"></div>Cash<br>
+<li [class.selected-method]="selectedPaymentMethod == 'cash'" (click)="selectPayMethod('cash')"><div class="payicon"><img src="assets/imgs/cash.png"></div>Cash<br>
 <p class="textmuthed small-text">Please keep exact change handy to help us serve you better</p>
 </li>
 </ul>
 </div>
 </ion-content>
+<ion-footer *ngIf="fromCheckout">
+<p  ion-fixed class="fixed-bottom-button">
+<ion-row class="container-white border-bottom-1" style="-webkit-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
+-moz-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
+box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);">
+<ion-col col-6>
+<div class="media p10">
+₹{{orderInfo.total}}<br>
+
+</div>
+</ion-col>
+<ion-col col-6 class="pr-20">
+<button ion-button   [color]="primary"  class="checkout-button m-10" (click)="proceedToPay()">Proceed</button>
+</ion-col>
+
+
+</ion-row>
+</p>
+</ion-footer>

@@ -15,7 +15,7 @@
 
 <ion-content>
 
-<ion-row style="position: absolute;top: 10px;z-index: 999999999999999999;">
+<ion-row style="position: absolute;top: 30px;z-index: 999999999999999999;">
 <ion-col (click)="backButtonAction()">
 <ion-buttons left >
 <ion-icon name="arrow-back" style="margin-top: 0px;font-size: 25px;margin-left: 13px;color: #fff;"></ion-icon>
@@ -33,15 +33,27 @@
 <h6>Set Delivery Location</h6>
 <ion-item>
     <ion-label color="primary" floating>LOCATION</ion-label>
-    <ion-input></ion-input>
+    <ion-input [formControl]="addAddressForm.controls['ab_address']"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label color="primary" floating>HOUSE / FLAT NO.</ion-label>
-    <ion-input value="{{addressInfo.ab_address}}" [formControl]="addAddressForm.controls['ab_address']"></ion-input>
+    <ion-input value="{{addressInfo.ab_houseno}}" [formControl]="addAddressForm.controls['ab_houseno']"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label color="primary" floating>LANDMARK</ion-label>
-    <ion-input></ion-input>
+    <ion-input [formControl]="addAddressForm.controls['ab_locality']"></ion-input>
+  </ion-item>
+   <ion-item>
+    <ion-label color="primary" floating>City</ion-label>
+    <ion-input [formControl]="addAddressForm.controls['ab_city']"></ion-input>
+  </ion-item>
+   <ion-item>
+    <ion-label color="primary" floating>State</ion-label>
+    <ion-input [formControl]="addAddressForm.controls['ab_state']"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" floating>Pincode</ion-label>
+    <ion-input [formControl]="addAddressForm.controls['ab_pincode']"></ion-input>
   </ion-item>
  <div class="address-save"  radio-group [formControl]="addAddressForm.controls['ab_type']">
  <span>SAVE AS</span>
@@ -51,10 +63,15 @@
  <li><ion-radio value="2" ></ion-radio> Work </li>
  <li><ion-radio value="3" checked></ion-radio> Other </li>
  </ul>
+ 
  </div>
- <ion-item>
-    <ion-label color="primary" floating>LOCATION</ion-label>
-    <ion-input></ion-input>
+<ion-item>
+    <ion-label color="primary" floating>Name</ion-label>
+    <ion-input [formControl]="addAddressForm.controls['ab_name']"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" floating>Mobile No</ion-label>
+    <ion-input [formControl]="addAddressForm.controls['ab_mobile_number']"></ion-input>
   </ion-item>
 </div>
 </ion-row>

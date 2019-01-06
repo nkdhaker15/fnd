@@ -53,7 +53,7 @@ rmenu
 	  
 	  if(this.content != null && this.content != undefined) {
 		  if(catId ==0) {
-			  this.content.scrollTo(0, (todayItem.offsetTop-19), 800);
+			  this.content.scrollTo(0, (todayItem.offsetTop-130), 800);
 		  }else {
 			this.content.scrollTo(0, (todayItem.offsetTop-150), 800);  
 		  }
