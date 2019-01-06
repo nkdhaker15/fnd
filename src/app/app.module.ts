@@ -5,6 +5,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Device } from '@ionic-native/device';
 /*import { NativeGeocoder } from '@ionic-native/native-geocoder';*/
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
@@ -134,6 +135,7 @@ import { ThankyouPage } from '../pages/thankyou/thankyou';
 	  GooglePlus,
 	  Geolocation,
 	  AndroidPermissions,  
+	  Device,  
    /* Geolocation,  
     NativeGeocoder,  
       */
