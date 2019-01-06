@@ -5,6 +5,8 @@ import { Device } from '@ionic-native/device';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
+
+import * as firebase from 'firebase';
 /**
  * Generated class for the FaqPage page.
  *
