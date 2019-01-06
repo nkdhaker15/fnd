@@ -368,7 +368,7 @@ presentConfirm(currentSeller, previousSeller) {
         text: 'Yes',
         handler: () => {
 		     this.cartItemsIds = [];
-		     this.carttotalamount = [];
+		     this.carttotalamount = 0;
 		     this.cartItems = [];
 			this.storage.set("cart", this.cartItems);
           this.sellerInfo = currentSeller;

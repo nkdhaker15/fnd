@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { ThankyouPage } from '../thankyou/thankyou';
+
+import { ApiBackendService } from '../../providers/apiBackendService';
+import { AuthUserService } from '../../providers/authUserService';
 
 /**
  * Generated class for the PaymentsPage page.
@@ -17,12 +21,14 @@ import { ThankyouPage } from '../thankyou/thankyou';
 })
 export class PaymentsPage {
    orderInfo: any= {};
+   cartInfo: any= {};
    selectedPaymentMethod: any = '';
    fromCheckout: boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, public storage: Storage) {
 	  if(this.navParams.get("orderInfo")!= undefined) {
 		  this.fromCheckout = true;
 		  this.orderInfo = this.navParams.get("orderInfo");
+		  this.cartInfo = this.navParams.get("cartInfo");
 		  console.log("this.orderInfo:: ", this.orderInfo);
 		  	  this.selectedPaymentMethod = 'cash';
 	  }
@@ -31,7 +37,25 @@ export class PaymentsPage {
 	  this.selectedPaymentMethod = pay_method;
   }
   proceedToPay() {
-	  this.navCtrl.push(ThankyouPage, {orderInfo: this.orderInfo});  
+	  
+	  let loading = this.loadingCtrl.create({
+		content: 'Please wait...'
+	  });
+	  loading.present();
+	 this.apiBackendService.processCartDetails(this.cartInfo).then((result: any) => {         
+		loading.dismiss();
+		if(result.message == 'ok') {
+			this.storage.set("cart", null);
+			this.storage.set("cartAddonItems", null);
+			let order_info: any = result;
+			
+				this.navCtrl.push(ThankyouPage, {orderInfo: order_info});  
+		}
+		  
+		}, (err) => { 
+		console.log(err); 
+		});
+	  
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad PaymentsPage');

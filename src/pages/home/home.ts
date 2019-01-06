@@ -52,6 +52,7 @@ export class HomePage {
           console.log("userLocationInfo:: ", userLocationInfo);
           if(userLocationInfo != null && userLocationInfo != undefined) {
               this.userLocationInfo = userLocationInfo;
+			  this.loadDashboardInfo();
           }else {
 			  
 			  this.navCtrl.push(DetectlocationPage);	  
@@ -63,7 +64,7 @@ export class HomePage {
           if(user != null && user != undefined) {
               this.userInfo = user;
           }         
-          this.loadDashboardInfo();
+          
       });
       
                     

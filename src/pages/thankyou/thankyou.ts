@@ -7,6 +7,7 @@ import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 
 import * as firebase from 'firebase';
+import { TabsPage } from '../tabs/tabs';
 /**
  * Generated class for the FaqPage page.
  *
@@ -53,29 +54,32 @@ export class ThankyouPage {
   }
 
 initMap() {
+	let objElement: any = this;
   this.geolocation.getCurrentPosition({ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true }).then((resp) => {
-    let mylocation = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
-    this.map = new google.maps.Map(this.mapElement.nativeElement, {
+    console.log("resp:: ", resp);   
+    console.log("objElement.mapElement.nativeElement:: ", objElement.mapElement.nativeElement);   
+   let mylocation = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
+    objElement.map = new google.maps.Map(objElement.mapElement.nativeElement, {
       zoom: 15,
       center: mylocation
     });
   });
   let watch = this.geolocation.watchPosition();
    watch.subscribe((data) => {
-	  this.deleteMarkers();
-	  this.updateGeolocation(this.device.uuid, data.coords.latitude,data.coords.longitude);
+	  objElement.deleteMarkers();
+	  objElement.updateGeolocation(objElement.device.uuid, data.coords.latitude,data.coords.longitude);
 	  let updatelocation = new google.maps.LatLng(data.coords.latitude,data.coords.longitude);
 	  let image = 'assets/imgs/blue-bike.png';
-	  this.addMarker(updatelocation,image);
-	  this.setMapOnAll(this.map);
+	  objElement.addMarker(updatelocation,image);
+	  objElement.setMapOnAll(objElement.map);
   });
 }
 
 addMarker(location, image) {
   let marker = new google.maps.Marker({
     position: location,
-    map: this.map,
-    icon: image
+    map: this.map
+   
   });
   this.markers.push(marker);
 }
@@ -127,7 +131,10 @@ updateGeolocation(uuid, lat, lng) {
 
   }
 
-  
+  backButtonAction(){
+	  
+     this.navCtrl.setRoot(TabsPage);
+	}
 
 }
 

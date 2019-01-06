@@ -1,18 +1,19 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Order Sucess</ion-title>
+  <ion-navbar hideBackButton>
+    <ion-title> <ion-icon (click)="backButtonAction()" name="arrow-back" style="margin-top: 0px;font-size: 25px;margin-left: 13px;color: #424242;"></ion-icon> Order Sucess</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content >
-<div #map id="map"></div>
+
         <ion-list>
 		  <ion-item>
 			<p>Thanks for placing order</p>
 			
 		  </ion-item>
 </ion-list>
+<div #map id="map"></div>
 </ion-content>

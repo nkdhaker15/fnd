@@ -43,8 +43,12 @@ private currentNumber = 1;
  cartitem
  = [{ name: "Manish Garg"},{ name: "Ram Kumar"},{ name: "Rakesh"},{ name: "Mohan"},{ name: "Amit Sharma"}];
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public modalCtrl: ModalController, private alertCtrl: AlertController) {
-	     this.total = 0.0;
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+  }
+
+  ionViewWillEnter() {
+	this.total = 0.0;
+    
     this.storage.ready().then(()=>{
 	  this.storage.get("sellerInfo").then( (data)=> {
 		if(data != null) {
@@ -398,43 +402,18 @@ checkout() {
 	
   if(this.userInfo.user_id>0)
   {
-	let alert = this.alertCtrl.create({
-				title: 'Confirm',
-				message: ' Do you want to proceed for checkout?',
-				buttons: [
-				  {
-					text: 'No',
-					role: 'cancel',
-					handler: () => {
-					  
-					}
-				  },
-				  {
-					text: 'Yes',
-					handler: () => {
-							 let cartInfo = {
-								 user_id: this.userInfo.user_id, ab_id: 1,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
-								 cartItems: this.cartItems, 
-								 cartAddons: this.cartAddonItems 
-							 };
-							console.log("cartInfo:: ", cartInfo);
-							 this.apiBackendService.processCartDetails(cartInfo).then((result: any) => {         
-								if(result.message == 'ok') {
-									this.storage.set("cart", null);
-									this.storage.set("cartAddonItems", null);
-									let order_info: any = result;
-									order_info['total'] = this.grandTotal;
-									this.navCtrl.push(PaymentsPage, {orderInfo: order_info});
-								}
-								  
-								}, (err) => { 
-								console.log(err); 
-								});
-					}
-				  }
-				]
-			  });
-			  alert.present();	
+
+		 let cartInfo = {
+			 user_id: this.userInfo.user_id, ab_id: 1,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
+			 cartItems: this.cartItems, 
+			 cartAddons: this.cartAddonItems 
+		 };
+		console.log("cartInfo:: ", cartInfo);
+		let order_info: any = {};
+				order_info['total'] = this.grandTotal;
+		this.navCtrl.push(PaymentsPage, {orderInfo: order_info, cartInfo: cartInfo});
+		
+						
 
 	}else{
 			this.navCtrl.push(LoginPage);
