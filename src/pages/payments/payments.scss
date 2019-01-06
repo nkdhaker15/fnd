@@ -1,0 +1,40 @@
+page-payments {
+.paytitle{
+padding:10px 15px;
+}
+.textmuthed{
+color:#666;
+}
+.small-text{
+margin-top:5px;
+margin-bottom:0px;
+font-size:11px;
+}
+.payment-list{
+width:100%;
+}
+.payment-list ul{
+margin:0;
+padding:0;
+list-style:none;
+}
+.payment-list ul li{
+position:relative;
+padding:15px 15px 15px 52px;
+border-bottom:1px solid #ddd;
+font-size:13px;
+background:#fff;
+}
+.payment-list ul li span{
+float:right;
+}
+.payment-list ul li .payicon{
+position: absolute;
+left: 15px;
+top:10px;
+}
+.payment-list ul li .payicon img{
+width:24px;
+height:24px;
+}
+}

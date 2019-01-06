@@ -8,6 +8,7 @@ import { FaqPage } from '../faq/faq';
 import { OrdersPage } from '../orders/orders';
 import { AddressbookPage } from '../addressbook/addressbook';
 import { LoginPage } from '../login/login';
+import { PaymentsPage } from '../payments/payments';
 
 import { AuthUserService } from '../../providers/authUserService';
 
@@ -80,5 +81,10 @@ export class MyaccountPage {
       this.authUserService.logoutUser().then(()=>{
           this.navCtrl.setRoot(LoginPage);  
       });
+  }
+  loadpayments()
+  {
+	  this.navCtrl.push(PaymentsPage);  
+	  
   }
 }

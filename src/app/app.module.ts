@@ -15,6 +15,7 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { DetectlocationPage } from '../pages/detectlocation/detectlocation';
 import { SearchdataPage } from '../pages/searchdata/searchdata';
+import { PaymentsPage } from '../pages/payments/payments';
 
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -78,7 +79,8 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	ExplorePage,
 	ProductChildPage,
 	DetectlocationPage,
-	ShrinkingSegmentHeader
+	ShrinkingSegmentHeader,
+	PaymentsPage
   ],
   imports: [
     BrowserModule,
@@ -115,7 +117,8 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
 	RmenuPage,
     TabsPage,
 	ExplorePage,
-	ProductChildPage
+	ProductChildPage,
+	PaymentsPage
 	
   ],
   providers: [

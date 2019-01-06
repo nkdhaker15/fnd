@@ -1,5 +1,5 @@
-import { Component, NgZone, Content, ChangeDetectorRef, ViewChild, Slides    } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController, ModalController, AlertController, Content  } from 'ionic-angular';
+import { Component, NgZone, ChangeDetectorRef, ViewChild    } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, ViewController, ToastController, ModalController, AlertController ,Content, Slides } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -19,7 +19,7 @@ import { TabsPage } from '../tabs/tabs';
   templateUrl: 'rmenu.html',
 })
 export class RmenuPage {
- @ViewChild('Content') content: Content;
+ @ViewChild('myContent') content: Content;
  @ViewChild('catTabSlides') catSlides: Slides;
 
 rmenu
@@ -51,7 +51,7 @@ rmenu
 	  this.selectedCategoryId = catId;
 	  let todayItem = document.getElementById('cat_div_'+catId);
 	  
-	  if(this.content != null && this.content != undefined && this.content != '') {
+	  if(this.content != null && this.content != undefined) {
 		  if(catId ==0) {
 			  this.content.scrollTo(0, (todayItem.offsetTop-19), 800);
 		  }else {

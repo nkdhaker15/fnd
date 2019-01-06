@@ -44,12 +44,12 @@ width:100%;
 }
 .merchent-details-banner{
 width:100%;
-height:225px;
+height:190px;
 overflow:hidden;
 }
 .merchent-details-banner img{
 width:100%;
-height:225px;
+height:100%;
 overflow:hidden;
 }
 .merchent-details-content{
@@ -79,5 +79,18 @@ font-size:13px;
 .tabcat-selected {
    color: #f08221;
    font-weight: bold;
+   font-size: 16px;
+}
+.slide-zoom padding{
+font-size: 16px;
+}
+.ion-md-arrow-back
+{
+margin-top: 0px !important;
+font-size: 23px;
+margin-left: 0px !important;
+color: #424242;
+margin-right: 10px;
+
 }
 }

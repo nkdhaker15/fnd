@@ -13,10 +13,10 @@
 <ion-col style="overflow-x:scroll;position:relative;">
 <ion-slides slidesPerView="3" #catTabSlides>
                     <ion-slide (click)="filterData(0)">
-                        <p [class.tabcat-selected]="selectedCategoryId === 0">Recommended</p>
+                        <p [class.tabcat-selected]="selectedCategoryId === 0" style="font-size:16px;">Recommended</p>
                     </ion-slide>
                     <ion-slide (click)="filterData(category_tab.category_id)" *ngFor="let category_tab of category_list; let k= index">
-                        <p [class.tabcat-selected]="selectedCategoryId === category_tab.category_id">{{category_tab.category_name}}</p>
+                        <p [class.tabcat-selected]="selectedCategoryId === category_tab.category_id" style="font-size:16px;">{{category_tab.category_name}}</p>
                     </ion-slide>
 					
                 </ion-slides>
@@ -29,7 +29,7 @@
 
 
 
-<ion-content fullscreen #Content class="container-white" (ionScroll)="onPageScroll($event)">
+<ion-content fullscreen #myContent class="container-white" (ionScroll)="onPageScroll($event)">
 
 <ion-row style="position: absolute;top: 10px;z-index: 999999999999999999;" [class.show-sub-header]="subHeaderShow">
 <ion-col (click)="backButtonAction()">
@@ -48,7 +48,7 @@
 <h3>{{sellerInfo.se_store_name}}</h3>
 <div class="merchent-location giveMeEllipsis">{{sellerInfo.seller_store_address}}</div>
 <div class="merchent-delivery-details">
-<img src="assets/icon/time.png" style="width:16px;margin-right:5px;"> 40-50 MINS | 3.4 <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;"> (500+)
+<img src="assets/icon/clock.png" style="width:16px;margin-right:5px;"> 40-50 MINS | 3.4 <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;"> (500+)
 </div>
 </div>
 </div>
