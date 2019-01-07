@@ -1,7 +1,4 @@
 page-rmenu {
-  .tabbar.show-tabbar {
-     display:none;
-   }
  .header {
   background: #fff;
    .toolbar-title {
@@ -80,9 +77,9 @@ margin-bottom:10px;
 font-size:13px;
 }
 .tabcat-selected {
-   color: #f08221;
-   font-weight: bold;
-   font-size: 16px;
+   color: #000 !important;
+font-weight: normal;
+border-bottom: 2px solid #666;
 }
 .slide-zoom padding{
 font-size: 16px;
@@ -95,5 +92,16 @@ margin-left: 0px !important;
 color: #424242;
 margin-right: 10px;
 
+}
+.menu-slide ion-slide{
+width:auto !important;
+padding:0px 12px;
+}
+.menu-product-title{
+margin-top: 3px;
+font-weight: 500;
+height: 30px;
+font-size: 13px;
+line-height: 18px;
 }
 }

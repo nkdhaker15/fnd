@@ -10,13 +10,13 @@
 </ion-navbar>
 <ion-row *ngIf="subHeaderShow && category_list.length > 1">
 
-<ion-col style="overflow-x:scroll;position:relative;">
-<ion-slides slidesPerView="3" #catTabSlides>
-                    <ion-slide (click)="filterData(0)">
-                        <p [class.tabcat-selected]="selectedCategoryId === 0" style="font-size:16px;">Recommended</p>
+<ion-col style="overflow-x:scroll;position:relative;padding:0px">
+<ion-slides slidesPerView="6.5" #catTabSlides class="menu-slide">
+                    <ion-slide (click)="filterData(0)" >
+                        <p [class.tabcat-selected]="selectedCategoryId === 0" style="font-size: 13px;padding: 10px 0px;margin: 0;color:#666;">Recommended</p>
                     </ion-slide>
                     <ion-slide (click)="filterData(category_tab.category_id)" *ngFor="let category_tab of category_list; let k= index">
-                        <p [class.tabcat-selected]="selectedCategoryId === category_tab.category_id" style="font-size:16px;">{{category_tab.category_name}}</p>
+                        <p [class.tabcat-selected]="selectedCategoryId === category_tab.category_id" style="font-size: 13px;padding: 10px 0px;margin: 0;color:#666;">{{category_tab.category_name}}</p>
                     </ion-slide>
 					
                 </ion-slides>
@@ -60,7 +60,7 @@
 <div class="media p10">
 <ion-row id="cat_div_0">
 <ion-col>
-<h5 style="padding-left:10px;">Recommended</h5>
+<h5>Recommended</h5>
 </ion-col>
 </ion-row>
 
@@ -68,7 +68,7 @@
 <ion-col col-6 class="p5 " style="margin-bottom:15px" *ngFor="let productItem of productList; let i = index"  #slidingItem>
 <img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;height:160px;margin-bottom:5px;">
 <span style="font-size:9px; color:#666;">{{productItem.brand_name}}</span>
-<p style="margin-top:3px;font-weight:500;height: 30px;">{{productItem.product_name}}</p>
+<p class="menu-slide ion-slide">{{productItem.product_name}}</p>
 <div class="product-footer">
 <div class=" pull-left " style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span><br> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
 <div style="border: 1px solid #d8d8d8; width:75px" class="pull-right">
@@ -94,7 +94,7 @@
 <div class="clearfix" style="background-color: #f5f5f5;height: 10px;"></div>
 
 
-<div class="container-white mb-60" >
+<div class="container-white" >
 <div class="media p10">
 <ion-row id="cat_div_{{category.category_id}}">
 <ion-col>
