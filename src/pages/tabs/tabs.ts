@@ -22,10 +22,10 @@ export class TabsPage {
 
   constructor(public statusBar: StatusBar,public navCtrl: NavController,private authUserService: AuthUserService) {
   statusBar.show();
-	   statusBar.styleDefault();
+	   
       statusBar.overlaysWebView(false);
-      statusBar.backgroundColorByHexString('#000000');
-
+      statusBar.backgroundColorByHexString('#ffffff');
+statusBar.styleDefault();
 	  
   }
   ionViewDidLoad() {

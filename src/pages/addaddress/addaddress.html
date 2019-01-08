@@ -15,7 +15,7 @@
 
 <ion-content>
 
-<ion-row style="position: absolute;top: 30px;z-index: 999999999999999999;">
+<ion-row style="position: absolute;top: 15px;z-index: 999999999999999999;">
 <ion-col (click)="backButtonAction()">
 <ion-buttons left >
 <ion-icon name="arrow-back" style="margin-top: 0px;font-size: 25px;margin-left: 13px;color: #fff;"></ion-icon>
@@ -43,15 +43,15 @@
     <ion-label color="primary" floating>LANDMARK</ion-label>
     <ion-input [formControl]="addAddressForm.controls['ab_locality']"></ion-input>
   </ion-item>
-   <ion-item>
+   <ion-item style="display:none">
     <ion-label color="primary" floating>City</ion-label>
     <ion-input [formControl]="addAddressForm.controls['ab_city']"></ion-input>
   </ion-item>
-   <ion-item>
+   <ion-item style="display:none">
     <ion-label color="primary" floating>State</ion-label>
     <ion-input [formControl]="addAddressForm.controls['ab_state']"></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item style="display:none">
     <ion-label color="primary" floating>Pincode</ion-label>
     <ion-input [formControl]="addAddressForm.controls['ab_pincode']"></ion-input>
   </ion-item>
@@ -59,17 +59,17 @@
  <span>SAVE AS</span>
  
  <ul >
- <li><ion-radio value="1" checked></ion-radio> Home </li>
- <li><ion-radio value="2" ></ion-radio> Work </li>
- <li><ion-radio value="3" checked></ion-radio> Other </li>
+ <li><ion-radio value="1" checked style="margin-top: -6px;"></ion-radio> Home </li>
+ <li><ion-radio value="2" style="margin-top: -6px;"></ion-radio> Work </li>
+ <li><ion-radio value="3" checked style="margin-top: -6px;"></ion-radio> Other </li>
  </ul>
  
  </div>
-<ion-item>
+<ion-item style="display:none">
     <ion-label color="primary" floating>Name</ion-label>
     <ion-input [formControl]="addAddressForm.controls['ab_name']"></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item style="display:none">
     <ion-label color="primary" floating>Mobile No</ion-label>
     <ion-input [formControl]="addAddressForm.controls['ab_mobile_number']"></ion-input>
   </ion-item>

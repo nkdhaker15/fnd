@@ -19,31 +19,31 @@
 <ion-row class="p10">
 <ion-col col-8>
 <div class="media">
-<h5 style="margin-top:0px;"><strong>Order Id:</strong> 516764</h5>
-<p>29 January 2018 @ 9:30PM</p>
-<span color="danger">Deliverd</span>
+<h5 style="margin-top:0px;"><strong>Order Id:</strong> {{userOrders.trans_id}}</h5>
+<p>{{userOrders.trans_create_datetime}}</p>
+<span color="danger">{{userOrders.trans_display_status}}</span>
 </div>
 </ion-col>
 <ion-col col-4>
-<img src="assets/imgs/p1.jpg" class="img-50 pull-right">
+<img src="assets/imgs/p1.jpg" class="img-50 pull-right" style="display:none">
 </ion-col>
 </ion-row>
 </div>
 <div class="container-white mb-10">
 <div class="media p10">
 <img src="assets/icon/location-pin.png" class="w20 pull-left mr10 pt-10">
-<p style="margin-top: 0px;width: 100%;margin-bottom: 0px;"><strong>Kanha:</strong></p>
-<span style="line-height:22px;">Opposite Gaurav Towers,kalyan Colony,...</span>
+<p style="margin-top: 0px;width: 100%;margin-bottom: 0px;"><strong>{{userOrders.seller_name}}:</strong></p>
+<span style="line-height:22px;" class="giveMeEllipsis">{{userOrders.seller_address}}</span>
 </div>
 <div class="media p10">
 <img src="assets/icon/location-pin.png" class="w20 pull-left mr10 pt-10">
 <p style="margin-top: 0px;width: 100%;margin-bottom: 0px;"><strong>Home:</strong></p>
-<span style="line-height:22px;">Opposite Gaurav Towers,kalyan Colony,...</span>
+<span style="line-height:22px;" class="giveMeEllipsis">{{userOrders.trans_address}}</span>
 </div>
 <hr style="margin: 0px;">
 <div class="media p10">
 <img src="assets/icon/right.png" class="w20 pull-left mr10 pt-10">
-<span style="line-height:22px;">Order delivered on 29 January 2018 @ 9:30PM  By Mirda</span>
+<span style="line-height:22px;">Order delivered on {{userOrders.trans_create_datetime}}  By Mirda</span>
 <span style="color:#f53d3d;">On Time</span>
 
 </div>
@@ -57,11 +57,8 @@
 <div class="media">
 <h6 style="margin-top:0px;"><strong>Bill Details:</strong></h6>
 <ion-list>
-<ion-item class="p0 f14">
-Heineken Lager Beer Wit x 1<span class="pull-right"><strong>₹</strong>400</span>
-</ion-item>
-<ion-item class="p0 f14">
-Heineken Lager Beer Wit x 1<span class="pull-right"><strong>₹</strong>400</span>
+<ion-item class="p0 f14" *ngFor="let element of userOrders.child;" >
+{{element.td_item_title}} x {{element.td_qty}} <span class="pull-right"><strong>₹</strong>{{element.td_total_amount}}</span>
 </ion-item>
 </ion-list>
 </div>
@@ -72,16 +69,16 @@ Heineken Lager Beer Wit x 1<span class="pull-right"><strong>₹</strong>400</spa
 <ion-col>
 <div class="media p10">
 <ion-list>
-<ion-item class="p0 f14">Item Total<span class="pull-right"><strong>₹</strong>400</span>
+<ion-item class="p0 f14">Item Total<span class="pull-right"><strong>₹</strong>0</span>
 </ion-item>
-<ion-item class="p0 f14">GST (5%)<span class="pull-right"><strong>₹</strong>20</span>
+<ion-item class="p0 f14">GST (5%)<span class="pull-right"><strong>₹</strong>0</span>
 </ion-item>
-<ion-item class="p0 f14">Delivery Charge<span class="pull-right"><strong>₹</strong>15</span>
+<ion-item class="p0 f14">Delivery Charge<span class="pull-right"><strong>₹</strong>0</span>
 </ion-item>
-<ion-item class="p0 f14">Discount Applied (LQBEER07)<span class="pull-right"><strong>₹</strong>100</span>
+<ion-item class="p0 f14">Discount Applied (-)<span class="pull-right"><strong>₹</strong>0</span>
 </ion-item>
 <hr style="margin: 0px;">
-<ion-item class="p0 f14">Paid Via Paytm<span class="pull-right"><strong>₹</strong>335</span>
+<ion-item class="p0 f14">Paid Via {{userOrders.trans_method}}<span class="pull-right"><strong>₹</strong> {{userOrders.trans_amount}}</span>
 </ion-item>
 </ion-list>
 </div>

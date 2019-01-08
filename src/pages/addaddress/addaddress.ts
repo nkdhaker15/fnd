@@ -29,8 +29,17 @@ export class AddaddressPage {
      geocoder: any;
   markers: any = [];
   map: any;
+     loading: any;
+
   address_latlng: any = {lat: 0, lng: 0};
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder,private ngZone: NgZone, public geolocation: Geolocation, private platform: Platform) {
+	  
+	   this.loading = this.loadingCtrl.create({
+					content: 'Please wait...'
+					
+				  });
+				  
+				  
 	  	  this.geocoder = new google.maps.Geocoder();
 
     this.addAddressForm = this.formBuilder.group({
@@ -302,20 +311,30 @@ placeToAddress(place){
      credentials['ab_user_id'] = this.userInfo.user_id;
       if(this.addressInfo['ab_id'] != undefined) {
           credentials['ab_id'] = this.addressInfo['ab_id'];
-      }
+      }else{
+		            credentials['ab_id'] = 0;
+
+		  
+	  }
 	  credentials['ab_lat'] = this.address_latlng['lat'];
 		credentials['ab_lng'] =   this.address_latlng['lng'];
+						  this.loading.present();
+
      this.apiBackendService.addUserAddresses(credentials).then((result: any) => {         
          
          if(result.message == 'failed') {
               this.registerErrorMsg = result.notification;
          }else
           if(result.message == 'ok') {             
-                 
+                 this.backButtonAction();
+				 				  this.loading.dismiss();
+
           }
           
         }, (err) => { 
-        console.log(err); 
+        console.log(err);
+		this.loading.dismiss();
+
         });
 	  
   }
