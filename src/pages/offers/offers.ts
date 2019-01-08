@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ViewController } from 'ionic-angular';
 
 
 import { ApiBackendService } from '../../providers/apiBackendService';
@@ -21,7 +21,8 @@ export class OffersPage {
 	  tabBarElement: any;
     userOffers: any = [];
     userInfo: any = {};
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController) {
+	inputPromoCode: any ='';
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public viewCtrl: ViewController) {
 	  	  	  	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
   }
   ionViewWillEnter() {	  	 	      
@@ -60,6 +61,16 @@ loadOffers() {
   ionViewDidLoad() {
 	  	  	  	  	      this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad OffersPage');
+  }
+  
+  applyPromoCode()
+{
+	this.dismiss();
+	
+}
+dismiss() {
+   
+   this.viewCtrl.dismiss(this.inputPromoCode);
   }
 
 }

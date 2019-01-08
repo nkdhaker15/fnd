@@ -98,6 +98,35 @@ export class ApiBackendService {
       });
  }
 
+ updateCartByCouponCode(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/cart/updatetocartcouponbyname', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+ }
+ 
+  applyCouponCode(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/cart/applypromocode', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+ }
   forgotPassword(data) {
       return new Promise((resolve, reject) => {
         var headers = new Headers();

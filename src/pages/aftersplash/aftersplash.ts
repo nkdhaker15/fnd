@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { LoginPage } from '../login/login';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 /*import { Geolocation } from '@ionic-native/geolocation';*/
 /*import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';*/
@@ -31,7 +32,7 @@ export class AftersplashPage {
   geocoder: any;
   userLocationInfo: any = {};
    slideImages: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, public apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, private authUserService: AuthUserService, private geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, public apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, private authUserService: AuthUserService, private geolocation: Geolocation, private diagnostic: Diagnostic) {
 	     statusBar.hide();
 
   }
@@ -69,6 +70,23 @@ export class AftersplashPage {
 	   this.navCtrl.push(LoginPage);
   }
   detectLocation() {
+    this.diagnostic.getPermissionAuthorizationStatus(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((status) => {
+      console.log("AuthorizationStatus");
+      console.log(status);
+      if (status != this.diagnostic.permissionStatus.GRANTED) {
+        this.diagnostic.requestRuntimePermission(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((data) => {
+          console.log("getCameraAuthorizationStatus");
+          console.log(data);
+        })
+      } else {
+        this.detectLocationAfterPermission();
+      }
+    }, (statusError) => {
+      console.log("statusError");
+      console.log(statusError);
+    });
+  }
+  detectLocationAfterPermission() {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });

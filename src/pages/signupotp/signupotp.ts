@@ -7,7 +7,7 @@ import { SignupfinalPage } from '../signupfinal/signupfinal';
 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiBackendService } from '../../providers/apiBackendService';
-declare var SMS:any;
+declare var SMSReceive:any;
 /**
  * Generated class for the SignupotpPage page.
  *
@@ -65,17 +65,13 @@ export class SignupotpPage {
   readOtpSms() {
 	  this.platform.ready().then((readySource) => {
 			 console.log('Permission check')
-	this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.READ_SMS).then(
-	  success => console.log('Permission granted'),
-	err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_SMS)
-	);
-
-	this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.READ_SMS]);
-			if(SMS){ SMS.startWatch(()=>{
-					   console.log('watching started');
-					}, Error=>{
-				   console.log('failed to start watching');
-			   });
+				if(SMSReceive){ 
+					SMSReceive.startWatch(function() {
+						console.log('smsreceive: watching started');
+					}, function() {
+						console.warn('smsreceive: failed to start watching');
+					});
+				}
 
 			  document.addEventListener('onSMSArrive', (e:any)=>{
 				   var sms = e.data;
@@ -84,14 +80,26 @@ export class SignupotpPage {
 					 if(messageStr.indexOf('Your one Time Password (OTP) for E-Comm') != -1) {
 						this.ngZone.run(()=>{ this.otpLength = true;});
 						let numbersOtp: any = messageStr.match(/\d+/g).map(Number);
-						this.registerForm.patchValue({user_otp: numbersOtp});
+						console.log("messageStr:: ", messageStr);
+						console.log("numbersOtp:: ", numbersOtp);
+						this.registerForm.setValue({user_otp: numbersOtp[0]});
+						console.log("this.registerForm:: ", this.registerForm);
 					 }
+					 
+					 if(SMSReceive){ 
+							SMSReceive.stopWatch(function() {
+								console.log('smsreceive: watching stopped');
+							}, function() {
+								console.warn('smsreceive: failed to stop watching');
+							});
+						}
 
 				   });
-			}
+			
 			});
   }  
   verifyOtp(){
+	  console.log("this.registerForm:: ", this.registerForm.value);
       if(this.registerForm.value.user_otp == '') {
           this.registerErrorMsg = "Please enter otp.";
       }else if(this.registerForm.value.user_otp.length < 6 || this.registerForm.value.user_otp.length > 6 ) {

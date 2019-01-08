@@ -1,7 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 import { AuthUserService } from '../../providers/authUserService';
 import { TabsPage } from '../tabs/tabs';
@@ -27,7 +27,7 @@ export class DetectlocationPage {
   currentSelectedAddress: any ='';
   userLocationInfo: any = {};
   tabBarElement: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone,  public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, private authUserService: AuthUserService, private ngZone: NgZone,  public loadingCtrl: LoadingController, private diagnostic: Diagnostic) {
 	  this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
 	  this.autocomplete = { input: '' };
 	  this.autocompleteItems = [];
@@ -37,7 +37,24 @@ export class DetectlocationPage {
 
 
   }
- tryGeolocation(){
+  tryGeolocation() {
+    this.diagnostic.getPermissionAuthorizationStatus(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((status) => {
+      console.log("AuthorizationStatus");
+      console.log(status);
+      if (status != this.diagnostic.permissionStatus.GRANTED) {
+        this.diagnostic.requestRuntimePermission(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((data) => {
+          console.log("getCameraAuthorizationStatus");
+          console.log(data);
+        })
+      } else {
+        this.tryGeolocationAfterPermission();
+      }
+    }, (statusError) => {
+      console.log("statusError");
+      console.log(statusError);
+    });
+  } 
+ tryGeolocationAfterPermission(){
   this.clearMarkers();
   let loading = this.loadingCtrl.create({
       content: 'Please wait...'

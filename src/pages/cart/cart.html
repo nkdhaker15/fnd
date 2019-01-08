@@ -128,13 +128,13 @@
 </div>
 </ion-col>
 </ion-row>
-<ion-row class="container-white" (click)="clickpromocode()">
+<ion-row class="container-white" *ngIf="cartUserPromoCode">
 <ion-col>
 <div class="media p10">
 <img src="assets/icon/discount.png" class="w20 pull-left mr10" style="margin-top:9px;">
-<span style="line-height:18px; font-size:16px;font-weight:500px">FFDD50 <br><span style="font-size:12px; color:#999;font-weight:normal">Offer applied on the bill</span></span>
+<span style="line-height:18px; font-size:16px;font-weight:500px">{{cartUserPromoCode}} <br><span style="font-size:12px; color:#999;font-weight:normal">Offer applied on the bill</span></span>
 
-<img src="assets/icon/error.png" class="w20 pull-right" style="margin-top:-9px;">
+<img src="assets/icon/error.png" (click)="removePromocode()" class="w20 pull-right" style="margin-top:-9px;">
 </div>
 </ion-col>
 </ion-row>

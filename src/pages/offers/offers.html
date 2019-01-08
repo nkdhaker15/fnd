@@ -17,8 +17,8 @@
 <ion-row class="p10">
 <ion-col col-12>
 <div class="offer-search">
-<input type="text" style="width:100%;border:1px solid #eee; height:45px;padding:10px;" placeholder="Enter Promo Code">
-<a href="#" class="apply">APPLY</a>
+<ion-input type="text" style="width:100%;border:1px solid #eee; height:45px;padding:10px;" placeholder="Enter Promo Code" (ngModel)="inputPromoCode"></ion-input>
+<a href="#" (click)="applyPromoCode()" class="apply">APPLY</a>
 </div>
 </ion-col>
 </ion-row>

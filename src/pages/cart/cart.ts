@@ -37,7 +37,8 @@ private currentNumber = 1;
   sellerInfo: any = {};
   userInfo: any = {};
     userAddressInfo: any = {};
-
+  cartUserPromoCode: any = '';
+  cartUserPromoCodeDiscount: any = 0;
   showEmptyCartMessage: boolean = false;
  showaddadressbutton:boolean=false;
  cartitem
@@ -189,7 +190,7 @@ private currentNumber = 1;
 	  this.total = 0;
 	  this.addonTotal = 0;
 	  this.deliveryCharge = 0;
-	  this.totalDiscount = 0;
+	  this.totalDiscount = this.cartUserPromoCodeDiscount;
 	  this.grandTotal = 0;
 	   this.cartItems.forEach( (item, index)=> {
 
@@ -421,9 +422,50 @@ checkout() {
 		
 	}
 }
+removePromocode() {
+	this.cartUserPromoCode = '';
+	this.cartUserPromoCodeDiscount = 0;
+}
+
+updateCartByCouponCode(code: any) {
+	   let user_req = {
+              resto_id: this.sellerInfo.seller_id,			 
+              coupon_name: code,			 
+              grand_total: (this.total+this.addonTotal),			 
+             // seller_id: 46 
+          };
+		  if(this.userInfo != null) {
+			user_req['user_id'] = this.userInfo.user_id;  
+		  }
+		   
+         let loading = this.loadingCtrl.create({
+                content: 'Please wait...'
+              });
+              loading.present();
+         this.apiBackendService.getCartAddon(user_req).then((result: any) => { 
+				 loading.dismiss();
+				 console.log("result:: ", result);
+		 });
+}
+
 clickpromocode()
 {
-	this.navCtrl.push(OffersPage);
+	if(this.userInfo.user_id>0)
+  {
+		let childModal = this.modalCtrl.create(OffersPage, { 'from':'cart' });
+	   childModal.onDidDismiss(data => {
+		 console.log(data);
+		 if(data != null) {
+			this.cartUserPromoCode = data;
+			this.updateCartByCouponCode(this.cartUserPromoCode);
+		 }
+	   });
+	   childModal.present();
+	}else{
+			this.navCtrl.push(LoginPage);
+
+		
+	}
 	
 }
 }
