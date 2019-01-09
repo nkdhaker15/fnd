@@ -578,8 +578,8 @@ width:200px;
 }
 .order-running
 {
-position: fixed;
-bottom: 47px;
+position: absolute;
+bottom: 0px;
 width: 100%;
 z-index: 99999;
 }
