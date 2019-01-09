@@ -1,0 +1,35 @@
+page-orderprocessing {
+.toolbar-title-md {
+
+    padding: 0 12px;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #424242;
+
+}
+.small-text
+{
+font-size:12px;
+font-style:normal;
+
+}
+#map {
+    height: 50%;
+  }
+  
+  .order-processing-list ion-item
+  {
+  background:#fff;
+  margin-bottom: 0px;
+    border-bottom: 1px solid #eeee;
+  }
+  .item-md.item-block .item-inner
+  {
+  border-bottom:none;
+  }
+  
+  .tabbar
+  {
+  display:none;
+  }
+}

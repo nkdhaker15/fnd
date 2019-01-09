@@ -3,9 +3,11 @@ import {App, IonicPage, NavController, NavParams, LoadingController } from 'ioni
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
-
+OrderprocessingPage
 import { CartPage } from '../cart/cart';
 import { RmenuPage } from '../rmenu/rmenu';
+import { OrderprocessingPage } from '../orderprocessing/orderprocessing';
+
 import { SearchdataPage } from '../searchdata/searchdata';
 import { DetectlocationPage } from '../detectlocation/detectlocation';
 import { Storage } from '@ionic/storage';
@@ -179,5 +181,11 @@ export class HomePage {
 	  }
 		  	  	   this.appCtrl.getRootNav().push(SearchdataPage,{searchdataobj:this.searchdataobj});    
   
+  }
+  
+  showorderprocessing()
+  {
+	  
+	  this.navCtrl.push(OrderprocessingPage)
   }
 }

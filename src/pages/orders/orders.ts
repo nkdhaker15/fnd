@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, LoadingController, ViewController} from 'ionic-angular';
 import { OrderdetailPage } from '../orderdetail/orderdetail';
 import { RmenuPage } from '../rmenu/rmenu';
+import { FaqPage } from '../faq/faq';
+import { RatingreviewPage } from '../ratingreview/ratingreview';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -84,10 +86,16 @@ loading:any;
             });
 }  
 
-getHelp(storeid:any)
+getHelp(orderid:any)
 {
 	
-		     this.navCtrl.push(RmenuPage,{storeid: storeid});  
+		     this.navCtrl.push(FaqPage,{orderid: orderid});  
+
+}
+showuserrate(orderid:any)
+{
+	
+			     this.navCtrl.push(RatingreviewPage,{orderid: orderid});  
 
 }
 }

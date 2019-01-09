@@ -15,9 +15,12 @@ import { AndroidPermissions} from '@ionic-native/android-permissions';
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
+import { OrderprocessingPage } from '../pages/orderprocessing/orderprocessing';
+
 import { DetectlocationPage } from '../pages/detectlocation/detectlocation';
 import { SearchdataPage } from '../pages/searchdata/searchdata';
 import { PaymentsPage } from '../pages/payments/payments';
+import { RatingreviewPage } from '../pages/ratingreview/ratingreview';
 
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -77,13 +80,15 @@ import { ThankyouPage } from '../pages/thankyou/thankyou';
 	OrderdetailPage,
 	AddaddressPage,
 	RmenuPage,
+	RatingreviewPage,
     TabsPage,
 	ExplorePage,
 	ProductChildPage,
 	DetectlocationPage,
 	ShrinkingSegmentHeader,
 	PaymentsPage,
-	ThankyouPage
+	ThankyouPage,
+	OrderprocessingPage
   ],
   imports: [
     BrowserModule,
@@ -122,7 +127,9 @@ import { ThankyouPage } from '../pages/thankyou/thankyou';
 	ExplorePage,
 	ProductChildPage,
 	PaymentsPage,
-	ThankyouPage
+	ThankyouPage,
+	RatingreviewPage,
+	OrderprocessingPage
 	
   ],
   providers: [

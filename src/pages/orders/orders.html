@@ -14,7 +14,7 @@
 
 
 <ion-content class="container-gray">
-<div class="container-white mb-10" *ngFor="let element of userOrders;">
+<div class="container-white mb-10" *ngFor="let element of userOrders;" >
 <ion-row>
 <ion-col>
 <div class="media" style="padding:10px 10px 0px;">
@@ -47,7 +47,7 @@ defaultColor = "#666666"
 readonly="true"
 [rating]="element.trans_seller_rate" style="float:right;" *ngIf="element.trans_seller_rate>0">
  </ionic3-star-rating>
-<button ion-button outline small class="pull-right mt-0" *ngIf="element.trans_seller_rate<=0">RATE</button>
+<button ion-button outline small class="pull-right mt-0" (click)="showuserrate(element.trans_id)" *ngIf="element.trans_seller_rate<=0">RATE</button>
 </ion-col>
 </ion-row>
 <hr style="margin: 0px;">
@@ -74,9 +74,17 @@ readonly="true"
 <button  (click)="showorderdetail(element.trans_id)" ion-button clear style="width:100%; text-align:center;height:45px;">VIEW RECEIPT</button>
 </ion-col>
 <ion-col col-6 style="padding:0px;">
-<button ion-button clear style="width:100%; text-align:center;height:45px;" onclick="getHelp(element.trans_id)">GET HELP</button>
+<button ion-button clear style="width:100%; text-align:center;height:45px;" (click)="getHelp(element.trans_id)">GET HELP</button>
 </ion-col>
 </ion-row>
 </div>
 
+
+<div style="height:100%;text-align:center;" class="container-white" *ngIf="userOrders.length<=0">
+<div>
+<img src="assets/imgs/empty_cart.png" style="margin-top: 40px;padding: 30px;">
+<h6 class="Open_Sans_Bold" style="font-size:1.1rem">GOOD FOOD AND WINE IS WAITING FOR YOU</h6>
+<p class="open-sans-normal" style="color:#ccc;font-size:12px">Your Haven't placeholder any order.</p>
+</div>
+</div>
 </ion-content>

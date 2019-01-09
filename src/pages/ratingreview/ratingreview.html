@@ -1,0 +1,67 @@
+<!--
+  Generated template for the RatingreviewPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Rating & Review</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+
+<div class="rating-slider">
+<ion-slides>
+<ion-slide >
+<ion-card text-center class="container-white" padding>
+<ion-avatar class="mt20">
+      <img src="assets/icon/user.png" style="width:70px;margin:0 auto;">
+    </ion-avatar>
+ <h1  class="mt20">How Was Shankar's delivery</h1>
+ <p class="mb-60">Your feedback will help improve the delivery experience</p>
+ 
+ <ionic3-star-rating
+activeIcon = "ios-star"
+defaultIcon = "ios-star-outline"
+activeColor = "#f2b01e"
+defaultColor = "#666666"
+readonly="false"
+[rating]="0" >
+ </ionic3-star-rating>
+
+ <ion-textarea #msgInput rows="5" maxLength="500" style="border:1px solid #eee;" class="mt20"></ion-textarea> 
+         <button ion-button [color]="primary"  class="mb-minus-2 signup-button" class="mt20">Next</button>
+
+</ion-card>
+</ion-slide>
+
+<ion-slide >
+<ion-card text-center class="container-white" padding>
+<ion-avatar class="mt20">
+      <img src="assets/icon/user.png" style="width:70px;margin:0 auto;">
+    </ion-avatar>
+ <h1  class="mt20">How Was kanha Malviya Nagar</h1>
+ <p class="mb-60">Your feedback will help improve the test experience</p>
+ 
+ <ionic3-star-rating
+activeIcon = "ios-star"
+defaultIcon = "ios-star-outline"
+activeColor = "#f2b01e"
+defaultColor = "#666666"
+readonly="false"
+[rating]="0" >
+ </ionic3-star-rating>
+
+ <ion-textarea #msgInput rows="5" maxLength="500" style="border:1px solid #eee;" class="mt20"></ion-textarea> 
+         <button ion-button [color]="primary"  class="mb-minus-2 signup-button" class="mt20">Next</button>
+
+</ion-card>
+</ion-slide>
+</ion-slides>
+</div>
+</ion-content>
