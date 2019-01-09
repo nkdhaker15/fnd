@@ -17,7 +17,7 @@
 <ion-row class="p10">
 <ion-col col-12>
 <div class="offer-search">
-<ion-input type="text" style="width:100%;border:1px solid #eee; height:45px;padding:10px;"  placeholder="Enter Promo Code" (ngModel)="inputPromoCode"></ion-input>
+<ion-input type="text" style="width:100%;border:1px solid #eee; height:45px;padding:10px;"  placeholder="Enter Promo Code" [formControl]="offerForm.controls['coupon_name']"></ion-input>
 <a href="#" (click)="applyPromoCode()" class="apply">APPLY</a>
 </div>
 </ion-col>
@@ -29,7 +29,7 @@
 <ion-col col-12>
 <div class="promo-code">
 <div class="promo-code-number">{{offer.coupon_code}}</div>
-<a href="#" style="float:right; text-decoration:none;margin-top:15px">APPLY</a>
+<a href="#" style="float:right; text-decoration:none;margin-top:15px" (click)="applyPromoCodeId(offer)">APPLY</a>
 </div>
 <h6>{{offer.coupon_title}}</h6>
 <p style="color:#666;font-size:12px;margin-top:0px;">{{offer.coupon_conditions}}</p>

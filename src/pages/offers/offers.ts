@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ViewController } from 'ionic-angular';
-
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -18,12 +18,17 @@ import { AuthUserService } from '../../providers/authUserService';
   templateUrl: 'offers.html',
 })
 export class OffersPage {
+	  offerForm: FormGroup;
 	  tabBarElement: any;
     userOffers: any = [];
     userInfo: any = {};
 	inputPromoCode: any ='';
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public viewCtrl: ViewController) {
+	selectedCouponInfo: any = null;
+	constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public viewCtrl: ViewController, private formBuilder: FormBuilder) {
 	  	  	  	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+						  this.offerForm = this.formBuilder.group({
+							  coupon_name: ['']
+							});
   }
   ionViewWillEnter() {	  	 	      
     
@@ -62,15 +67,24 @@ loadOffers() {
 	  	  	  	  	      this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad OffersPage');
   }
-  
+  applyPromoCodeId(couponInfo)
+{
+	this.selectedCouponInfo = couponInfo;
+	this.dismiss();
+	
+}
+setPromoCode(code: any) {
+	this.inputPromoCode = code;
+}
   applyPromoCode()
 {
+	this.selectedCouponInfo = {coupon_name: this.offerForm.value.coupon_name};
 	this.dismiss();
 	
 }
 dismiss() {
    
-   this.viewCtrl.dismiss(this.inputPromoCode);
+   this.viewCtrl.dismiss(this.selectedCouponInfo);
   }
 
 }

@@ -45,7 +45,7 @@ export class AftersplashPage {
 
  
       this.authUserService.getUser().then((user)=>{
-          console.log("user:: ", user);
+          
 		  		   this.geocoder = new google.maps.Geocoder();
           if(user != null && user != undefined) {
               this.navCtrl.setRoot(TabsPage);
@@ -57,11 +57,11 @@ export class AftersplashPage {
 		   if(slides != undefined) {
 			  this.slideImages = slides.results;
 			  this.imageBaseUrl = slides.imageurl;
-			  //console.log('slides:: ', this.slideImages);
+			  
        }
        loading.dismiss();
 		});
-    console.log('ionViewDidLoad AftersplashPage');
+    
   }
    openregister(){
 	 //  this.navCtrl.push(SignupPage);  
@@ -71,12 +71,10 @@ export class AftersplashPage {
   }
   detectLocation() {
     this.diagnostic.getPermissionAuthorizationStatus(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((status) => {
-      console.log("AuthorizationStatus");
-      console.log(status);
+      
       if (status != this.diagnostic.permissionStatus.GRANTED) {
         this.diagnostic.requestRuntimePermission(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((data) => {
-          console.log("getCameraAuthorizationStatus");
-          console.log(data);
+         
         })
       } else {
         this.detectLocationAfterPermission();
@@ -107,7 +105,7 @@ export class AftersplashPage {
          // resp.coords.latitude
          // resp.coords.longitude
         }).catch((error) => {
-          console.log('Error getting location', error);
+          
           loading.dismiss();
         });
 
@@ -177,8 +175,7 @@ export class AftersplashPage {
           lng: results[0].geometry.location.lng
       };
 	  let address: any = this.placeToAddress(results[0]);
-	   console.log("address:: ", address);
-	   console.log("results:: ", results);
+	   
 	  this.userLocationInfo = {address: address['address'], fullAddress: results[0].formatted_address, lat: results[0].geometry.location.lat(),
           lng: results[0].geometry.location.lng()};
 		  

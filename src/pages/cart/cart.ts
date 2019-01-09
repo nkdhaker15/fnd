@@ -55,20 +55,20 @@ private currentNumber = 1;
 		if(data != null) {
 			this.sellerInfo = data;
 		}
-		console.log("this.sellerInfo :: ", this.sellerInfo);
+		
 	});
 	this.storage.get("cartAddonItems").then( (data)=> {
 		if(data != null) {
 			this.cartAddonItems = data;
 		}
-		console.log("this.cartAddonItems :: ", this.cartAddonItems);
+		
 	});
       this.storage.get("cart").then( (data)=>{
 		if(data == null) {
 			data = [];
 		}  
         this.cartItems = data;
-        console.log(this.cartItems);
+        
       
         if(this.cartItems.length > 0){
 			
@@ -124,7 +124,7 @@ private currentNumber = 1;
 		   }
 		   //this.addonItems[index] = addon;
 		     this.cartAddonItems = data;
-			 console.log("this.cartAddonItems:: ", this.cartAddonItems);
+			 
 		     this.storage.set("cartAddonItems", data).then(() => {
                 this.calculateTotals();
                   
@@ -156,7 +156,7 @@ private currentNumber = 1;
               loading.present();
          this.apiBackendService.getCartAddon(user_req).then((result: any) => { 
 				 loading.dismiss();
-				     console.log('manish:',result);
+				     
 
 				 this.addonImagePath = result.addon_image_url;
 				 if(result.address_status>0)
@@ -178,7 +178,7 @@ private currentNumber = 1;
 							});
 						});
 						this.calculateTotals();
-						console.log("this.addonItems:: ", this.addonItems);
+						
 				}
             }, (err) => { 
             console.log(err); 
@@ -215,9 +215,9 @@ private currentNumber = 1;
   }
   ionViewDidLoad() {
 	  this.tabBarElement.style.display = 'none';
-    console.log('ionViewDidLoad CartPage');
+    
 	     this.authUserService.getUser().then((user)=>{
-          console.log("user:: ", user);
+          
           if(user != null && user != undefined) {
               this.userInfo = user;
           }
@@ -302,7 +302,7 @@ private currentNumber = 1;
  }
  
  addonCartQty(index) {
-	 //console.log("this.addonItems[index]:: ", this.addonItems[index]);
+	
 	  if(this.addonItems[index] == undefined) {
 		 return 1;
 	 }else {
@@ -317,7 +317,7 @@ private currentNumber = 1;
 	 this.changeAddonQty(addon, index, 1);
  }
 decrementAddon(addon, index) { 
-	 console.log("addon:: ", addon);
+	
 	 if(addon.qty <= 1) {
 			this.changeAddonQty(addon, index, -2);
 	 }else {
@@ -354,8 +354,7 @@ decrementAddon(addon, index) {
 }
    removeAddonFromCart(addonItem, i){
 
-    let price;    
-     
+    let price;         
     
 	this.storage.get("cartAddonItems").then( (data)=>{
 		let cartAddonItemsInfo: any = [];
@@ -389,7 +388,7 @@ clickaddadress()
 {
 	let childModal = this.modalCtrl.create(AddressbookPage, { userAddressInfo: this.userAddressInfo, 'from':'cart' });
    childModal.onDidDismiss(data => {
-     console.log(data);
+     
 	 if(data != null) {
 		this.userAddressInfo = data;
 	 }
@@ -409,7 +408,11 @@ checkout() {
 			 cartItems: this.cartItems, 
 			 cartAddons: this.cartAddonItems 
 		 };
-		console.log("cartInfo:: ", cartInfo);
+        if(this.cartUserPromoCode != '') {
+			cartInfo['coupon_code'] = this.cartUserPromoCode;
+			cartInfo['coupon_discount_amt'] = this.cartUserPromoCodeDiscount;
+		}
+		
 		let order_info: any = {};
 				order_info['total'] = this.grandTotal;
 		this.navCtrl.push(PaymentsPage, {orderInfo: order_info, cartInfo: cartInfo});
@@ -425,6 +428,7 @@ checkout() {
 removePromocode() {
 	this.cartUserPromoCode = '';
 	this.cartUserPromoCodeDiscount = 0;
+	this.calculateTotals();
 }
 
 updateCartByCouponCode(code: any) {
@@ -442,9 +446,39 @@ updateCartByCouponCode(code: any) {
                 content: 'Please wait...'
               });
               loading.present();
-         this.apiBackendService.getCartAddon(user_req).then((result: any) => { 
+         this.apiBackendService.updateCartByCouponCode(user_req).then((result: any) => { 
 				 loading.dismiss();
-				 console.log("result:: ", result);
+				 if(result.message == 'ok') {
+					this.cartUserPromoCodeDiscount = parseFloat(result.discount_amount);
+					this.cartUserPromoCode = code;
+				 }
+				 this.calculateTotals();
+				 
+		 });
+}
+updateCartByCouponCodeId(codeId: any, code: any) {
+	   let user_req = {
+              resto_id: this.sellerInfo.seller_id,			 
+              coupon_id: codeId,			 
+              grand_total: (this.total+this.addonTotal),			 
+             // seller_id: 46 
+          };
+		  if(this.userInfo != null) {
+			user_req['user_id'] = this.userInfo.user_id;  
+		  }
+		   
+         let loading = this.loadingCtrl.create({
+                content: 'Please wait...'
+              });
+              loading.present();
+         this.apiBackendService.applyCouponCode(user_req).then((result: any) => { 
+				 loading.dismiss();
+				 if(result.message == 'ok') {
+					this.cartUserPromoCodeDiscount = parseFloat(result.discount_amount);
+					this.cartUserPromoCode = code;
+				 }
+				 this.calculateTotals();
+				 
 		 });
 }
 
@@ -454,10 +488,16 @@ clickpromocode()
   {
 		let childModal = this.modalCtrl.create(OffersPage, { 'from':'cart' });
 	   childModal.onDidDismiss(data => {
-		 console.log(data);
+		 
 		 if(data != null) {
-			this.cartUserPromoCode = data;
-			this.updateCartByCouponCode(this.cartUserPromoCode);
+			 this.cartUserPromoCodeDiscount = 0;
+			let cartUserPromoCode: any = data;
+			this.cartUserPromoCode = '';
+			if(cartUserPromoCode['coupon_name'] != undefined && cartUserPromoCode['coupon_name'] != null) {
+					this.updateCartByCouponCode(cartUserPromoCode['coupon_name']);
+			}else {
+				this.updateCartByCouponCodeId(cartUserPromoCode['coupon_id'], cartUserPromoCode['coupon_code']);
+			}		
 		 }
 	   });
 	   childModal.present();

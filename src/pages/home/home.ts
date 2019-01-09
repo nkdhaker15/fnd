@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import {App, IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -24,7 +24,7 @@ export class HomePage {
     cartcount:any =0;
    userLocationInfo: any = {address: ''};
    loading: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public storage: Storage, public appCtrl: App) {
      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 				  if (this.tabBarElement) {
 		      this.tabBarElement.style.display = 'flex';
@@ -49,7 +49,7 @@ export class HomePage {
     });
     });
 	this.authUserService.getUserLocation().then((userLocationInfo)=>{
-          console.log("userLocationInfo:: ", userLocationInfo);
+          
           if(userLocationInfo != null && userLocationInfo != undefined) {
               this.userLocationInfo = userLocationInfo;
 			  this.loadDashboardInfo();
@@ -60,7 +60,7 @@ export class HomePage {
           
       });			  
       this.authUserService.getUser().then((user)=>{
-          console.log("user:: ", user);
+          
           if(user != null && user != undefined) {
               this.userInfo = user;
           }         
@@ -117,7 +117,7 @@ export class HomePage {
 				 this.loading.dismiss();
 				 
 				this.dashboardData = result;
-                 console.log("this.dashboardData:: ", this.dashboardData);
+                 
 				}, (err) => { 
 				console.log(err); 
 				 this.loading.dismiss();
@@ -126,31 +126,31 @@ export class HomePage {
     
    productListPage(sellerInfo: any)
   {         sellerInfo.seller_img_base_url = this.dashboardData.seller_url;
-	  	   this.navCtrl.push(RmenuPage, {sellerInfo: sellerInfo});    
+	  	   this.appCtrl.getRootNav().push(RmenuPage, {sellerInfo: sellerInfo});    
 	 // let nav = this.app.getRootNav(); 
-	      //console.log('click OrdersPage');
+	      
 
   } 
    
    mycartMethod()
   {
-	  	   this.navCtrl.push(CartPage);    
+		   this.appCtrl.getRootNav().push(CartPage);    
 	 // let nav = this.app.getRootNav(); 
-	      //console.log('click OrdersPage');
+	      
 
   } 
   doRefresh(refresher) {
-    console.log('Begin async operation', refresher);
+   
 
     setTimeout(() => {
-      console.log('Async operation has ended');
+      
       refresher.complete();
     }, 2000);
   }
   
    opendetectlocation()
   {  
-	 	  	  	   this.navCtrl.push(DetectlocationPage);     
+	 	  	  	   this.appCtrl.getRootNav().push(DetectlocationPage);     
   }
   
   showsearchdata(strtype,strdataobject)
@@ -177,7 +177,7 @@ export class HomePage {
 	  this.searchdataobj.title = '';
  	  this.searchdataobj.id = 0;		  
 	  }
-		  	  	   this.navCtrl.push(SearchdataPage,{searchdataobj:this.searchdataobj});    
+		  	  	   this.appCtrl.getRootNav().push(SearchdataPage,{searchdataobj:this.searchdataobj});    
   
   }
 }

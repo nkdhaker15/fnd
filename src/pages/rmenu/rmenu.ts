@@ -44,7 +44,7 @@ rmenu
 
   ionViewDidLoad() {
 	  this.tabBarElement.style.display = 'none';
-    console.log('ionViewDidLoad RmenuPage');
+    
 	
   }
   filterData(catId) {
@@ -90,12 +90,12 @@ rmenu
     
     ionViewWillUnload() {
 	  //this.tabBarElement.style.display = 'block';
-    console.log('ionViewDidLoad RmenuPage');
+    
   }
   ionViewWillEnter() {	  	 	      
        this.getCartItems();
       this.authUserService.getUser().then((user)=>{
-          console.log("user:: ", user);
+          
           if(user != null && user != undefined) {
               this.userInfo = user;
           }         
@@ -115,7 +115,7 @@ rmenu
   openProductChildModal(product) {
    let childModal = this.modalCtrl.create(ProductChildPage, { productInfo: product });
    childModal.onDidDismiss(data => {
-     console.log(data);
+     
 	 if(data != null) {
 		this.addToCart(product, data.pmp_net_price, data.pmp_id, data.unit_name); 
 	 }
@@ -178,8 +178,7 @@ rmenu
 				  this.cartItemsIds.push(product.product_id);
 			  }
 		     this.storage.set("cart", data).then(() => {
-				console.log("Cart Updated");
-				console.log(data);
+				
 
 				/*this.toastController.create({
 				  message: "Cart Updated",
@@ -286,8 +285,7 @@ this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
 				  this.cartItemsIds.push(product.product_id);
 			  }
 		     this.storage.set("cart", data).then(() => {
-				console.log("Cart Updated");
-				console.log(data);
+				
 
 				/*this.toastController.create({
 				  message: "Cart Updated",
@@ -396,7 +394,7 @@ loadProducts() {
             this.productList = result.result;
 			this.category_list = result.category;
 			this.allresult=result;
-				console.log("this.catorye:: ",this.allresult);
+				
             }, (err) => { 
             console.log(err); 
              loading.dismiss();
