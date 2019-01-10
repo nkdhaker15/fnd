@@ -51,12 +51,14 @@ export class PaymentsPage {
 			this.storage.set("cartAddonItems", null);
 			this.storage.set("orderInProcessing", result);
 			let order_info: any = result;
-			let childModal = this.modalCtrl.create(ThankyouPage, {orderInfo: order_info});
-			   childModal.onDidDismiss(data => {				 
+			//let childModal = this.modalCtrl.create(ThankyouPage, {orderInfo: order_info});
+			   /*childModal.onDidDismiss(data => {				 
 				   this.navCtrl.push(OrderprocessingPage, {orderInfo: order_info}); 
-			   });
-			   childModal.present();
+			   });*/
+			//   childModal.present();
 				 
+				 				   this.navCtrl.push(OrderprocessingPage, {orderInfo: order_info}); 
+
 		}
 		  
 		}, (err) => { 

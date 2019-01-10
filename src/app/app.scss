@@ -225,7 +225,7 @@ margin-right: -10px;
 
 .ion-slide-addon
 {
-width: 202px !important;
+width: 165px !important;
 margin-right: -10px;
 }
 
@@ -576,10 +576,10 @@ width:200px;
    line-height: 40px;        
    max-height: 40px;     
 }
-.order-running
-{
-position: absolute;
-bottom: 0px;
-width: 100%;
-z-index: 99999;
+.order-running {
+    position: absolute;
+    width: 100%;
+    z-index: 99999;
+    bottom: 0;
+    left: 0;
 }

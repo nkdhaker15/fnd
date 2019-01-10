@@ -119,7 +119,7 @@ export class ApiBackendService {
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/json' );
         const requestOptions = new RequestOptions({ headers: headers });
-        this.http.post(this.apiUrl+'/rating/seller', data, requestOptions)
+        this.http.post(this.apiUrl+'/orders/updaterating', data, requestOptions)
           .subscribe(res => {
             resolve(this._extractData(res));
           }, (err) => {
@@ -134,7 +134,7 @@ export class ApiBackendService {
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/json' );
         const requestOptions = new RequestOptions({ headers: headers });
-        this.http.post(this.apiUrl+'/rating/driver', data, requestOptions)
+        this.http.post(this.apiUrl+'/orders/updaterating', data, requestOptions)
           .subscribe(res => {
             resolve(this._extractData(res));
           }, (err) => {

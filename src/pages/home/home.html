@@ -17,10 +17,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
+<div style="position:relative;height:100%;">
 
 
-<div *ngIf="dashboardData.length != 0">
+
+<div *ngIf="dashboardData.length != 0"  >
 
 <ion-slides class="color-white " >
 <ion-slide *ngFor="let sliderItem of dashboardData.slider" class="ion-slide-offer"> 
@@ -130,6 +132,11 @@
 </div>
 </ion-card>
 
+
+</div>
+</div>
+</ion-content>
+<ion-footer>
 <div class="order-running" (click)="showorderprocessing()" *ngIf="orderprocesStatus">
 <ion-list>
   <ion-item style="background:#eee;">
@@ -141,6 +148,4 @@
   </ion-item>
 </ion-list>
 </div>
-</div>
-
-</ion-content>
+</ion-footer>

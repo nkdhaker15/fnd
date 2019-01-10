@@ -83,7 +83,7 @@ export class RatingreviewPage {
      this.apiBackendService.saveDriverRating(credentials).then((result: any) => {         
          
          loading.dismiss();
-          
+              this.slider.slideTo(2, 500);
           
         }, (err) => { 
         console.log(err);
