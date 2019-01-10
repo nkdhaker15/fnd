@@ -2,12 +2,14 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Device } from '@ionic-native/device';
+import { Storage } from '@ionic/storage';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 
 import * as firebase from 'firebase';
 import { TabsPage } from '../tabs/tabs';
+import { RatingreviewPage } from '../ratingreview/ratingreview';
 /**
  * Generated class for the FaqPage page.
  *
@@ -23,13 +25,15 @@ declare var google: any;
 export class OrderprocessingPage {
 	@ViewChild('map') mapElement: ElementRef;
 	map: any;
+	orderInfo: any = {order_id: 0};
 	tabBarElement: any;
 	shownGroup = null;
 	diseases = [];
 	userInfo: any = {};
 	markers = [];
+	orderprocesStatus: boolean = false;
 	ref = firebase.database().ref('geolocations/');
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public platform: Platform, private device: Device, private geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public platform: Platform, private device: Device, private geolocation: Geolocation, public storage: Storage) {
 	  	    this.platform.ready().then(() => {
 				this.initMap();
 					  	  	  	  	     
@@ -127,6 +131,16 @@ updateGeolocation(uuid, lat, lng) {
           }         
           
       });
+	  
+	  	this.storage.get("orderInProcessing").then( (data)=>{
+			
+		  if(data == null) {
+			  this.orderprocesStatus = false;
+		  }else {
+			  this.orderInfo = data;
+			  this.orderprocesStatus = true;
+		  }
+    });
       
       
 
@@ -136,7 +150,9 @@ updateGeolocation(uuid, lat, lng) {
 	  
      this.navCtrl.setRoot(TabsPage);
 	}
-
+    gotoOrderRating() {
+		this.navCtrl.push(RatingreviewPage, {order_id: this.orderInfo.order_id});
+	}
 }
 
 export const snapshotToArray = snapshot => {

@@ -26,6 +26,7 @@ export class HomePage {
     cartcount:any =0;
    userLocationInfo: any = {address: ''};
    loading: any;
+   orderprocesStatus: boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public storage: Storage, public appCtrl: App) {
      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 				  if (this.tabBarElement) {
@@ -48,6 +49,14 @@ export class HomePage {
           this.cartcount=  this.cartItems.length;
         
 
+    });
+	
+	this.storage.get("orderInProcessing").then( (data)=>{
+		  if(data == null) {
+			  this.orderprocesStatus = false;
+		  }else {
+			  this.orderprocesStatus = true;
+		  }
     });
     });
 	this.authUserService.getUserLocation().then((userLocationInfo)=>{

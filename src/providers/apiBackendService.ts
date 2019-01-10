@@ -113,6 +113,37 @@ export class ApiBackendService {
       });
  }
  
+ saveSellerRating(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/rating/seller', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+ }
+
+ saveDriverRating(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/rating/driver', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+ }
+
+ 
   applyCouponCode(data) {
       return new Promise((resolve, reject) => {
         var headers = new Headers();

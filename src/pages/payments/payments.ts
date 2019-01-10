@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { ThankyouPage } from '../thankyou/thankyou';
+import { OrderprocessingPage } from '../orderprocessing/orderprocessing';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -24,7 +25,7 @@ export class PaymentsPage {
    cartInfo: any= {};
    selectedPaymentMethod: any = '';
    fromCheckout: boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, public storage: Storage, public modalCtrl: ModalController) {
 	  if(this.navParams.get("orderInfo")!= undefined) {
 		  this.fromCheckout = true;
 		  this.orderInfo = this.navParams.get("orderInfo");
@@ -34,7 +35,8 @@ export class PaymentsPage {
 	  }
   }
   selectPayMethod(pay_method) {
-	  this.selectedPaymentMethod = pay_method;
+	  /*this.selectedPaymentMethod = pay_method;*/
+	  this.selectedPaymentMethod = 'cash';
   }
   proceedToPay() {
 	  
@@ -47,9 +49,14 @@ export class PaymentsPage {
 		if(result.message == 'ok') {
 			this.storage.set("cart", null);
 			this.storage.set("cartAddonItems", null);
+			this.storage.set("orderInProcessing", result);
 			let order_info: any = result;
-			
-				this.navCtrl.push(ThankyouPage, {orderInfo: order_info});  
+			let childModal = this.modalCtrl.create(ThankyouPage, {orderInfo: order_info});
+			   childModal.onDidDismiss(data => {				 
+				   this.navCtrl.push(OrderprocessingPage, {orderInfo: order_info}); 
+			   });
+			   childModal.present();
+				 
 		}
 		  
 		}, (err) => { 

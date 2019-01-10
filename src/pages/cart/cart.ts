@@ -23,6 +23,7 @@ import { AuthUserService } from '../../providers/authUserService';
 export class CartPage {
 private currentNumber = 1;
   cartItems: any = [];
+  cartRelatedInfo: any = {};
   addonItems: any = [];
   cartAddonItems: any = [];
   addonImagePath: any = '';
@@ -157,7 +158,20 @@ private currentNumber = 1;
          this.apiBackendService.getCartAddon(user_req).then((result: any) => { 
 				 loading.dismiss();
 				     
-
+				 this.cartRelatedInfo = {};
+				 this.cartRelatedInfo['delivery_charge_99'] = 0;
+				if(result['delivery_charge_99'] != undefined) {
+					this.cartRelatedInfo['delivery_charge_99'] = result['delivery_charge_99'];
+				}	
+				this.cartRelatedInfo['delivery_charge_499'] = 0;
+				if(result['delivery_charge_499'] != undefined) {
+					this.cartRelatedInfo['delivery_charge_499'] = result['delivery_charge_499'];
+				}	
+				this.cartRelatedInfo['delivery_charge_999'] = 0;
+				if(result['delivery_charge_999'] != undefined) {
+					this.cartRelatedInfo['delivery_charge_999'] = result['delivery_charge_999'];
+				}
+							
 				 this.addonImagePath = result.addon_image_url;
 				 if(result.address_status>0)
 				 {
@@ -167,7 +181,8 @@ private currentNumber = 1;
 				 }
 				this.addonItems = result.addons;
 				if(this.addonItems.length == 0) {
-					 this.addonTotal = 0; 
+					 this.addonTotal = 0;
+					 this.calculateTotals();
 				}else {
 						this.cartAddonItems.forEach( (item, index)=> {
 							 this.addonItems.forEach( (addonItem, addonItemIndex)=> {
@@ -185,6 +200,20 @@ private currentNumber = 1;
              loading.dismiss();
             });
 }
+  calculateDeliveryCharge(cartTotalAmt) {
+	  let deliveryCharge: any = 0;
+	  if(cartTotalAmt <= 99) {
+		  deliveryCharge = this.cartRelatedInfo['delivery_charge_99'];
+		  
+	  }else  if(cartTotalAmt <= 499) {
+		  deliveryCharge = this.cartRelatedInfo['delivery_charge_499'];
+		  
+	  }else  if(cartTotalAmt <= 999) {
+		  deliveryCharge = this.cartRelatedInfo['delivery_charge_999'];
+		  
+	  }
+	  return deliveryCharge;
+  } 
   calculateTotals() {
 	  this.totalItems = this.cartItems.length;
 	  this.total = 0;
@@ -195,13 +224,14 @@ private currentNumber = 1;
 	   this.cartItems.forEach( (item, index)=> {
 
             
-              this.total = this.total + (item.amount * item.qty)
+              this.total = this.total + (item.amount * item.qty);
             this.grandTotal = this.total + this.deliveryCharge - this.totalDiscount;
 
           });
 		  
-		   this.cartAddonItems.forEach( (item, index)=> {            
-              this.addonTotal = this.addonTotal + (item.amount * item.qty)
+		    this.cartAddonItems.forEach( (item, index)=> {            
+            this.addonTotal = this.addonTotal + (item.amount * item.qty);			  
+			this.deliveryCharge = this.calculateDeliveryCharge((this.total - this.totalDiscount + this.addonTotal));
             this.grandTotal = this.total + this.deliveryCharge - this.totalDiscount + this.addonTotal;
 
           });
@@ -412,7 +442,8 @@ checkout() {
 			cartInfo['coupon_code'] = this.cartUserPromoCode;
 			cartInfo['coupon_discount_amt'] = this.cartUserPromoCodeDiscount;
 		}
-		
+		cartInfo['disount'] = this.totalDiscount;
+		cartInfo['delivery_charge'] = this.deliveryCharge;
 		let order_info: any = {};
 				order_info['total'] = this.grandTotal;
 		this.navCtrl.push(PaymentsPage, {orderInfo: order_info, cartInfo: cartInfo});

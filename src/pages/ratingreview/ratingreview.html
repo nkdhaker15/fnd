@@ -16,8 +16,9 @@
 <ion-content >
 
 <div class="rating-slider">
-<ion-slides>
+<ion-slides  #mySlider (ionSlideDidChange)="slideChanged()">
 <ion-slide >
+<form [formGroup]="driverRatingForm">
 <ion-card text-center class="container-white" padding>
 <ion-avatar class="mt20">
       <img src="assets/icon/user.png" style="width:70px;margin:0 auto;">
@@ -31,16 +32,18 @@ defaultIcon = "ios-star-outline"
 activeColor = "#f2b01e"
 defaultColor = "#666666"
 readonly="false"
-[rating]="0" >
+[rating]="0">
  </ionic3-star-rating>
 
- <ion-textarea #msgInput rows="5" maxLength="500" style="border:1px solid #eee;" class="mt20"></ion-textarea> 
-         <button ion-button [color]="primary"  class="mb-minus-2 signup-button" class="mt20">Next</button>
+ <ion-textarea #msgInput [formControl]="driverRatingForm.controls['driver_review']" rows="5" maxLength="500" style="border:1px solid #eee;" class="mt20"></ion-textarea> 
+         <button ion-button [color]="primary"  class="mb-minus-2 signup-button" (click)="saveDriverRating()" class="mt20">Next</button>
 
 </ion-card>
+</form>
 </ion-slide>
 
 <ion-slide >
+<form [formGroup]="sellerRatingForm">
 <ion-card text-center class="container-white" padding>
 <ion-avatar class="mt20">
       <img src="assets/icon/user.png" style="width:70px;margin:0 auto;">
@@ -54,13 +57,14 @@ defaultIcon = "ios-star-outline"
 activeColor = "#f2b01e"
 defaultColor = "#666666"
 readonly="false"
-[rating]="0" >
+[rating]="0">
  </ionic3-star-rating>
 
- <ion-textarea #msgInput rows="5" maxLength="500" style="border:1px solid #eee;" class="mt20"></ion-textarea> 
-         <button ion-button [color]="primary"  class="mb-minus-2 signup-button" class="mt20">Next</button>
+ <ion-textarea #msgInput rows="5" [formControl]="sellerRatingForm.controls['seller_review']" maxLength="500" style="border:1px solid #eee;" class="mt20"></ion-textarea> 
+         <button ion-button [color]="primary" (click)="saveSellerRating()" class="mb-minus-2 signup-button" class="mt20">Next</button>
 
 </ion-card>
+</form>
 </ion-slide>
 </ion-slides>
 </div>
