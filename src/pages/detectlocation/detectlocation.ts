@@ -45,6 +45,9 @@ export class DetectlocationPage {
         this.diagnostic.requestRuntimePermission(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((data) => {
           console.log("getCameraAuthorizationStatus");
           console.log(data);
+		  if(data == this.diagnostic.permissionStatus.GRANTED) {
+			  this.tryGeolocationAfterPermission();
+		  }
         })
       } else {
         this.tryGeolocationAfterPermission();

@@ -25,17 +25,25 @@ declare var google: any;
 export class OrderprocessingPage {
 	@ViewChild('map') mapElement: ElementRef;
 	map: any;
+	driverLatLng: any = {lat:0, lng:0};
+	userLatLng: any = {lat:0, lng:0};
 	orderInfo: any = {order_id: 0};
 	tabBarElement: any;
 	shownGroup = null;
 	diseases = [];
 	userInfo: any = {};
 	markers = [];
+	directionsService: any;
+	directionsDisplay: any;
 	orderprocesStatus: boolean = false;
 	ref = firebase.database().ref('geolocations/');
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public platform: Platform, private device: Device, private geolocation: Geolocation, public storage: Storage) {
 	  	    this.platform.ready().then(() => {
-				this.initMap();
+				setInterval(()=> {
+					this.loadCurrentStatus();
+					}, 30000);
+					
+					this.initMap() ;
 					  	  	  	  	     
 			});
 
@@ -57,27 +65,58 @@ export class OrderprocessingPage {
 			});			
 
   }
+ displayDirection(location1, location2) {
+           this.directionsService.route({
+	          origin: location1,
+	          destination: location2,
+	          travelMode: 'DRIVING'
+	        }, (response, status) => {
+	          if (status === 'OK') {
+	            this.directionsDisplay.setDirections(response);
+	          }
+	        });
+} 
+loadCurrentStatus() {
+	
+	  let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
 
+ 
+      let order_req: any = {
+		  order_id: 9
+	  };
+    this.apiBackendService.getOrderStatusUser(order_req).then((orderTrack: any)=>{
+		    loading.dismiss();
+			this.deleteMarkers();
+		console.log(orderTrack);
+		
+				  let updatelocation = new google.maps.LatLng(orderTrack.trans_lat,orderTrack.trans_long);
+				 
+				  let updatelocation2 = new google.maps.LatLng(this.userLatLng.lat,this.userLatLng.lng);
+				  this.displayDirection(updatelocation, updatelocation2);
+  
+		});
+}
 initMap() {
 	let objElement: any = this;
   this.geolocation.getCurrentPosition({ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true }).then((resp) => {
     console.log("resp:: ", resp);   
+	this.userLatLng.lat = resp.coords.latitude;
+	this.userLatLng.lng = resp.coords.longitude;
+	
     console.log("objElement.mapElement.nativeElement:: ", objElement.mapElement.nativeElement);   
    let mylocation = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
     objElement.map = new google.maps.Map(objElement.mapElement.nativeElement, {
       zoom: 15,
       center: mylocation
     });
+	objElement.directionsService = new google.maps.DirectionsService;
+objElement.directionsDisplay = new google.maps.DirectionsRenderer;
+objElement.directionsDisplay.setMap(objElement.map);
   });
-  let watch = this.geolocation.watchPosition();
-   watch.subscribe((data) => {
-	  objElement.deleteMarkers();
-	  objElement.updateGeolocation(objElement.device.uuid, data.coords.latitude,data.coords.longitude);
-	  let updatelocation = new google.maps.LatLng(data.coords.latitude,data.coords.longitude);
-	  let image = 'assets/imgs/blue-bike.png';
-	  objElement.addMarker(updatelocation,image);
-	  objElement.setMapOnAll(objElement.map);
-  });
+ 
 }
 
 addMarker(location, image) {

@@ -74,7 +74,9 @@ export class AftersplashPage {
       
       if (status != this.diagnostic.permissionStatus.GRANTED) {
         this.diagnostic.requestRuntimePermission(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((data) => {
-         
+            if(data == this.diagnostic.permissionStatus.GRANTED) {
+			  this.detectLocationAfterPermission();
+		    }
         })
       } else {
         this.detectLocationAfterPermission();
