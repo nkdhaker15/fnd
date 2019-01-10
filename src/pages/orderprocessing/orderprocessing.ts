@@ -153,6 +153,7 @@ updateGeolocation(uuid, lat, lng) {
     gotoOrderRating() {
 		this.navCtrl.push(RatingreviewPage, {order_id: this.orderInfo.order_id});
 	}
+
 }
 
 export const snapshotToArray = snapshot => {

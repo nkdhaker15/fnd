@@ -23,6 +23,7 @@ export class RatingreviewPage {
   sellerRatingForm: FormGroup;
   selectedSlideIndex: any = 0;
   selectOrderId: any = 0;
+  orderinfo:any={};
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService, private formBuilder: FormBuilder, public events: Events,  public loadingCtrl: LoadingController) {
      this.driverRatingForm = this.formBuilder.group({
       driver_rating: [''],
@@ -41,8 +42,9 @@ export class RatingreviewPage {
 			objElement.driverRatingForm.patchValue({driver_rating: starRating});
 		}
 	});
-	if(this.navParams.get('order_id') != undefined) {
-		this.selectOrderId = this.navParams.get('order_id');
+	if(this.navParams.get('orderinfo') != undefined) {
+		this.orderinfo = this.navParams.get('orderinfo');
+		this.selectOrderId = this.orderinfo.trans_id;
 	}
   }
   slideChanged() {
@@ -107,7 +109,7 @@ export class RatingreviewPage {
      this.apiBackendService.saveSellerRating(credentials).then((result: any) => {         
          
          loading.dismiss();
-          
+          this.navCtrl.pop();
           
         }, (err) => { 
         console.log(err);

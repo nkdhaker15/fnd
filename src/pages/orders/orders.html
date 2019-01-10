@@ -47,7 +47,7 @@ defaultColor = "#666666"
 readonly="true"
 [rating]="element.trans_seller_rate" style="float:right;" *ngIf="element.trans_seller_rate>0">
  </ionic3-star-rating>
-<button ion-button outline small class="pull-right mt-0" (click)="showuserrate(element.trans_id)" *ngIf="element.trans_seller_rate<=0">RATE</button>
+<button ion-button outline small class="pull-right mt-0" (click)="showuserrate(element)" *ngIf="element.trans_seller_rate<=0">RATE</button>
 </ion-col>
 </ion-row>
 <hr style="margin: 0px;">

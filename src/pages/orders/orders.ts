@@ -92,10 +92,10 @@ getHelp(orderid:any)
 		     this.navCtrl.push(FaqPage,{orderid: orderid});  
 
 }
-showuserrate(orderid:any)
+showuserrate(orderinfo:any)
 {
 	
-			     this.navCtrl.push(RatingreviewPage,{orderid: orderid});  
+			     this.navCtrl.push(RatingreviewPage,{orderinfo: orderinfo});  
 
 }
 }

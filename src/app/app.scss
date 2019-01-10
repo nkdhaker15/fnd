@@ -216,42 +216,12 @@ background-position: 4% 55%;
     padding: 0;
 
 }
-page-home .ion-slide {
-
-   width: 152px !important;
-margin-right: -10px;
-
-}
 
 .ion-slide-addon
 {
 width: 165px !important;
 margin-right: -10px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -582,4 +552,10 @@ width:200px;
     z-index: 99999;
     bottom: 0;
     left: 0;
+}
+.width100{
+width:100% !important;
+}
+.width80{
+width:80%;
 }
