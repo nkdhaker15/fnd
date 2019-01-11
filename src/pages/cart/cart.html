@@ -119,7 +119,7 @@
 
 
 
-<ion-row class="container-white" (click)="clickpromocode()">
+<ion-row class="container-white" (click)="clickpromocode()" *ngIf="!cartUserPromoCode">
 <ion-col>
 <div class="media p10">
 <img src="assets/icon/discount.png" class="w20 pull-left mr10">

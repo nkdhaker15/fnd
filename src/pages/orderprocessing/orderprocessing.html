@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>ORDER #3435355 <br>
+    <ion-title>ORDER #{{orderInfo.order_id}} <br>
 	<span class="small-text">11:51 | 2 Item, 87</span>
 	</ion-title>
   </ion-navbar>
@@ -21,14 +21,15 @@
 
 <div class="order-running" >
 <ion-list class="order-processing-list">
-  <ion-item >
+
+  <ion-item [class.step-complete]="orderTransInfo.trans_status >=1">
     <ion-avatar item-start>
       <img src="assets/imgs/orderreceived.png">
     </ion-avatar>
     <h2>ORDER RECEIVED</h2>
   </ion-item>
 
-  <ion-item >
+  <ion-item  [class.step-complete]="orderTransInfo.trans_status >=2">
     <ion-avatar item-start>
       <img src="assets/imgs/orderprepare.png">
     </ion-avatar>
@@ -36,20 +37,12 @@
     <p>Restaurant has confirmed your order.</p>
   </ion-item>
 
-  <ion-item>
+  <ion-item [class.step-complete]="orderTransInfo.trans_status >=3">
     <ion-avatar item-start>
       <img src="assets/imgs/orderpickup.png">
     </ion-avatar>
     <h2>ORDER PICKED UP</h2>
     <p>Restaurant has confirmed your order.</p>
-  </ion-item>
-
- <ion-item>
-    <ion-avatar item-start>
-      <img src="assets/imgs/orderpickup.png">
-    </ion-avatar>
-    <h2>Rate this order</h2>
-    <p> <button ion-button [color]="primary" (click)="gotoOrderRating()" class="mb-minus-2 signup-button" class="mt20">Next</button></p>
   </ion-item>
 </ion-list>
 </div>

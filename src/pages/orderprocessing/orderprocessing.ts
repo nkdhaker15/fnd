@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage';
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 
-import * as firebase from 'firebase';
+
 import { TabsPage } from '../tabs/tabs';
 import { RatingreviewPage } from '../ratingreview/ratingreview';
 /**
@@ -25,6 +25,7 @@ declare var google: any;
 export class OrderprocessingPage {
 	@ViewChild('map') mapElement: ElementRef;
 	map: any;
+	loadingObj: any=null;
 	driverLatLng: any = {lat:0, lng:0};
 	userLatLng: any = {lat:0, lng:0};
 	orderInfo: any = {order_id: 0};
@@ -32,13 +33,15 @@ export class OrderprocessingPage {
 	shownGroup = null;
 	diseases = [];
 	userInfo: any = {};
+	orderTransInfo: any = {};
 	markers = [];
 	directionsService: any;
 	directionsDisplay: any;
 	orderprocesStatus: boolean = false;
-	ref = firebase.database().ref('geolocations/');
+	
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public platform: Platform, private device: Device, private geolocation: Geolocation, public storage: Storage) {
 	  	    this.platform.ready().then(() => {
+				
 				setInterval(()=> {
 					this.loadCurrentStatus();
 					}, 30000);
@@ -46,24 +49,8 @@ export class OrderprocessingPage {
 					this.initMap() ;
 					  	  	  	  	     
 			});
-
-			this.ref.on('value', resp => {
-			  this.deleteMarkers();
-			  snapshotToArray(resp).forEach(data => {
-				if(data.uuid !== this.device.uuid) {
-				  let image = 'assets/imgs/green-bike.png';
-				  let updatelocation = new google.maps.LatLng(data.latitude,data.longitude);
-				  this.addMarker(updatelocation,image);
-				  this.setMapOnAll(this.map);
-				} else {
-				  let image = 'assets/imgs/blue-bike.png';
-				  let updatelocation = new google.maps.LatLng(data.latitude,data.longitude);
-				  this.addMarker(updatelocation,image);
-				  this.setMapOnAll(this.map);
-				}
-			  });
-			});			
-
+			
+			
   }
  displayDirection(location1, location2) {
            this.directionsService.route({
@@ -73,29 +60,38 @@ export class OrderprocessingPage {
 	        }, (response, status) => {
 	          if (status === 'OK') {
 	            this.directionsDisplay.setDirections(response);
-	          }
+	          }else {
+				  console.log("response:: ", response);
+				  
+			  }
 	        });
 } 
 loadCurrentStatus() {
-	
-	  let loading = this.loadingCtrl.create({
+	if(this.loadingObj != null) {
+		this.loadingObj.dismiss().catch(()=>{});
+	}
+	  this.loadingObj = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-    loading.present();
+    this.loadingObj.present();
 
  
       let order_req: any = {
-		  order_id: 9
+		  order_id: this.orderInfo.order_id
 	  };
     this.apiBackendService.getOrderStatusUser(order_req).then((orderTrack: any)=>{
-		    loading.dismiss();
-			this.deleteMarkers();
-		console.log(orderTrack);
-		
-				  let updatelocation = new google.maps.LatLng(orderTrack.trans_lat,orderTrack.trans_long);
-				 
-				  let updatelocation2 = new google.maps.LatLng(this.userLatLng.lat,this.userLatLng.lng);
-				  this.displayDirection(updatelocation, updatelocation2);
+		    this.loadingObj.dismiss();
+			this.orderTransInfo = orderTrack.result;
+			if(this.orderTransInfo.trans_status == 4) {
+				this.storage.set("orderInProcessing", null);
+				this.gotoOrderRating();
+			}else{
+					let updatelocation = new google.maps.LatLng(orderTrack.result.trans_lat,orderTrack.result.trans_long);
+
+					let updatelocation2 = new google.maps.LatLng(this.userLatLng.lat,this.userLatLng.lng);
+
+					this.displayDirection(updatelocation, updatelocation2);
+			}
   
 		});
 }
@@ -112,9 +108,10 @@ initMap() {
       zoom: 15,
       center: mylocation
     });
-	objElement.directionsService = new google.maps.DirectionsService;
-objElement.directionsDisplay = new google.maps.DirectionsRenderer;
+	objElement.directionsService = new google.maps.DirectionsService();
+objElement.directionsDisplay = new google.maps.DirectionsRenderer();
 objElement.directionsDisplay.setMap(objElement.map);
+objElement.loadCurrentStatus();
   });
  
 }
@@ -177,6 +174,7 @@ updateGeolocation(uuid, lat, lng) {
 			  this.orderprocesStatus = false;
 		  }else {
 			  this.orderInfo = data;
+			  console.log("this.orderInfo:: ", this.orderInfo);
 			  this.orderprocesStatus = true;
 		  }
     });
@@ -190,7 +188,7 @@ updateGeolocation(uuid, lat, lng) {
      this.navCtrl.setRoot(TabsPage);
 	}
     gotoOrderRating() {
-		this.navCtrl.push(RatingreviewPage, {order_id: this.orderInfo.order_id});
+		this.navCtrl.push(RatingreviewPage, {order_id: this.orderTransInfo});
 	}
 
 }

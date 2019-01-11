@@ -202,13 +202,13 @@ private currentNumber = 1;
 }
   calculateDeliveryCharge(cartTotalAmt) {
 	  let deliveryCharge: any = 0;
-	  if(cartTotalAmt <= 99) {
+	  if(cartTotalAmt <= 499) {
 		  deliveryCharge = this.cartRelatedInfo['delivery_charge_99'];
 		  
-	  }else  if(cartTotalAmt <= 499) {
+	  }else  if(cartTotalAmt <= 999) {
 		  deliveryCharge = this.cartRelatedInfo['delivery_charge_499'];
 		  
-	  }else  if(cartTotalAmt <= 999) {
+	  }else  if(cartTotalAmt > 999) {
 		  deliveryCharge = this.cartRelatedInfo['delivery_charge_999'];
 		  
 	  }
@@ -231,10 +231,12 @@ private currentNumber = 1;
 		  
 		    this.cartAddonItems.forEach( (item, index)=> {            
             this.addonTotal = this.addonTotal + (item.amount * item.qty);			  
-			this.deliveryCharge = this.calculateDeliveryCharge((this.total - this.totalDiscount + this.addonTotal));
+			
             this.grandTotal = this.total + this.deliveryCharge - this.totalDiscount + this.addonTotal;
 
           });
+		  this.deliveryCharge = this.calculateDeliveryCharge(this.grandTotal);
+		  this.grandTotal = this.total + this.deliveryCharge - this.totalDiscount + this.addonTotal;
   }
   lineTotal(item: any) {
 	 return (item.amount * item.qty);
