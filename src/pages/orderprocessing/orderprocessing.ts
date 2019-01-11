@@ -84,7 +84,7 @@ loadCurrentStatus() {
 		    this.loadingObj.dismiss();
 			
 			this.orderTransInfo = orderTrack.result;
-			if(this.orderTransInfo.trans_status == 4) {
+			if(this.orderTransInfo.trans_order_status == 4) {
 				
 				this.storage.set("orderInProcessing", null);
 				this.gotoOrderRating();
