@@ -78,8 +78,8 @@ export class AddaddressPage {
 			this.address_latlng['lat'] = this.addressInfo.ab_lat;   
 		   }
 		   
-		   if(this.addressInfo.ab_lng != undefined ) {
-			this.address_latlng['lng'] = this.addressInfo.ab_lng;
+		   if(this.addressInfo.ab_long != undefined ) {
+			this.address_latlng['lng'] = this.addressInfo.ab_long;
 		   }
 		   
       }
@@ -317,7 +317,7 @@ placeToAddress(place){
 		  
 	  }
 	  credentials['ab_lat'] = this.address_latlng['lat'];
-		credentials['ab_lng'] =   this.address_latlng['lng'];
+		credentials['ab_long'] =   this.address_latlng['lng'];
 						  this.loading.present();
 
      this.apiBackendService.addUserAddresses(credentials).then((result: any) => {         

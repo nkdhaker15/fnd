@@ -88,7 +88,7 @@ loadCurrentStatus() {
 			}else{
 					let updatelocation = new google.maps.LatLng(orderTrack.result.trans_lat,orderTrack.result.trans_long);
 
-					let updatelocation2 = new google.maps.LatLng(this.userLatLng.lat,this.userLatLng.lng);
+					let updatelocation2 = new google.maps.LatLng(orderTrack.result.trans_delivery_lat,orderTrack.result.trans_delivery_long);
 
 					this.displayDirection(updatelocation, updatelocation2);
 			}
