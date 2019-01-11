@@ -436,7 +436,7 @@ checkout() {
   {
 
 		 let cartInfo = {
-			 user_id: this.userInfo.user_id, ab_id: 1,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
+			 user_id: this.userInfo.user_id, ab_id: this.userAddressInfo.ab_id,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
 			 cartItems: this.cartItems, 
 			 cartAddons: this.cartAddonItems 
 		 };
@@ -446,6 +446,7 @@ checkout() {
 		}
 		cartInfo['disount'] = this.totalDiscount;
 		cartInfo['delivery_charge'] = this.deliveryCharge;
+		console.log("cartInfo:: ", cartInfo);
 		let order_info: any = {};
 				order_info['total'] = this.grandTotal;
 		this.navCtrl.push(PaymentsPage, {orderInfo: order_info, cartInfo: cartInfo});

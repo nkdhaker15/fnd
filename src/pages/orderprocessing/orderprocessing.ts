@@ -38,13 +38,10 @@ export class OrderprocessingPage {
 	directionsService: any;
 	directionsDisplay: any;
 	orderprocesStatus: boolean = false;
-	
+	orderprocesPageStatus: boolean = false;
+	currentInterval: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public platform: Platform, private device: Device, private geolocation: Geolocation, public storage: Storage) {
-	  	    this.platform.ready().then(() => {
-				
-				setInterval(()=> {
-					this.loadCurrentStatus();
-					}, 30000);
+	  	    this.platform.ready().then(() => {				
 					
 					this.initMap() ;
 					  	  	  	  	     
@@ -74,15 +71,21 @@ loadCurrentStatus() {
       content: 'Please wait...'
     });
     this.loadingObj.present();
-
- 
+   let objElement: any = this;
+   if(this.orderprocesPageStatus) {
+	  setTimeout(()=> {
+						objElement.loadCurrentStatus();
+	   }, 10000);
+   }
       let order_req: any = {
 		  order_id: this.orderInfo.order_id
 	  };
     this.apiBackendService.getOrderStatusUser(order_req).then((orderTrack: any)=>{
 		    this.loadingObj.dismiss();
+			
 			this.orderTransInfo = orderTrack.result;
 			if(this.orderTransInfo.trans_status == 4) {
+				
 				this.storage.set("orderInProcessing", null);
 				this.gotoOrderRating();
 			}else{
@@ -140,25 +143,9 @@ deleteMarkers() {
   this.markers = [];
 }
 
-updateGeolocation(uuid, lat, lng) {
-  if(localStorage.getItem('mykey')) {
-    firebase.database().ref('geolocations/'+localStorage.getItem('mykey')).set({
-      uuid: uuid,
-      latitude: lat,
-      longitude : lng
-    });
-  } else {
-    let newData = this.ref.push();
-    newData.set({
-      uuid: uuid,
-      latitude: lat,
-      longitude: lng
-    });
-    localStorage.setItem('mykey', newData.key);
-  }
-}
+
   ionViewWillEnter() {	  	 	      
-    
+    this.orderprocesPageStatus = true;
       this.authUserService.getUser().then((user)=>{
           console.log("user:: ", user);
           if(user != null && user != undefined) {
@@ -182,9 +169,12 @@ updateGeolocation(uuid, lat, lng) {
       
 
   }
-
+  ionViewCanLeave() {
+	   this.orderprocesPageStatus = false;
+  }
+  
   backButtonAction(){
-	  
+	  this.orderprocesPageStatus = false;
      this.navCtrl.setRoot(TabsPage);
 	}
     gotoOrderRating() {
