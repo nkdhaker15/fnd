@@ -26,10 +26,10 @@
     <ion-avatar item-start>
       <img src="assets/imgs/orderreceived.png">
     </ion-avatar>
-    <h2>ORDER RECEIVED</h2>
+    <h2>ORDER CONFIRMED</h2>
   </ion-item>
 
-  <ion-item  [class.step-complete]="orderTransInfo.trans_order_status >=2">
+  <ion-item  [class.step-complete]="orderTransInfo.trans_order_status >=2" *ngIf="orderTransInfo.trans_order_status >=1">
     <ion-avatar item-start>
       <img src="assets/imgs/orderprepare.png">
     </ion-avatar>
@@ -37,12 +37,12 @@
     <p>Restaurant has confirmed your order.</p>
   </ion-item>
 
-  <ion-item [class.step-complete]="orderTransInfo.trans_order_status >=3">
+  <ion-item [class.step-complete]="orderTransInfo.trans_order_status >=3"  *ngIf="orderTransInfo.trans_order_status >=2">
     <ion-avatar item-start>
       <img src="assets/imgs/orderpickup.png">
     </ion-avatar>
     <h2>ORDER PICKED UP</h2>
-    <p>Restaurant has confirmed your order.</p>
+    <p>Your Order is on the way.</p>
   </ion-item>
 </ion-list>
 </div>

@@ -48,7 +48,7 @@
 <h3>{{sellerInfo.se_store_name}}</h3>
 <div class="merchent-location giveMeEllipsis">{{sellerInfo.seller_store_address}}</div>
 <div class="merchent-delivery-details">
-<img src="assets/icon/clock.png" style="width:16px;margin-right:5px;"> 40-50 MINS | 3.4 <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;"> (500+)
+<img src="assets/icon/clock.png" style="width:16px;margin-right:5px;"> {{sellerInfo.seller_deliver_duration}} <span *ngIf="sellerInfo.seller_rate>0">| {{sellerInfo.seller_rate}} <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;"> ({{sellerInfo.seller_rate_count}}+)</span>
 </div>
 </div>
 </div>

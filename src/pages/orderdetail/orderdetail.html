@@ -43,7 +43,7 @@
 <hr style="margin: 0px;">
 <div class="media p10">
 <img src="assets/icon/right.png" class="w20 pull-left mr10 pt-10">
-<span style="line-height:22px;">Order delivered on {{userOrders.trans_create_datetime}}  By Mirda</span>
+<span style="line-height:22px;">Order delivered on {{userOrders.trans_create_datetime}}  By {{userOrders.driver_name}}</span>
 <span style="color:#f53d3d;">On Time</span>
 
 </div>
@@ -69,13 +69,13 @@
 <ion-col>
 <div class="media p10">
 <ion-list>
-<ion-item class="p0 f14">Item Total<span class="pull-right"><strong>₹</strong>0</span>
+<ion-item class="p0 f14">Item Total<span class="pull-right"><strong>₹</strong>{{userOrders.trans_item_total}}</span>
 </ion-item>
-<ion-item class="p0 f14">GST (5%)<span class="pull-right"><strong>₹</strong>0</span>
+<ion-item class="p0 f14" style="display:none">GST (5%)<span class="pull-right"><strong>₹</strong>0</span>
 </ion-item>
-<ion-item class="p0 f14">Delivery Charge<span class="pull-right"><strong>₹</strong>0</span>
+<ion-item class="p0 f14">Delivery Charge<span class="pull-right"><strong>₹</strong>{{userOrders.trans_delivery_charge}}</span>
 </ion-item>
-<ion-item class="p0 f14">Discount Applied (-)<span class="pull-right"><strong>₹</strong>0</span>
+<ion-item class="p0 f14">Discount Applied (-)<span class="pull-right"><strong>₹</strong>{{userOrders.trans_discount_amount}}</span>
 </ion-item>
 <hr style="margin: 0px;">
 <ion-item class="p0 f14">Paid Via {{userOrders.trans_method}}<span class="pull-right"><strong>₹</strong> {{userOrders.trans_amount}}</span>

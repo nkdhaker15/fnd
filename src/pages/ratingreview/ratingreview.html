@@ -23,7 +23,7 @@
 <ion-avatar class="mt20">
       <img src="assets/icon/user.png" style="width:70px;margin:0 auto;">
     </ion-avatar>
- <h1  class="mt20">How Was Shankar's delivery</h1>
+ <h1  class="mt20">How Was {{orderinfo.driver_name}} delivery</h1>
  <p class="mb-40">Your feedback will help improve the delivery experience</p>
  
  <ionic3-star-rating
@@ -46,9 +46,9 @@ readonly="false"
 <form [formGroup]="sellerRatingForm">
 <ion-card text-center class="container-white" padding>
 <ion-avatar class="mt20">
-      <img src="assets/icon/user.png" style="width:70px;margin:0 auto;">
+      <img src="{{orderinfo.seller_image}}" style="width:70px;margin:0 auto;">
     </ion-avatar>
- <h1  class="mt20">How Was kanha Malviya Nagar</h1>
+ <h1  class="mt20">How Was {{orderinfo.seller.se_store_name}}</h1>
  <p class="mb-40">Your feedback will help improve the test experience</p>
  
  <ionic3-star-rating
