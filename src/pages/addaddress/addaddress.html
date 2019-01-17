@@ -59,14 +59,14 @@
  <span>SAVE AS</span>
  
  <ul >
- <li><ion-radio value="1" checked style="margin-top: -6px;"></ion-radio> Home </li>
- <li><ion-radio value="2" style="margin-top: -6px;"></ion-radio> Work </li>
- <li><ion-radio value="3" checked style="margin-top: -6px;"></ion-radio> Other </li>
+ <li><ion-radio value="1" checked="true" style="margin-top: -6px;" (click)="hidemewhen()"></ion-radio> Home </li>
+ <li><ion-radio value="2" style="margin-top: -6px;" (click)="hidemewhen()"></ion-radio> Work </li>
+ <li><ion-radio value="3"  style="margin-top: -6px;" (click)="hidemewhen()"></ion-radio> Other </li>
  </ul>
  
  </div>
-<ion-item style="display:none">
-    <ion-label color="primary" floating>Name</ion-label>
+<ion-item  *ngIf="showothername">
+    <ion-label color="primary" floating>Save as Name</ion-label>
     <ion-input [formControl]="addAddressForm.controls['ab_name']"></ion-input>
   </ion-item>
   <ion-item style="display:none">

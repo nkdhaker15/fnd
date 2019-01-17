@@ -30,7 +30,7 @@ export class AddaddressPage {
   markers: any = [];
   map: any;
      loading: any;
-
+   showothername:boolean=false;
   address_latlng: any = {lat: 0, lng: 0};
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder,private ngZone: NgZone, public geolocation: Geolocation, private platform: Platform) {
 	  
@@ -51,7 +51,7 @@ export class AddaddressPage {
       ab_address: [''],
       ab_city: [''],
       ab_locality: [''],
-      ab_type: [''],
+      ab_type: ['1'],
       
         
     });
@@ -61,6 +61,10 @@ export class AddaddressPage {
           let house_no: any = '';
 		  if(this.addressInfo.ab_houseno != undefined) {
 			 house_no =  this.addressInfo.ab_houseno;
+		  }
+		  if(this.addressInfo.ab_type==3)
+		  {
+			  this.showothername=true;
 		  }
            this.addAddressForm.setValue({                    
                   ab_houseno:house_no,
@@ -169,7 +173,8 @@ placeToAddress(place){
 	  
 	   console.log("address:: ", address);
 	   console.log("results:: ", results);
-	   
+	   if(address['address']!='')
+	   {
 	   this.addAddressForm.setValue({   
 				  ab_mobile_number: this.addAddressForm.value['ab_mobile_number'],
                   ab_name: this.addAddressForm.value['ab_name'],	   
@@ -182,6 +187,21 @@ placeToAddress(place){
                    ab_type: this.addAddressForm.value['ab_type']
                 
            });
+	   }else{
+		    this.addAddressForm.setValue({   
+				  ab_mobile_number: this.addAddressForm.value['ab_mobile_number'],
+                  ab_name: this.addAddressForm.value['ab_name'],	   
+                  ab_houseno:  address['houseno'],
+                  ab_pincode: address['postal_code'],
+                  ab_state: address['state'],
+                  ab_address: address['locality'],
+                  ab_city: address['city'],
+                  ab_locality: address['landmark'],
+                   ab_type: this.addAddressForm.value['ab_type']
+                
+           }); 
+		   
+	   }
 	  
 		  
 		  //this.setUserLocation();
@@ -197,6 +217,13 @@ placeToAddress(place){
 				console.log(result.coords.latitude);
 			  console.log(result.coords.longitude);
 			  this.loadMap(result.coords.latitude, result.coords.longitude);
+			  
+			   
+		  this.geocodeUserAddress({
+			  lat: result.coords.latitude,
+			  lng: result.coords.longitude
+			});
+		
 			  
 		  });
 	  }
@@ -340,5 +367,21 @@ placeToAddress(place){
   }
   backButtonAction(){
      this.navCtrl.pop();
+	}
+	
+	hidemewhen()
+	{
+		      let credentials = this.addAddressForm.value;
+
+		//console.log("test",this.addAddressForm.ab_type);
+		if(credentials['ab_type']=='3')
+		{
+			
+			this.showothername =true;
+		}else{
+			
+			this.showothername =false;
+		}
+		
 	}
 }

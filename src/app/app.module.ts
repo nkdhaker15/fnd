@@ -11,6 +11,7 @@ import { Diagnostic } from '@ionic-native/diagnostic';
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { AndroidPermissions} from '@ionic-native/android-permissions';
+import { Network } from '@ionic-native/network';
 
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
@@ -144,7 +145,8 @@ import { ThankyouPage } from '../pages/thankyou/thankyou';
 	  Geolocation,
 	  AndroidPermissions,  
 	  Device,
-	Diagnostic,	  
+	Diagnostic,
+Network,	
    /* Geolocation,  
     NativeGeocoder,  
       */

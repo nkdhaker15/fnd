@@ -434,7 +434,9 @@ checkout() {
 	
   if(this.userInfo.user_id>0)
   {
-
+	  console.log("test",this.userAddressInfo);
+        if(this.userAddressInfo.ab_id!=undefined)
+		{
 		 let cartInfo = {
 			 user_id: this.userInfo.user_id, ab_id: this.userAddressInfo.ab_id,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
 			 cartItems: this.cartItems, 
@@ -450,7 +452,11 @@ checkout() {
 		let order_info: any = {};
 				order_info['total'] = this.grandTotal;
 		this.navCtrl.push(PaymentsPage, {orderInfo: order_info, cartInfo: cartInfo});
-		
+		}else{
+			
+				this.navCtrl.push(AddressbookPage,{'from':'cart','userAddressInfo':this.userAddressInfo});
+	
+		}
 						
 
 	}else{

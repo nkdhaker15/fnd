@@ -104,5 +104,6 @@
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-sms-receive" spec="^1.0.1" />
     <plugin name="cordova.plugins.diagnostic" spec="4.0.10" />
+    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <engine name="android" spec="7.1.4" />
 </widget>

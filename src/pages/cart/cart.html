@@ -32,9 +32,8 @@
 <div class="adress-type" *ngIf="userAddressInfo.ab_type == 3">Other</div>
 
 
-<h4>{{userAddressInfo.ab_name}}</h4>
+<h4 *ngIf="userAddressInfo.ab_type == 3">{{userAddressInfo.ab_name}}</h4>
 <p>{{userAddressInfo.ab_address}}, {{userAddressInfo.ab_city}}, {{userAddressInfo.ab_state}}, {{userAddressInfo.ab_pincode}}</p>
-<p><strong>Mobile No:</strong> {{userAddressInfo.ab_mobile_number}}</p>
 
 <button ion-button full (click)="clickaddadress()" class="checkout-button" >Change or Add Address</button>
 </div>

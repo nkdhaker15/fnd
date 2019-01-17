@@ -5,11 +5,9 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Orders</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
@@ -19,7 +17,7 @@
 <ion-col>
 <div class="media" style="padding:10px 10px 0px;">
 <div class="rest-img">
-<img src="{{element.seller_image}}">
+<img src="{{element.seller_image}}" style="height:112px;">
 <div class="overlay"></div>
 <div class="rest-info">
 <h6>{{element.seller_name}}</h6>
@@ -52,12 +50,10 @@ readonly="true"
 </ion-row>
 <hr style="margin: 0px;">
 <ion-row>
-<ion-col col-8>
+<ion-col col-12>
 <div class="media p10">
 <p style="margin-top:0px;color:#666">{{element.trans_item}} <!--<span>x 1</span>--></p>
 </div>
-</ion-col>
-<ion-col col-4>
 </ion-col>
 </ion-row>
 <hr style="margin: 0px;">

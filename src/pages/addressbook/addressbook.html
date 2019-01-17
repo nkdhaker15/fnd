@@ -26,15 +26,13 @@
 <ion-row class="container-white mt10"  *ngFor="let element of userAddresses" >
 <ion-col>
 <div class="media p10">
-<ion-radio *ngIf="showAddressbookSelect"  class="radio radio-inline radio-blue" (click)="selectAddressForCart(element)" value="{{element.ab_id}}">  </ion-radio> &nbsp;&nbsp;
+<ion-radio *ngIf="showAddressbookSelect"  class="radio radio-inline radio-blue" (click)="selectAddressForCart(element)" value="{{element.ab_id}}">  </ion-radio> 
 
 <div class="adress-type" *ngIf="element.ab_type == 1">Home</div>
 <div class="adress-type" *ngIf="element.ab_type == 2">Work (Delivery Between 10 am - 5 am)</div>
 <div class="adress-type" *ngIf="element.ab_type == 3">Other</div>
-
-<h4>{{element.ab_name}}</h4>
-<p>{{element.ab_address}}, {{element.ab_city}}, {{element.ab_state}}, {{element.ab_pincode}}</p>
-<p><strong>Mobile No:</strong> {{element.ab_mobile_number}}</p>
+<h1 *ngIf="element.ab_type == 3">{{element.ab_name}}</h1>
+<p>{{element.ab_houseno}},<br> {{element.ab_locality}},<br> {{element.ab_address}}</p>
 <button ion-button (click)="editAddress(element)" >Edit</button>
 <button ion-button  (click)="removeAddress(element.ab_id)"  color="danger">Remove</button>
 </div>

@@ -70,7 +70,7 @@ loadCurrentStatus() {
 	  this.loadingObj = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-    this.loadingObj.present();
+   // this.loadingObj.present();
    let objElement: any = this;
    if(this.orderprocesPageStatus) {
 	  setTimeout(()=> {

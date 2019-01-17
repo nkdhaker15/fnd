@@ -193,7 +193,7 @@ rmenu
   
   getCartItems() {
 	    this.storage.ready().then(()=>{
-
+this.carttotalamount=0;
       this.storage.get("cart").then( (data)=>{
 		  if(data == null) {
 			  data = [];
