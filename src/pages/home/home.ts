@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {App, IonicPage, NavController, NavParams, LoadingController ,AlertController} from 'ionic-angular';
-import { Network } from '@ionic-native/network';
+
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
@@ -28,27 +28,15 @@ export class HomePage {
    loading: any;
    alert:any;
    orderprocesStatus: boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public storage: Storage, public appCtrl: App,private network: Network,private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public storage: Storage, public appCtrl: App, private alertCtrl: AlertController) {
      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 				  if (this.tabBarElement) {
 		      this.tabBarElement.style.display = 'flex';
 				  }
-				   this.alert = this.alertCtrl.create({
-                title: 'No Internet Connection',
-                subTitle: "Please check your internet connection",
-                buttons: ['Dismiss']
-              });
+				   
   }
   ionViewWillEnter() {	  	 	      
-    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-  console.log('network was disconnected :-(');
     
-              this.alert.present();
-});
-
-// stop disconnect watch
-disconnectSubscription.unsubscribe();
-
 	   this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 				  if (this.tabBarElement) {
 		      this.tabBarElement.style.display = 'flex';

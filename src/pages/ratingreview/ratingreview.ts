@@ -44,8 +44,10 @@ export class RatingreviewPage {
 	});
 	if(this.navParams.get('orderinfo') != undefined) {
 		this.orderinfo = this.navParams.get('orderinfo');
+
 		this.selectOrderId = this.orderinfo.trans_id;
 		console.log("test",this.orderinfo);
+
 	}
   }
   slideChanged() {

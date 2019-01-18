@@ -178,7 +178,7 @@ deleteMarkers() {
      this.navCtrl.setRoot(TabsPage);
 	}
     gotoOrderRating() {
-		this.navCtrl.push(RatingreviewPage, {order_id: this.orderTransInfo});
+		this.navCtrl.push(RatingreviewPage, {order_id: this.orderInfo.order_id, orderinfo: this.orderTransInfo});
 	}
 
 }

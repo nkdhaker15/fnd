@@ -127,13 +127,17 @@ rmenu
 	   this.storage.get("sellerInfo").then( (data)=> {
 		if(data != null) {
 			if(data.seller_id != this.sellerInfo.seller_id) {
-				this.presentConfirm(this.sellerInfo,  data);
+				this.presentConfirm(this.sellerInfo,  data, product, amount, variationId, variationLabel);
 			}
 		}else {
 			this.storage.set("sellerInfo",  this.sellerInfo);
+			this.processCartItems(product, amount, variationId, variationLabel);
 		}
 		
 	});
+	  
+  }
+  processCartItems(product, amount, variationId, variationLabel) {
 	  this.storage.get("cart").then((data) => {
 		  if(product.qty == undefined || product.qty < 1) {
 			  product.qty = 1;
@@ -193,7 +197,7 @@ rmenu
   
   getCartItems() {
 	    this.storage.ready().then(()=>{
-this.carttotalamount=0;
+
       this.storage.get("cart").then( (data)=>{
 		  if(data == null) {
 			  data = [];
@@ -206,9 +210,11 @@ this.carttotalamount=0;
 
           this.cartItems.forEach( (item, index)=> {
              this.cartItemsIds.push(item.product.product_id);
-this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
+this.carttotalamount =parseFloat(this.carttotalamount)+ (parseFloat(item.amount)*parseInt(item.qty));
 
 		});
+		}else {
+			this.carttotalamount=0;
 		}
 
     });
@@ -314,7 +320,7 @@ this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
 				 
 			 }else {
 				this.cartItemsIds.push(item.product.product_id);
-				this.carttotalamount =parseFloat(this.carttotalamount)+ parseFloat(item.amount);
+				this.carttotalamount =parseFloat(this.carttotalamount)+ (parseFloat(item.amount)*parseInt(item.qty));
 				cartItemsInfo.push(item);
 			 }
 			 if(index == (this.cartItems.length-1)) {
@@ -349,7 +355,7 @@ isItemQty(product: any) {
 	}
 	return status;
 }
-presentConfirm(currentSeller, previousSeller) {
+presentConfirm(currentSeller, previousSeller, product, amount, variationId, variationLabel) {
   let alert = this.alertCtrl.create({
     title: 'Confirm',
     message: 'Your previous cart will empty. Do you want to proceed?',
@@ -371,6 +377,11 @@ presentConfirm(currentSeller, previousSeller) {
 			this.storage.set("cart", this.cartItems);
           this.sellerInfo = currentSeller;
 		  this.storage.set("sellerInfo",  this.sellerInfo);
+		  let objElement = this;
+		  setTimeout(()=> {
+				objElement.processCartItems(product, amount, variationId, variationLabel);
+		  }, 1000);
+		  
         }
       }
     ]

@@ -23,6 +23,7 @@ import { AuthUserService } from '../../providers/authUserService';
 export class CartPage {
 private currentNumber = 1;
   cartItems: any = [];
+  deliverySlots: any = [];
   cartRelatedInfo: any = {};
   addonItems: any = [];
   cartAddonItems: any = [];
@@ -141,6 +142,9 @@ private currentNumber = 1;
 		}
 		return status;
   }
+  selectDeliveryTimeSlot(dtime) {
+	  
+  }
   loadAddons() {
     
     let user_req = {
@@ -159,6 +163,10 @@ private currentNumber = 1;
 				 loading.dismiss();
 				     
 				 this.cartRelatedInfo = {};
+				 this.deliverySlots = [];
+				 if(result['deliver_time'] != undefined) {
+				 this.deliverySlots = result.deliver_time;
+				 }
 				 this.cartRelatedInfo['delivery_charge_99'] = 0;
 				if(result['delivery_charge_99'] != undefined) {
 					this.cartRelatedInfo['delivery_charge_99'] = result['delivery_charge_99'];
@@ -454,7 +462,7 @@ checkout() {
 		this.navCtrl.push(PaymentsPage, {orderInfo: order_info, cartInfo: cartInfo});
 		}else{
 			
-				this.navCtrl.push(AddressbookPage,{'from':'cart','userAddressInfo':this.userAddressInfo});
+			this.clickaddadress();
 	
 		}
 						
