@@ -37,7 +37,8 @@
 
 <ion-slides class="color-white " [slidesPerView]="1.2">
 <ion-slide *ngFor="let merchantItem of filterRestrauntByTypeAndPopular(0)"  (click)="productListPage(merchantItem)"> 
-<ion-card style="height: 260px;color: #fff;text-align: left;padding: 10px;">
+<ion-card style="height: 260px;color: #fff;text-align: left;padding: 10px;position:relative;" >
+<div class="overlay-slide "><span class="overlay-slide-text">Closed</span></div>
    <img src="{{dashboardData.seller_url}}{{merchantItem.seller_image}}" style="height: 150px;width: 100%;"> 
 <div class="resto-meta" >
 <p style="font-size: 14px;font-weight:500;" class="open_sans_semi">{{merchantItem.se_store_name}}</p>

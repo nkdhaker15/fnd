@@ -1,9 +1,4 @@
-page-product-child {
-	height: 30rem !important;
-	bottom: 0;
-	top: unset !important;
-	z-index: 999999;
-}
+
 .product-pop-up-title{
 background:#f5f5f5;
 padding:15px;
@@ -50,4 +45,11 @@ margin:7px 0px;
     transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
     transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
 
+}
+page-product-child {
+	height: 100% !important;
+	bottom: 0;
+	top: unset !important;
+	z-index: 999999;
+	background: rgba(0,0,0,0.6);
 }

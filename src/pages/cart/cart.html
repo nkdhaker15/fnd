@@ -138,17 +138,23 @@
 </ion-col>
 </ion-row>
 
-<ion-row class="container-white" *ngIf="deliverySlots.length > 0">
-<ion-col>
+<div  class="container-white mt10 mb-10" *ngIf="deliverySlots.length > 0">
+<ion-row   class="border-bottom-1">
+<ion-col col-7>
 <div class="media p10">
-  <span style="line-height:22px;">Select Delivery Time</span>
-   <ul style="list-style:none;">
- <li *ngFor="let dtime of deliverySlots" style="padding: 0px 0px 10px 0px;"><ion-radio value="1" [disabled]="!dtime.status" style="margin-top: -6px;" (click)="selectDeliveryTimeSlot(dtime)"></ion-radio> {{dtime.LABEL}} </li>
- 
- </ul>
+<strong>Select Delivery Time </strong>
 </div>
 </ion-col>
 </ion-row>
+<ion-row   class="border-bottom-1" *ngFor="let dtime of deliverySlots" >
+<ion-col col-12>
+<div class="media p10">
+<ion-radio value="1" [disabled]="!dtime.status" style="margin-top: -6px;" (click)="selectDeliveryTimeSlot(dtime)"></ion-radio> {{dtime.LABEL}}
+</div>
+</ion-col>
+</ion-row>
+</div>
+
 
 <div  class="container-white mt10 mb-100">
 <ion-row   class="border-bottom-1">
