@@ -92,10 +92,10 @@
 
 <div  class="container-gray  mb-10">
 <p class="ml10" style="font-size: 18px;font-weight:500;margin-bottom:10px;">ADD-ONS </p>
-<ion-slides class="color-white ">
+<ion-slides class="color-white " [slidesPerView]="2.5">
 <div class="s" *ngFor="let addonItem of addonItems; let i = index">
-<ion-slide  class="ion-slide-addon" *ngIf="!addonInCart(addonItem)"> 
-<ion-card style="color: #fff;text-align: left;box-shadow:none">
+<ion-slide   *ngIf="!addonInCart(addonItem)"> 
+<ion-card style="color: #fff;text-align: left;box-shadow:none;width:calc(100% - 10px);">
 <div class="add-on-img-box">
 <img src="{{addonImagePath}}{{addonItem.ap_image}}" style="width:100%;margin-bottom:5px;height:125px;">
 <div class="add-on-text">
