@@ -46,6 +46,7 @@
 </div>
 <div class="merchent-details-content">
 <h3>{{sellerInfo.se_store_name}}</h3>
+<div class="overlay-slide " *ngIf="sellerInfo.dh_close_status"><span class="overlay-slide-text">Closed</span></div>
 <div class="merchent-location giveMeEllipsis">{{sellerInfo.seller_store_address}}</div>
 <div class="merchent-delivery-details">
 <img src="assets/icon/clock.png" style="width:16px;margin-right:5px;"> {{sellerInfo.seller_deliver_duration}} <span *ngIf="sellerInfo.seller_rate>0">| {{sellerInfo.seller_rate}} <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;"> ({{sellerInfo.seller_rate_count}}+)</span>
@@ -71,8 +72,8 @@
 <p class="menu-product-title giveMeEllipsis2">{{productItem.product_name}}</p>
 <div class="product-footer">
 <div class=" pull-left " style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span><br> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
-<div style="border: 1px solid #d8d8d8; width:75px" class="pull-right">
-<div class="qty-badge" *ngIf="isItemQty(productItem)"  >
+<div style="border: 1px solid #d8d8d8; width:75px" class="pull-right" *ngIf="!sellerInfo.dh_close_status">
+<div class="qty-badge" *ngIf="isItemQty(productItem)">
 <ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
 {{getItemQty(i)}}
 <ion-icon name="add" (click)="increment(i)" ></ion-icon>
@@ -107,7 +108,7 @@
 <span style="font-size:9px; color:#666;">{{productItem.brand_name}}</span>
 <p class="menu-product-title-full">{{productItem.product_name}}</p>
 <div style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
-<div style="border: 1px solid #d8d8d8; width:75px;margin-top:10px">
+<div style="border: 1px solid #d8d8d8; width:75px;margin-top:10px" *ngIf="!sellerInfo.dh_close_status">
 <div class="qty-badge" *ngIf="isItemQty(productItem)"  >
 <ion-icon name="remove" (click)="decrementCatItem(i, category.category_id)" ></ion-icon>
 {{getCatItemQty(i, category.category_id)}}
@@ -131,7 +132,7 @@
 
 
 
-<p  ion-fixed class="fixed-bottom-button" (click)="viewcart()" *ngIf="cartItems.length>0">
+<p  ion-fixed class="fixed-bottom-button" (click)="viewcart()" *ngIf="cartItems.length>0 && !sellerInfo.dh_close_status">
 <ion-row class="container-white border-bottom-1" style="-webkit-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
 -moz-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
 box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);">

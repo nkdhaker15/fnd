@@ -56,6 +56,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StarRatingModule } from 'ionic3-star-rating';
 import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/shrinking-segment-header';
 import { ThankyouPage } from '../pages/thankyou/thankyou';
+import { DisclaimerPage } from '../pages/disclaimer/disclaimer';
 @NgModule({
   declarations: [
     MyApp,
@@ -89,6 +90,7 @@ import { ThankyouPage } from '../pages/thankyou/thankyou';
 	ShrinkingSegmentHeader,
 	PaymentsPage,
 	ThankyouPage,
+	DisclaimerPage,
 	OrderprocessingPage
   ],
   imports: [
@@ -129,6 +131,7 @@ import { ThankyouPage } from '../pages/thankyou/thankyou';
 	ProductChildPage,
 	PaymentsPage,
 	ThankyouPage,
+	DisclaimerPage,
 	RatingreviewPage,
 	OrderprocessingPage
 	

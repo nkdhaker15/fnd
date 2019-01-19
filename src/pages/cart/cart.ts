@@ -36,6 +36,7 @@ private currentNumber = 1;
   deliveryCharge: any = 0;
   totalDiscount: any = 0;
   cartAddontotalamount: any = 0;
+  stopOrderStatus: any = 0;
   sellerInfo: any = {};
   userInfo: any = {};
     userAddressInfo: any = {};
@@ -166,6 +167,10 @@ private currentNumber = 1;
 				 this.deliverySlots = [];
 				 if(result['deliver_time'] != undefined) {
 				 this.deliverySlots = result.deliver_time;
+				 }
+				 this.stopOrderStatus = 0;
+				 if(result.message == 'failed') {
+						this.stopOrderStatus = 1;
 				 }
 				 this.cartRelatedInfo['delivery_charge_99'] = 0;
 				if(result['delivery_charge_99'] != undefined) {

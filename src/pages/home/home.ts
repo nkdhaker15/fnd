@@ -10,6 +10,7 @@ import { OrderprocessingPage } from '../orderprocessing/orderprocessing';
 
 import { SearchdataPage } from '../searchdata/searchdata';
 import { DetectlocationPage } from '../detectlocation/detectlocation';
+
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -24,10 +25,12 @@ export class HomePage {
    dashboardData: any = {};
     cartItems: any = [];
     cartcount:any =0;
+    allow_drink_status:any =0;
    userLocationInfo: any = {address: ''};
    loading: any;
    alert:any;
    orderprocesStatus: boolean = false;
+   bind_km: any = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController,public storage: Storage, public appCtrl: App, private alertCtrl: AlertController) {
      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 				  if (this.tabBarElement) {
@@ -61,12 +64,21 @@ export class HomePage {
 			  //this.orderprocesStatus = true;
 		  }
     });
+
     });
 	this.authUserService.getUserLocation().then((userLocationInfo)=>{
           
           if(userLocationInfo != null && userLocationInfo != undefined) {
               this.userLocationInfo = userLocationInfo;
-			  this.loadDashboardInfo();
+			  	this.storage.get("allow_drink_status").then( (data)=>{
+					  if(data == null) {
+						  this.allow_drink_status = 0;
+					  }else {
+						  this.allow_drink_status = 1;
+					  }
+					  this.loadDashboardInfo();
+				});
+			  
           }else {
 			  
 			  this.navCtrl.push(DetectlocationPage);	  
@@ -117,7 +129,8 @@ export class HomePage {
 		let user_req = {
 				  
 				  lat: this.userLocationInfo.lat,
-				  lng: this.userLocationInfo.lng
+				  lng: this.userLocationInfo.lng,
+				  allow_drink_status: this.allow_drink_status
 			  };
 			  if(this.userInfo  != null) {
 				  user_req['user_id'] = this.userInfo.user_id;
@@ -131,7 +144,7 @@ export class HomePage {
 				 this.loading.dismiss();
 				 
 				this.dashboardData = result;
-                 
+                 this.bind_km = this.dashboardData.km_bind;
 				}, (err) => { 
 				console.log(err); 
 				 this.loading.dismiss();
@@ -139,11 +152,10 @@ export class HomePage {
    }
     
    productListPage(sellerInfo: any)
-  {         sellerInfo.seller_img_base_url = this.dashboardData.seller_url;
-	  	   this.appCtrl.getRootNav().push(RmenuPage, {sellerInfo: sellerInfo});    
-	 // let nav = this.app.getRootNav(); 
-	      
-
+  {        if(this.bind_km <= sellerInfo.distance && sellerInfo.dh_close_status==0) {
+				sellerInfo.seller_img_base_url = this.dashboardData.seller_url;
+				this.appCtrl.getRootNav().push(RmenuPage, {sellerInfo: sellerInfo});    
+			}
   } 
    
    mycartMethod()

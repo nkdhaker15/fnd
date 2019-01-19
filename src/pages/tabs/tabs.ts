@@ -5,6 +5,7 @@ import { MyaccountPage } from '../myaccount/myaccount';
 import { HomePage } from '../home/home';
 import { ExplorePage } from '../explore/explore';
 import { LoginPage } from '../login/login';
+import { DisclaimerPage } from '../disclaimer/disclaimer';
 
 import { AuthUserService } from '../../providers/authUserService';
 
@@ -17,6 +18,7 @@ export class TabsPage {
   tab1Root = HomePage;
   tab3Root = ExplorePage;
   tab4Root = MyaccountPage;
+  tab5Root = DisclaimerPage;
   tabBarElement: any;
   userInfo: any = {};
 
