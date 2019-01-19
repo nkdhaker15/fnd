@@ -22,7 +22,7 @@ export class ExplorePage {
    userLocationInfo: any = {address: ''};
    loading: any;
    dashboardData: any = {};
-
+   bind_km: any  = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public viewCtrl: ViewController) {
 	   this.loading = this.loadingCtrl.create({
                 content: 'Please wait...'
@@ -57,6 +57,7 @@ export class ExplorePage {
 				 this.loading.dismiss();
 				 
 				this.dashboardData = result;
+				this.bind_km = this.dashboardData.km_bind;
                  console.log("this.dashboardData:: ", this.dashboardData);
 				}, (err) => { 
 				console.log(err); 

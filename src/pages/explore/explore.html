@@ -18,8 +18,9 @@
 
 
 <ion-content >
-<ion-card style="height: 250px;color: #fff;text-align: left;box-shadow: none" *ngFor="let merchantItem of dashboardData.merchant" (click)="productListPage(merchantItem)">
-   <img src="{{dashboardData.seller_url}}{{merchantItem.seller_image}}" style="height: 150px;width: 100%;"> 
+<ion-card style="height: 250px;color: #fff;text-align: left;box-shadow: none" *ngFor="let merchantItem of dashboardData.merchant" (click)="productListPage(merchantItem)" [class.out-from-bind-km]="bind_km > merchantItem.distance">
+<div class="overlay-slide " *ngIf="merchantItem.dh_close_status==1"><span class="overlay-slide-text">Closed</span></div>  
+  <img src="{{dashboardData.seller_url}}{{merchantItem.seller_image}}" style="height: 150px;width: 100%;"> 
 <div class="resto-meta" style="margin-left:5px;">
 <p style="font-size: 16px;font-weight:500;">{{merchantItem.se_store_name}}</p>
 <p style="color:#ccc" class="giveMeEllipsis">{{merchantItem.seller_store_address}}...</p>

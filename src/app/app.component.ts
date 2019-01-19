@@ -31,20 +31,26 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-	  
+	  console.log("this.network:: ", this.network.type);
+	  if(this.network.type == 'none') {
+		  this.showAlertForNetworkOff();
+	  }
 	  let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
 		  console.log('network was disconnected :-(');
-			          let alert: any = this.alertCtrl.create({
+			this.showAlertForNetworkOff();			
+		});
+
+		// stop disconnect watch
+		//disconnectSubscription.unsubscribe();
+    });
+	firebase.initializeApp(configFirebase);
+  } 
+  showAlertForNetworkOff() {
+	  let alert: any = this.alertCtrl.create({
                 title: 'No Internet Connection',
                 subTitle: "Please check your internet connection",
                 buttons: ['Dismiss']
               });
 					 alert.present();
-		});
-
-		// stop disconnect watch
-		disconnectSubscription.unsubscribe();
-    });
-	firebase.initializeApp(configFirebase);
   }
 }

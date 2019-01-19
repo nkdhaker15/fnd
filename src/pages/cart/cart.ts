@@ -37,6 +37,8 @@ private currentNumber = 1;
   totalDiscount: any = 0;
   cartAddontotalamount: any = 0;
   stopOrderStatus: any = 0;
+  stopOrderStatusMessage: any = '';
+  setDeliveryTime: any = '';
   sellerInfo: any = {};
   userInfo: any = {};
     userAddressInfo: any = {};
@@ -54,12 +56,7 @@ private currentNumber = 1;
 	this.total = 0.0;
     
     this.storage.ready().then(()=>{
-	  this.storage.get("sellerInfo").then( (data)=> {
-		if(data != null) {
-			this.sellerInfo = data;
-		}
-		
-	});
+
 	this.storage.get("cartAddonItems").then( (data)=> {
 		if(data != null) {
 			this.cartAddonItems = data;
@@ -144,12 +141,15 @@ private currentNumber = 1;
 		return status;
   }
   selectDeliveryTimeSlot(dtime) {
+	  this.setDeliveryTime = dtime.LABEL;
 	  
   }
   loadAddons() {
     
-    let user_req = {
-              seller_type: this.sellerInfo.seller_type			 
+    let user_req: any = {
+              seller_type: this.sellerInfo.seller_type,			 
+              seller_id: this.sellerInfo.seller_id,	
+			  user_id: 0		
              // seller_id: 46 
           };
 		  if(this.userInfo != null) {
@@ -169,8 +169,14 @@ private currentNumber = 1;
 				 this.deliverySlots = result.deliver_time;
 				 }
 				 this.stopOrderStatus = 0;
-				 if(result.message == 'failed') {
+				 this.stopOrderStatusMessage = '';
+				 if(result.liqur_two_time_status == 1 && this.sellerInfo.seller_type == 0) {
 						this.stopOrderStatus = 1;
+						this.stopOrderStatusMessage = result.liqur_two_time_message;
+				 }else
+				 if(result.resto_close_status == 1) {
+						this.stopOrderStatus = 1;
+						this.stopOrderStatusMessage = result.resto_close_message;
 				 }
 				 this.cartRelatedInfo['delivery_charge_99'] = 0;
 				if(result['delivery_charge_99'] != undefined) {
@@ -260,7 +266,13 @@ private currentNumber = 1;
   }
   ionViewDidLoad() {
 	  this.tabBarElement.style.display = 'none';
-    
+        	  this.storage.get("sellerInfo").then( (data)=> {
+		if(data != null) {
+			this.sellerInfo = data;
+		}
+		console.log("this.sellerInfo:: ", this.sellerInfo);
+		
+	});
 	     this.authUserService.getUser().then((user)=>{
           
           if(user != null && user != undefined) {
@@ -450,15 +462,27 @@ checkout() {
 	  console.log("test",this.userAddressInfo);
         if(this.userAddressInfo.ab_id!=undefined)
 		{
+			if(this.setDeliveryTime == '' && this.sellerInfo.seller_type == 0) {
+				let alert = this.alertCtrl.create({
+								title: 'Delivery time',
+								subTitle: 'Please select delivery time',
+								buttons: ['Dismiss']
+							  });
+							  alert.present();
+				return ;
+			}
+			
 		 let cartInfo = {
 			 user_id: this.userInfo.user_id, ab_id: this.userAddressInfo.ab_id,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
 			 cartItems: this.cartItems, 
-			 cartAddons: this.cartAddonItems 
+			 cartAddons: this.cartAddonItems,
+			 trans_delivery_time: this.setDeliveryTime
 		 };
         if(this.cartUserPromoCode != '') {
 			cartInfo['coupon_code'] = this.cartUserPromoCode;
 			cartInfo['coupon_discount_amt'] = this.cartUserPromoCodeDiscount;
 		}
+		
 		cartInfo['disount'] = this.totalDiscount;
 		cartInfo['delivery_charge'] = this.deliveryCharge;
 		console.log("cartInfo:: ", cartInfo);
