@@ -21,11 +21,10 @@ import { TabsPage } from '../tabs/tabs';
 export class RmenuPage {
  @ViewChild('myContent') content: Content;
  @ViewChild('catTabSlides') catSlides: Slides;
-
+dataClosestatus:boolean=true;
 rmenu
  = [{ name: "Signature Premier Grain"},{ name: "All Seasons"},{ name: "Heineken Lager Beer Wit"},{ name: "Signature Premier Grain"},{ name: "All Seasons"}];
  userInfo: any = {};
- tabBarElement: any;
  productList: any = [];
  sellerInfo: any = {};
  product_image_path: any = '';
@@ -35,16 +34,48 @@ rmenu
  carttotalamount: any =0;
  category_list:any= [];
  allresult:any = [];
+ userLocationInfo:any={};
+ bind_km:any=3;
+ bind_error:boolean=false;
  subHeaderShow: boolean = false;
+ liqourqty:any=0;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public modalCtrl: ModalController, private alertCtrl: AlertController, public zone: NgZone, private cd: ChangeDetectorRef) {
      this.sellerInfo = this.navParams.get("sellerInfo");
-	 this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-	
+	 console.log(this.sellerInfo);
+	this.checkrestaurentclosed(this.sellerInfo);
+	//console.log(this.dataClosestatus,'dataClosestatus');
  }
+onViewWillEnter()
+{
+	    	this.checkrestaurentclosed(this.sellerInfo);
+			
+				this.authUserService.getUserLocation().then((userLocationInfo)=>{
+          
+          if(userLocationInfo != null && userLocationInfo != undefined) {
+              this.userLocationInfo = userLocationInfo
+			
+			  console.log(this.userLocationInfo,'tens');
+          }      
+          
+      });
+	  
+			
 
+}
   ionViewDidLoad() {
-	  this.tabBarElement.style.display = 'none';
-    
+    	this.checkrestaurentclosed(this.sellerInfo);
+	this.authUserService.getUserLocation().then((userLocationInfo)=>{
+          
+          if(userLocationInfo != null && userLocationInfo != undefined) {
+              this.userLocationInfo = userLocationInfo
+			
+			  console.log(this.userLocationInfo,'tens');
+			  
+          }      
+          
+      });
+	                      this.loadProducts();
+
 	
   }
   filterData(catId) {
@@ -102,7 +133,6 @@ rmenu
           
       });
       
-                    this.loadProducts();
 
 
   }
@@ -124,11 +154,11 @@ rmenu
  }
    
   addToCartPrepare(productItem) {
-	  if(productItem.child.length == 1) {
+	 	   if(productItem.child.length == 1) {
 		  this.addToCart(productItem,productItem.child[0].pmp_net_price, productItem.child[0].pmp_id, productItem.child[0].unit_name);
 	  }else{
 	  this.addToCart(productItem,productItem.pmp_net_price, 0, '');
-	  }
+	  }  
   }
   addToCart(product, amount, variationId, variationLabel) {
 	  console.log("product:: ", product);
@@ -137,9 +167,29 @@ rmenu
 			if(data.seller_id != this.sellerInfo.seller_id) {
 				this.presentConfirm(this.sellerInfo,  data, product, amount, variationId, variationLabel);
 			}else {
-				this.processCartItems(product, amount, variationId, variationLabel);
+				
+		console.log(this.sellerInfo.seller_type,'sellertype');
+	  if(this.sellerInfo.seller_type==0)
+	  {
+		  		  this.getliqourqty();
+
+		  if(this.liqourqty<6)
+		  {
+		  
+	 		 				this.processCartItems(product, amount, variationId, variationLabel);
+
+		  }else{
+			  this.alertsixbottel();
+			  
+		  }
+	  }else{
+		
+		 				this.processCartItems(product, amount, variationId, variationLabel);
+ 
+	  }
 			}
 		}else {
+			
 			this.storage.set("sellerInfo",  this.sellerInfo);
 			this.processCartItems(product, amount, variationId, variationLabel);
 		}
@@ -209,7 +259,7 @@ rmenu
   
   getCartItems() {
 	    this.storage.ready().then(()=>{
-
+this.liqourqty=0;
       this.storage.get("cart").then( (data)=>{
 		  if(data == null) {
 			  data = [];
@@ -223,6 +273,7 @@ rmenu
           this.cartItems.forEach( (item, index)=> {
              this.cartItemsIds.push(item.product.product_id);
 this.carttotalamount = parseFloat(this.carttotalamount)+ (parseFloat(item.amount)*parseInt(item.qty));
+this.liqourqty = parseInt(this.liqourqty)+parseInt(item.qty);
 
 		});
 		}else {
@@ -232,18 +283,59 @@ this.carttotalamount = parseFloat(this.carttotalamount)+ (parseFloat(item.amount
     });
     });
   }
+  getliqourqty()
+  {
+	
+  }
   
    incrementCatItem(index, catId) {
 	  
-		this.allresult[catId][index].qty++;
+	  	
+	  if(this.sellerInfo.seller_type==0)
+	  {
+		  		  		  this.getliqourqty();
+
+		  if(this.liqourqty<6)
+		  {
+
+this.allresult[catId][index].qty++;
 	this.changeProductQtyToCart(this.allresult[catId][index]);
+		  }else{
+			  this.alertsixbottel();
+			  
+		  }
+	  }else{
+		
+this.allresult[catId][index].qty++;
+	this.changeProductQtyToCart(this.allresult[catId][index]); 
+	  }
+	  
+		
     
  }
  
   increment(index) {
 	  
-		this.productList[index].qty++;
+		
+	  	
+	  if(this.sellerInfo.seller_type==0)
+	  {
+		  		  this.getliqourqty();
+
+		  if(this.liqourqty<6)
+		  {
+		  
+this.productList[index].qty++;
 	this.changeProductQtyToCart(this.productList[index]);
+		  }else{
+			  this.alertsixbottel();
+			  
+		  }
+	  }else{
+		
+this.productList[index].qty++;
+	this.changeProductQtyToCart(this.productList[index]);
+	  }
     
  }
   decrementCatItem(index, catId) {
@@ -327,6 +419,7 @@ this.carttotalamount = parseFloat(this.carttotalamount)+ (parseFloat(item.amount
 			this.cartItems = data;
 		}
 		this.cartItemsIds = [];
+		this.carttotalamount=0;
 		 this.cartItems.forEach( (item, index)=> {
 			 if(product.product_id == item.product.product_id) {
 				 
@@ -413,11 +506,15 @@ loadProducts() {
               loading.present();
          this.apiBackendService.getProductListInfo(user_req).then((result: any) => { 
              loading.dismiss();
+			 if(result.message=='ok')
+			 {
              this.product_image_path = result.product_image;
             this.productList = result.result;
 			this.category_list = result.category;
 			this.allresult=result;
-				
+			this.bind_km=result.bind_km;
+			console.log(this.allresult,'all');
+			 }
             }, (err) => { 
             console.log(err); 
              loading.dismiss();
@@ -446,4 +543,94 @@ calculateCatContent(currentTop) {
 backButtonAction(){
      this.navCtrl.pop();
 	}
+	
+	 checkrestaurentclosed(merchatdata)
+  {
+	  let currenttime:any=new Date().getTime();
+	  
+	  console.log(currenttime,"current_time");
+	  
+
+	  if(merchatdata.dh_opening=='24 Hrs')
+	  {
+		  this.dataClosestatus = false;
+		  
+	  }else if(merchatdata.dh_opening=='Closed'){  
+		 this.dataClosestatus = true;  
+	  }else{
+		  let currentdate = new Date().toISOString();
+		  console.log(new Date().getTime(),'current_date_time');
+       let current =currentdate.substr(0,10);
+	   let opentimestring = current+' '+merchatdata.dh_opening;
+	   let closetimestring = current+' '+merchatdata.dh_closing;
+		  //console.log(currenttimestring,'currenttime');
+		  let openingtime:any=new Date(opentimestring).getTime();
+	  let closingtime:any=new Date(closetimestring).getTime();
+	  
+	  if(currenttime>closingtime)
+	  {
+		  		 this.dataClosestatus = true;  
+
+		  
+	  }else{
+		  
+		  		 this.dataClosestatus = false;  
+
+	  }
+	  	  console.log(openingtime,"openingtime");
+	  console.log(closingtime,"closingtime");
+
+	  }
+	  
+  }
+
+   getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = this.deg2rad(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+   }
+
+   deg2rad(deg) {
+    return deg * (Math.PI/180)
+   }
+   
+   getInThisArea(lat1,lon1,lat2,lon2)
+   {
+	  // 	   console.log(lat1);
+	  // console.log(lon1);
+	  // console.log(lat2);
+	  //console.log(lon2);
+if(!this.dataClosestatus)
+{
+	   let distance = this.getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2);
+	   if(distance>this.bind_km)
+	   {
+		   this.bind_error=true;
+		   		   return true;
+
+	   }else{
+		   this.bind_error=false;
+		   return false;
+	   }
 }
+	   
+   }
+   alertsixbottel()
+ {
+	 let alert = this.alertCtrl.create({
+								title: 'Max limit 6 bottles',
+								subTitle: '6 bottle allowed at once per user',
+								buttons: ['Dismiss']
+							  });
+							  alert.present();
+				return ;
+ }
+  }

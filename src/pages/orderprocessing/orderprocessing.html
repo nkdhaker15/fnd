@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-title>ORDER #{{orderInfo.order_id}} <br>
-	<span class="small-text">11:51 | 2 Item, 87</span>
+	<span class="small-text">{{orderTransInfo.trans_create_datetime}} | {{orderTransInfo.total_item}} Item, {{orderTransInfo.trans_amount}}</span>
 	</ion-title>
   </ion-navbar>
 
@@ -22,27 +22,77 @@
 <div class="order-running" >
 <ion-list class="order-processing-list">
 
-  <ion-item [class.step-complete]="orderTransInfo.trans_order_status >=1">
+  <ion-item [class.step-complete]="orderTransInfo.trans_order_status==0" class="order-processing">
     <ion-avatar item-start>
-      <img src="assets/imgs/orderreceived.png">
+	<div class="status-icon">
+      <img src="assets/imgs/orderreceived.png" class="status-icon-img">
+	  <span *ngIf="orderTransInfo.trans_order_status==0">NOW</span>
+	  	  <span *ngIf="orderTransInfo.trans_order_status==1">Done</span>
+
+	  </div>
     </ion-avatar>
-    <h2>ORDER CONFIRMED</h2>
+	<ion-row>
+	<ion-col col-9>
+	<div class="order-status-content">
+	<h2>Order Received</h2>
+    <p>Awaiting restraunts confirmation. Delivery executive will<br> be assign shortly.</p>
+	</div>
+	</ion-col>
+	<ion-col col-3>
+	</ion-col>
+	</ion-row>
   </ion-item>
 
-  <ion-item  [class.step-complete]="orderTransInfo.trans_order_status >=2" *ngIf="orderTransInfo.trans_order_status >=1">
+  <ion-item  [class.step-complete]="orderTransInfo.trans_order_status >=1 && orderTransInfo.trans_order_status <2" [class.order-fad]="orderTransInfo.trans_order_status <=0">
     <ion-avatar item-start>
-      <img src="assets/imgs/orderprepare.png">
+	<div class="status-icon">
+      <img src="assets/imgs/orderprepare.png" class="status-icon-img">
+	  	    <span *ngIf="orderTransInfo.trans_order_status==0">LATER</span>
+	    <span *ngIf="orderTransInfo.trans_order_status==1">NOW</span>
+	  	  <span *ngIf="orderTransInfo.trans_order_status>2">Done</span>
+
+	
+	  </div>
     </ion-avatar>
-    <h2>ORDER IS BEING PREPARED</h2>
-    <p>Restaurant has confirmed your order.</p>
+	<ion-row>
+	<ion-col col-9>
+	<div class="order-status-content">
+	<h2>Order is Being Prepared</h2>
+	<p  *ngIf="orderTransInfo.trans_driver_id <=0">Restaurant has confirmed your order.</p>
+	    <p *ngIf="orderTransInfo.trans_driver_id>0" ><b>{{orderTransInfo.driver_name}}</b> has arrived at restaurant <br>and will pickup your order.</p>
+	</div>
+	</ion-col>
+	<ion-col col-3>
+	<div class="call-ion" *ngIf="orderTransInfo.trans_driver_id>0 && orderTransInfo.trans_order_status <2" onclick="calldriver()">
+	<a href="tel:{{orderTransInfo.driver_mobile_number}}"><img src="assets/imgs/call.png"></a>
+	</div>
+	</ion-col>
+	</ion-row>
   </ion-item>
 
-  <ion-item [class.step-complete]="orderTransInfo.trans_order_status >=3"  *ngIf="orderTransInfo.trans_order_status >=2">
+  <ion-item [class.step-complete]="orderTransInfo.trans_order_status >=2"  [class.order-fad]="orderTransInfo.trans_order_status <=2">
     <ion-avatar item-start>
-      <img src="assets/imgs/orderpickup.png">
+	<div class="status-icon">
+      <img src="assets/imgs/orderpickup.png" class="status-icon-img">
+	  <span *ngIf="orderTransInfo.trans_order_status<=2">LATER</span>
+	    <span *ngIf="orderTransInfo.trans_order_status>2">NOW</span>
+	  </div>
     </ion-avatar>
-    <h2>ORDER PICKED UP</h2>
-    <p>Your Order is on the way.</p>
+	<ion-row>
+	<ion-col col-9>
+	<div class="order-status-content">
+	<h2>Order Picked up</h2>
+    <p  *ngIf="orderTransInfo.trans_order_status <=2">Your Order is on the way.</p>
+	    <p *ngIf="orderTransInfo.trans_driver_id>0 && orderTransInfo.trans_order_status >2" ><b>{{orderTransInfo.driver_name}}</b> has pickup your Order and  on the way.</p>
+
+	</div>
+	</ion-col>
+	<ion-col col-3>
+	<div class="call-ion" *ngIf="orderTransInfo.trans_driver_id>0 && orderTransInfo.trans_order_status >=2" >
+	<a href="tel:{{orderTransInfo.driver_mobile_number}}"><img src="assets/imgs/call.png"></a>
+	</div>
+	</ion-col>
+	</ion-row>
   </ion-item>
 </ion-list>
 </div>

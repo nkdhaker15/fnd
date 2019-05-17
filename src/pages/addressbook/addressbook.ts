@@ -29,7 +29,6 @@ export class AddressbookPage {
 	    showAddressbookSelect: boolean = false;
        selectedChildId: number = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder, private alertCtrl: AlertController, public viewCtrl: ViewController) {
-	  	  	  	  	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
       if(this.navParams.get('from')=='cart')
 	  {
 		  this.userAddressInfo = this.navParams.get('userAddressInfo');
@@ -43,7 +42,6 @@ export class AddressbookPage {
   }
 
   ionViewDidLoad() {
-    this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad AddressbookPage');
   }
   
@@ -74,7 +72,12 @@ loadAddresses() {
              loading.dismiss();
              console.log("result::", result);
             this.userAddresses = result.result;
-
+            if(result.address_status==1)
+			{
+				
+				this.selectedChildId=result.address_result.ab_id
+				this.userAddressInfo = result.address_result;
+			}
             }, (err) => { 
             console.log(err); 
              loading.dismiss();

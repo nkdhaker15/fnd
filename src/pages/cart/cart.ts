@@ -5,7 +5,6 @@ import { AddressbookPage } from '../addressbook/addressbook';
 import { OffersPage } from '../offers/offers';
 import { LoginPage } from '../login/login';
 import { PaymentsPage } from '../payments/payments';
-
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 /**
@@ -14,7 +13,6 @@ import { AuthUserService } from '../../providers/authUserService';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
 @IonicPage()
 @Component({
   selector: 'page-cart',
@@ -46,10 +44,15 @@ private currentNumber = 1;
   cartUserPromoCodeDiscount: any = 0;
   showEmptyCartMessage: boolean = false;
  showaddadressbutton:boolean=false;
+ userwalletbalance:any = 0;
+ redeemamount:any=0;
+ cash_on_block:any=0;
+  cash_on_block_amount:any=0;
+liqourqty:any=0;
+gstamountcalculator:any=0;
  cartitem
  = [{ name: "Manish Garg"},{ name: "Ram Kumar"},{ name: "Rakesh"},{ name: "Mohan"},{ name: "Amit Sharma"}];
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public viewCtrl: ViewController, public toastController: ToastController, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public modalCtrl: ModalController, private alertCtrl: AlertController) {
-    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
   }
 
   ionViewWillEnter() {
@@ -141,7 +144,7 @@ private currentNumber = 1;
 		return status;
   }
   selectDeliveryTimeSlot(dtime) {
-	  this.setDeliveryTime = dtime.LABEL;
+	  this.setDeliveryTime = dtime.key;
 	  
   }
   loadAddons() {
@@ -162,13 +165,14 @@ private currentNumber = 1;
               loading.present();
          this.apiBackendService.getCartAddon(user_req).then((result: any) => { 
 				 loading.dismiss();
-				     
+				     this.userwalletbalance = result.wallet_balance;
 				 this.cartRelatedInfo = {};
 				 this.deliverySlots = [];
 				 if(result['deliver_time'] != undefined) {
 				 this.deliverySlots = result.deliver_time;
 				 }
 				 this.stopOrderStatus = 0;
+				 this.cash_on_block = result.cash_on_block;
 				 this.stopOrderStatusMessage = '';
 				 if(result.liqur_two_time_status == 1 && this.sellerInfo.seller_type == 0) {
 						this.stopOrderStatus = 1;
@@ -240,13 +244,21 @@ private currentNumber = 1;
 	  this.deliveryCharge = 0;
 	  this.totalDiscount = this.cartUserPromoCodeDiscount;
 	  this.grandTotal = 0;
+	  this.liqourqty=0;
+this.gstamountcalculator=0;
 	   this.cartItems.forEach( (item, index)=> {
-
             
               this.total = this.total + (item.amount * item.qty);
+			  this.liqourqty +=item.qty;
+
             this.grandTotal = this.total + this.deliveryCharge - this.totalDiscount;
 
           });
+		  if(this.sellerInfo.seller_type==1)
+		  {
+		  this.gstamountcalculator = (this.total*5)/100;
+		  }
+		  console.log(this.liqourqty,'lqourqty');
 		  
 		    this.cartAddonItems.forEach( (item, index)=> {            
             this.addonTotal = this.addonTotal + (item.amount * item.qty);			  
@@ -255,7 +267,20 @@ private currentNumber = 1;
 
           });
 		  this.deliveryCharge = this.calculateDeliveryCharge(this.grandTotal);
-		  this.grandTotal = this.total + this.deliveryCharge - this.totalDiscount + this.addonTotal;
+		  this.grandTotal = this.total + this.deliveryCharge - this.totalDiscount + this.addonTotal-this.redeemamount+this.gstamountcalculator;
+		  if(this.grandTotal>500)
+		  {
+			 this.cash_on_block_amount=1;
+		  }else{
+						  this.cash_on_block_amount=0;
+  
+		  }
+		  if(this.cartUserPromoCodeDiscount>0)
+		  {
+						 this.cash_on_block_amount=1;  
+		  }else{
+						 this.cash_on_block_amount=0;  			  
+		  }
   }
   lineTotal(item: any) {
 	 return (item.amount * item.qty);
@@ -265,7 +290,6 @@ private currentNumber = 1;
 	 return (item.amount * item.qty);
   }
   ionViewDidLoad() {
-	  this.tabBarElement.style.display = 'none';
         	  this.storage.get("sellerInfo").then( (data)=> {
 		if(data != null) {
 			this.sellerInfo = data;
@@ -300,7 +324,7 @@ private currentNumber = 1;
     if(this.cartItems.length == 0){
       this.showEmptyCartMessage = true;
     }
-
+this.removePromocode();
      this.calculateTotals();
   }
 
@@ -329,14 +353,10 @@ private currentNumber = 1;
 
     this.storage.set("cart", this.cartItems).then( ()=> {
 
-      this.toastController.create({
-        message: "Cart Updated.",
-        duration: 2000,
-        showCloseButton: true
-      }).present();
+     
 
     });
-
+this.removePromocode();
     this.calculateTotals();
 
 
@@ -344,10 +364,38 @@ private currentNumber = 1;
   
   increment(index) {
 	 
-		
+		if(this.sellerInfo.seller_type==0)
+		{
+			this.calculateTotals();
+			
+		}
+		//console.log()
+		if(this.sellerInfo.seller_type==0)
+		{
+		if(this.liqourqty<6)
+		{
 		 this.changeQty(this.cartItems[index], index, 1);
-		
+		this.removePromocode();
+		}else{
+			
+			this.alertsixbottel();
+		}
+		}else{
+			
+			this.changeQty(this.cartItems[index], index, 1);
+		this.removePromocode();
+		}
     
+ }
+ alertsixbottel()
+ {
+	 let alert = this.alertCtrl.create({
+								title: 'Max limit 6 bottles',
+								subTitle: '6 bottle allowed at once per user',
+								buttons: ['Dismiss']
+							  });
+							  alert.present();
+				return ;
  }
   decrement(index) {
 	if(this.cartItems[index].qty <= 1) {
@@ -355,7 +403,7 @@ private currentNumber = 1;
 	}else {
 		this.changeQty(this.cartItems[index], index, -1);
 	}
-	
+	this.removePromocode();
  }
  
  addonCartQty(index) {
@@ -366,7 +414,7 @@ private currentNumber = 1;
 		 if(this.addonItems[index].qty == undefined) {
 			 this.addonItems[index].qty = 1;
 		 }
-		 
+		 this.removePromocode();
 		 return this.addonItems[index].qty;
 	 }
  }
@@ -404,7 +452,7 @@ decrementAddon(addon, index) {
     this.storage.set("cartAddonItems", this.cartAddonItems).then( ()=> {      
 
     });
-
+this.removePromocode();
     this.calculateTotals();
 
 
@@ -431,6 +479,7 @@ decrementAddon(addon, index) {
 			 if(index == (this.cartAddonItems.length-1)) {
 				this.storage.set("cartAddonItems", cartAddonItemsInfo).then( ()=> {
 					this.cartAddonItems = cartAddonItemsInfo;
+					this.removePromocode();
 					this.calculateTotals();
 				});
 			 }
@@ -443,14 +492,23 @@ decrementAddon(addon, index) {
 }
 clickaddadress()
 {
+		
+  if(this.userInfo.user_id>0)
+  {
 	let childModal = this.modalCtrl.create(AddressbookPage, { userAddressInfo: this.userAddressInfo, 'from':'cart' });
    childModal.onDidDismiss(data => {
      
 	 if(data != null) {
 		this.userAddressInfo = data;
+		console.log(data,'selected');
+		this.showaddadressbutton=true;
 	 }
    });
    childModal.present();
+  }else{
+	  this.navCtrl.push(LoginPage,{'from':'cart'});
+	  
+  }
 	//this.navCtrl.push(AddressbookPage,{'from':'cart'});
 	
 }
@@ -473,16 +531,20 @@ checkout() {
 			}
 			
 		 let cartInfo = {
-			 user_id: this.userInfo.user_id, ab_id: this.userAddressInfo.ab_id,discount_amount: 0,coupon_id: 0,payment_mode:'cod',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
+			 user_id: this.userInfo.user_id, ab_id: this.userAddressInfo.ab_id,discount_amount: 0,coupon_id: 0,payment_mode:'cash',grand_total: this.grandTotal,resto_id: this.sellerInfo.seller_id,
 			 cartItems: this.cartItems, 
 			 cartAddons: this.cartAddonItems,
-			 trans_delivery_time: this.setDeliveryTime
+			 trans_delivery_time: this.setDeliveryTime,resto_type: this.sellerInfo.seller_type,
+			 redeemamt:this.redeemamount,
+			 gstamountcalculator:this.gstamountcalculator
+			 
 		 };
         if(this.cartUserPromoCode != '') {
 			cartInfo['coupon_code'] = this.cartUserPromoCode;
 			cartInfo['coupon_discount_amt'] = this.cartUserPromoCodeDiscount;
 		}
-		
+		cartInfo['cash_on_block']=this.cash_on_block;
+		cartInfo['cash_on_block_amount']=this.cash_on_block_amount;
 		cartInfo['disount'] = this.totalDiscount;
 		cartInfo['delivery_charge'] = this.deliveryCharge;
 		console.log("cartInfo:: ", cartInfo);
@@ -497,7 +559,7 @@ checkout() {
 						
 
 	}else{
-			this.navCtrl.push(LoginPage);
+			this.navCtrl.push(LoginPage,{'from':'cart'});
 
 		
 	}
@@ -528,6 +590,15 @@ updateCartByCouponCode(code: any) {
 				 if(result.message == 'ok') {
 					this.cartUserPromoCodeDiscount = parseFloat(result.discount_amount);
 					this.cartUserPromoCode = code;
+				 }else{
+					 
+					let alert = this.alertCtrl.create({
+								title: 'Invalid Promocode',
+								subTitle: 'Promo code is invalid',
+								buttons: ['Dismiss']
+							  });
+							  alert.present(); 
+					 
 				 }
 				 this.calculateTotals();
 				 
@@ -579,10 +650,34 @@ clickpromocode()
 	   });
 	   childModal.present();
 	}else{
-			this.navCtrl.push(LoginPage);
+			this.navCtrl.push(LoginPage,{'from':'cart'});
 
 		
 	}
 	
 }
+datachanged(e:any)
+{
+	let total = this.total+this.addonTotal-this.cartUserPromoCodeDiscount;
+	if(e.checked)
+	{
+	
+	console.log(e.checked);
+	if(total>this.userwalletbalance)
+	{
+		
+		this.redeemamount =this.userwalletbalance;
+			this.userwalletbalance =0;
+
+	
+	}
+	
+	}else{
+	
+	this.userwalletbalance =this.redeemamount;
+	this.redeemamount =0;
+	}
+	this.calculateTotals();
 }
+}
+

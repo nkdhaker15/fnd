@@ -2,6 +2,16 @@ page-addaddress {
 .address-box{
 width:100%;
 }
+.error_message{
+color: #fff;
+text-align: center;
+width: 100%;
+background: red;
+font-size: 1.2rem;
+padding: 10px;
+top: 0;
+z-index: 9999;
+}
 .address-box h6{
 margin-bottom:0px;
 }

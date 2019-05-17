@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component ,ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -23,7 +23,7 @@ export class ForgotpasswordPage {
   editSuccessMsg = '';  
   userInfo: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private authUserService: AuthUserService, private formBuilder: FormBuilder, public loadingCtrl: LoadingController, public apiBackendService: ApiBackendService) {
-	  	      
+	  	    //  this.input.setFocus();
       this.forgotPasswordForm = this.formBuilder.group({
           username: ['']
           

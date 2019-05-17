@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams} from 'ionic-angular';
+import { IonicPage, NavController, NavParams,AlertController} from 'ionic-angular';
 import { EditprofilePage } from '../editprofile/editprofile';
 import { ChangepasswordPage } from '../changepassword/changepassword';
 import { OffersPage } from '../offers/offers';
@@ -9,6 +9,8 @@ import { OrdersPage } from '../orders/orders';
 import { AddressbookPage } from '../addressbook/addressbook';
 import { LoginPage } from '../login/login';
 import { PaymentsPage } from '../payments/payments';
+import { WallethistoryPage } from '../wallethistory/wallethistory';
+import { Storage } from '@ionic/storage';
 
 import { AuthUserService } from '../../providers/authUserService';
 
@@ -27,18 +29,14 @@ import { AuthUserService } from '../../providers/authUserService';
 export class MyaccountPage {
   tabBarElement: any;
   userInfo: any = {};
-  constructor(public navCtrl: NavController, public navParams: NavParams, private authUserService: AuthUserService) {
-	 	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+  constructor(public navCtrl: NavController, public navParams: NavParams, private authUserService: AuthUserService,public storage: Storage, private alertCtrl: AlertController) {
 
   }
 
   ionViewDidLoad() {
-		      this.tabBarElement.style.display = 'visible';
 
   } 
   ionViewWillEnter() {
-	  	 	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-		      this.tabBarElement.style.display = 'flex';
     console.log('ionViewDidLoad EditprofilePage');
       this.authUserService.getUser().then((user)=>{
           this.userInfo = user;
@@ -76,15 +74,44 @@ export class MyaccountPage {
     this.navCtrl.push(AddressbookPage);  
   }
   
-    logoutUser()
-  {
-      this.authUserService.logoutUser().then(()=>{
-          this.navCtrl.setRoot(LoginPage);  
-      });
-  }
+
   loadpayments()
   {
 	  this.navCtrl.push(PaymentsPage);  
 	  
   }
+  loadwallethistory()
+  {
+		  this.navCtrl.push(WallethistoryPage);  
+  
+  }
+  logoutUser(){
+	
+	 let alert = this.alertCtrl.create({
+            title: 'Are you sure?',
+            message: 'Do you want to logout?',
+            buttons: [
+              {
+                text: 'Cancel',
+                role: 'cancel',
+                handler: () => {
+                  
+                }
+              },
+              {
+                text: 'Yes',
+                handler: () => { 
+				this.authUserService.logoutUser().then(()=>{
+		 			this.storage.set("orderInProcessing", null);
+          this.navCtrl.setRoot(LoginPage);  
+      });
+                }
+              }
+            ]
+          });
+          alert.present();
+	
+	
+}
+
 }

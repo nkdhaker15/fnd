@@ -17,6 +17,8 @@ const configFirebase = {
     storageBucket: "food-and-drink-226310.appspot.com",
     messagingSenderId: "932547603099"
   };
+   declare var window: any; 
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -42,7 +44,22 @@ export class MyApp {
 
 		// stop disconnect watch
 		//disconnectSubscription.unsubscribe();
+			window.FirebasePlugin.grantPermission();
+		let objElement: any = this;
+		window.FirebasePlugin.onNotificationOpen(function(notification) {
+			console.log(notification);
+			//let notificationData: any = JSON.parse(notification);
+			/*let alert: any = objElement.alertCtrl.create({
+                title: 'Notification',
+                subTitle:  notification.title,
+                buttons: ['Dismiss']
+              });
+			 alert.present();*/
+		}, function(error) {
+			console.error(error);
+		});
     });
+	
 	firebase.initializeApp(configFirebase);
   } 
   showAlertForNetworkOff() {

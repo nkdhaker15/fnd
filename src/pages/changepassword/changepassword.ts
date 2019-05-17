@@ -23,7 +23,6 @@ export class ChangepasswordPage {
   editSuccessMsg = '';  
   userInfo: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private authUserService: AuthUserService, private formBuilder: FormBuilder, public loadingCtrl: LoadingController, public apiBackendService: ApiBackendService) {
-	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
       this.changePasswordForm = this.formBuilder.group({
           user_old_password: [''],
           user_new_password: [''],
@@ -34,7 +33,6 @@ export class ChangepasswordPage {
   }
 
   ionViewDidLoad() {
-	  this.tabBarElement.style.display = 'none';
       this.authUserService.getUser().then((user)=>{
           this.userInfo = user;
           

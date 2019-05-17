@@ -1,9 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform,Navbar } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
-
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
 
@@ -24,6 +23,8 @@ declare var google: any;
 })
 export class OrderprocessingPage {
 	@ViewChild('map') mapElement: ElementRef;
+    @ViewChild(Navbar) navBar: Navbar;
+
 	map: any;
 	loadingObj: any=null;
 	driverLatLng: any = {lat:0, lng:0};
@@ -41,6 +42,7 @@ export class OrderprocessingPage {
 	orderprocesPageStatus: boolean = false;
 	currentInterval: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public platform: Platform, private device: Device, private geolocation: Geolocation, public storage: Storage) {
+	  this.platform.registerBackButtonAction(this.backButtonAction.bind(this),500);
 	  	    this.platform.ready().then(() => {				
 					
 					this.initMap() ;
@@ -89,15 +91,24 @@ loadCurrentStatus() {
 				this.storage.set("orderInProcessing", null);
 				this.gotoOrderRating();
 			}else{
-					let updatelocation = new google.maps.LatLng(orderTrack.result.trans_lat,orderTrack.result.trans_long);
+if(orderTrack.result.trans_lat>0)
+			{		
+let updatelocation = new google.maps.LatLng(orderTrack.result.trans_lat,orderTrack.result.trans_long);
+let updatelocation2 = new google.maps.LatLng(orderTrack.result.trans_delivery_lat,orderTrack.result.trans_delivery_long);
+this.displayDirection(updatelocation, updatelocation2);
+this.addMarker(updatelocation,'assets/icon/scootericon.png');
+			}else{
+let updatelocation = new google.maps.LatLng(orderTrack.result.trans_seller_lat,orderTrack.result.trans_seller_long);
+let updatelocation2 = new google.maps.LatLng(orderTrack.result.trans_delivery_lat,orderTrack.result.trans_delivery_long);
+this.displayDirection(updatelocation, updatelocation2);
+}
 
-					let updatelocation2 = new google.maps.LatLng(orderTrack.result.trans_delivery_lat,orderTrack.result.trans_delivery_long);
-
-					this.displayDirection(updatelocation, updatelocation2);
 			}
   
 		});
 }
+
+
 initMap() {
 	let objElement: any = this;
   this.geolocation.getCurrentPosition({ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true }).then((resp) => {
@@ -109,7 +120,18 @@ initMap() {
    let mylocation = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
     objElement.map = new google.maps.Map(objElement.mapElement.nativeElement, {
       zoom: 15,
-      center: mylocation
+      center: mylocation,
+	   mapTypeControlOptions: {
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.HYBRID]
+    }, 
+    disableDefaultUI: true, 
+    mapTypeControl: true,
+    scaleControl: true,
+    zoomControl: true,
+    zoomControlOptions: {
+      style: google.maps.ZoomControlStyle.LARGE 
+    },
+    mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 	objElement.directionsService = new google.maps.DirectionsService();
 objElement.directionsDisplay = new google.maps.DirectionsRenderer();
@@ -122,7 +144,9 @@ objElement.loadCurrentStatus();
 addMarker(location, image) {
   let marker = new google.maps.Marker({
     position: location,
-    map: this.map
+    map: this.map,
+	color:'#000000',
+	icon:image
    
   });
   this.markers.push(marker);
@@ -172,7 +196,13 @@ deleteMarkers() {
   ionViewCanLeave() {
 	   this.orderprocesPageStatus = false;
   }
-  
+   ionViewDidLoad() {
+	   this.navBar.backButtonClick = (e:UIEvent)=>{
+     // todo something
+     this.navCtrl.push(TabsPage);
+    }
+    console.log('ionViewDidLoad SignupfinalPage');
+  }
   backButtonAction(){
 	  this.orderprocesPageStatus = false;
      this.navCtrl.setRoot(TabsPage);
@@ -180,6 +210,7 @@ deleteMarkers() {
     gotoOrderRating() {
 		this.navCtrl.push(RatingreviewPage, {order_id: this.orderInfo.order_id, orderinfo: this.orderTransInfo});
 	}
+	
 
 }
 

@@ -1,9 +1,17 @@
-<ion-content>
-<ion-list>
-  <ion-item>
-	<p>Thanks for placing order</p>			
-  </ion-item>		  
-</ion-list>
-	<ion-row padding><button ion-button full (click)="backButtonAction()" class="normal-button50">Order Tracking</button></ion-row>
+<ion-header style="display:none">
 
+  <ion-navbar>
+    <ion-title>Complete Registration</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+<div class="no-img">
+<div class="no-img-box mb-20">
+<img src="assets/imgs/thankyou.png">
+</div>
+<h3>Thanks for placing order!</h3>
+<p>Please wait until we are confirm your order</p>
+<button ion-button class="button-c mt-20" (click)="backButtonAction()">Track Order</button>
+</div>
 </ion-content>

@@ -5,6 +5,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 
 /**
@@ -31,8 +32,19 @@ export class AddaddressPage {
   map: any;
      loading: any;
    showothername:boolean=false;
+   userlocation:any={};
   address_latlng: any = {lat: 0, lng: 0};
-  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder,private ngZone: NgZone, public geolocation: Geolocation, private platform: Platform) {
+  errormessage:any='';
+  constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private formBuilder: FormBuilder,private ngZone: NgZone, public geolocation: Geolocation, private platform: Platform,private diagnostic: Diagnostic) {
+	  
+	   this.authUserService.getUserLocation().then((data)=>{
+         console.log("userlocation:: ", data);
+          if(data != null && data != undefined) {
+              this.userlocation = data;
+             // this.loadAddresses();
+          }         
+          
+      });
 	  
 	   this.loading = this.loadingCtrl.create({
 					content: 'Please wait...'
@@ -214,11 +226,15 @@ placeToAddress(place){
 		  this.loadMap(this.address_latlng['lat'], this.address_latlng['lat']);
 	  }else{
 			this.geolocation.getCurrentPosition().then(result => {
-				console.log(result.coords.latitude);
+				//console.log(result.coords.latitude);
 			  console.log(result.coords.longitude);
+			  this.address_latlng['lat'] = result.coords.latitude;
+			  this.address_latlng['lng'] = result.coords.longitude;
+			  
 			  this.loadMap(result.coords.latitude, result.coords.longitude);
 			  
-			   
+					  console.log(this.address_latlng,"test");
+   
 		  this.geocodeUserAddress({
 			  lat: result.coords.latitude,
 			  lng: result.coords.longitude
@@ -256,7 +272,7 @@ placeToAddress(place){
     
         let mapOption = {
           center: latLng,
-          zoom: 14,
+          zoom: 17,
           mapTypeId:'roadmap',
           disableDefaultUI: true
         }
@@ -302,7 +318,36 @@ placeToAddress(place){
 	  
   ionViewWillEnter() {	  	 	      
      this.platform.ready().then(() => {
-          this.initPage();
+		 
+		  this.diagnostic.getPermissionAuthorizationStatus(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((status) => {
+      
+      if (status != this.diagnostic.permissionStatus.GRANTED) {
+        this.diagnostic.requestRuntimePermission(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((data) => {
+            if(data == this.diagnostic.permissionStatus.GRANTED) {
+				  this.diagnostic.isLocationEnabled().then((isEnabled) => {
+  if(!isEnabled){
+      //handle confirmation window code here and then call switchToLocationSettings
+    this.diagnostic.switchToLocationSettings();
+  }else{
+       this.initPage();
+  }});
+			 
+		    }
+        })
+      } else {
+		    this.diagnostic.isLocationEnabled().then((isEnabled) => {
+  if(!isEnabled){
+      //handle confirmation window code here and then call switchToLocationSettings
+    this.diagnostic.switchToLocationSettings();
+  }else{
+        this.initPage();
+  }});
+      }
+    }, (statusError) => {
+      console.log("statusError");
+      console.log(statusError);
+    });
+          
           
         });
       this.authUserService.getUser().then((user)=>{
@@ -345,6 +390,31 @@ placeToAddress(place){
 	  }
 	  credentials['ab_lat'] = this.address_latlng['lat'];
 		credentials['ab_long'] =   this.address_latlng['lng'];
+		
+		if( credentials['ab_lat']=='')
+		{
+			this.errormessage ='Please drag n drop on map for accuracy';
+			return;
+		}
+		if( credentials['ab_address']=='')
+		{
+			this.errormessage ='Please Enter Location';
+			return;
+		}
+		if( credentials['ab_houseno']=='')
+		{
+			this.errormessage ='Please Enter HOUSE / FLAT NO.';
+			return;
+		}
+		if( credentials['ab_locality']=='')
+		{
+			this.errormessage ='Please Enter LANDMARK';
+			return;
+		}
+		
+		
+		
+		
 						  this.loading.present();
 
      this.apiBackendService.addUserAddresses(credentials).then((result: any) => {         

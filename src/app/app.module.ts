@@ -17,10 +17,12 @@ import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { OrderprocessingPage } from '../pages/orderprocessing/orderprocessing';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { DetectlocationPage } from '../pages/detectlocation/detectlocation';
 import { SearchdataPage } from '../pages/searchdata/searchdata';
 import { PaymentsPage } from '../pages/payments/payments';
+import { WallethistoryPage } from '../pages/wallethistory/wallethistory';
 import { RatingreviewPage } from '../pages/ratingreview/ratingreview';
 
 import { HomePage } from '../pages/home/home';
@@ -91,6 +93,7 @@ import { DisclaimerPage } from '../pages/disclaimer/disclaimer';
 	PaymentsPage,
 	ThankyouPage,
 	DisclaimerPage,
+	WallethistoryPage,
 	OrderprocessingPage
   ],
   imports: [
@@ -133,7 +136,8 @@ import { DisclaimerPage } from '../pages/disclaimer/disclaimer';
 	ThankyouPage,
 	DisclaimerPage,
 	RatingreviewPage,
-	OrderprocessingPage
+	OrderprocessingPage,
+	WallethistoryPage
 	
   ],
   providers: [
@@ -150,6 +154,7 @@ import { DisclaimerPage } from '../pages/disclaimer/disclaimer';
 	  Device,
 	Diagnostic,
 Network,	
+InAppBrowser,
    /* Geolocation,  
     NativeGeocoder,  
       */

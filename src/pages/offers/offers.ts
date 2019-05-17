@@ -24,9 +24,8 @@ export class OffersPage {
     userInfo: any = {};
 	inputPromoCode: any ='';
 	selectedCouponInfo: any = null;
-	fromCartStatus: boolean = false;
+ 	fromCartStatus: boolean = false;
 	constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public viewCtrl: ViewController, private formBuilder: FormBuilder) {
-	  	  	  	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 						  this.offerForm = this.formBuilder.group({
 							  coupon_name: ['']
 							});
@@ -68,7 +67,6 @@ loadOffers() {
 }    
 
   ionViewDidLoad() {
-	  	  	  	  	      this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad OffersPage');
   }
   applyPromoCodeId(couponInfo)

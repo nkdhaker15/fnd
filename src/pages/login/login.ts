@@ -6,12 +6,11 @@ import { TabsPage } from '../tabs/tabs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
-
+import { DetectlocationPage } from '../detectlocation/detectlocation';
 import { SignupfinalPage } from '../signupfinal/signupfinal';
-
+import { CartPage } from '../cart/cart';
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
-
 import { ForgotpasswordPage } from '../forgotpassword/forgotpassword';
 /**
  * Generated class for the LoginPage page.
@@ -27,16 +26,28 @@ import { ForgotpasswordPage } from '../forgotpassword/forgotpassword';
 })
 export class LoginPage {
   credentialsForm: FormGroup;
-  loginErrorMsg: any = '';    
+  loginErrorMsg: any = ''; 
+   userLocationInfo: any = {};
+  cartfrom:any='';
   constructor(public navCtrl: NavController, public navParams: NavParams, public statusBar: StatusBar, public apiBackendService: ApiBackendService, private formBuilder: FormBuilder, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public fb: Facebook, private googlePlus: GooglePlus) {
     this.credentialsForm = this.formBuilder.group({
       email: [''],
       password: ['']
-    });
+    });	
+	if(this.navParams.get("from"))
+	{
+	     this.cartfrom = this.navParams.get("from");
+	}
+	 this.authUserService.getUser().then((user)=>{
+          console.log("user:: ", user);
+          if(user != null && user != undefined) {
+              this.navCtrl.setRoot(TabsPage);
+          }         
+          
+      });
   }
-
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+    console.log('ionViewDidLoad LoginPage',this.cartfrom);
   }
     
 ionViewWillEnter() {	  	 	      
@@ -67,7 +78,12 @@ ionViewWillEnter() {
               this.loginErrorMsg = result.notification;
           }else if(result.message == 'ok') {
               this.authUserService.saveUser(result.results).then((status)=>{
-                  this.navCtrl.setRoot(TabsPage);
+				    if( this.cartfrom!='')
+			  {
+				  				   this.navCtrl.push(CartPage);	
+			  }else{
+				   this.navCtrl.setRoot(TabsPage);	
+			  }
               });
           } 
         }, (err) => { 
@@ -91,7 +107,12 @@ ionViewWillEnter() {
                 this.navCtrl.push(SignupfinalPage, {user_data: user_data}); 
           }else if(result.message == 'ok') {
               this.authUserService.saveUser(result.result).then((status)=>{
-                  this.navCtrl.setRoot(TabsPage);
+				    if( this.cartfrom!='')
+			  {
+				  				   this.navCtrl.push(CartPage);	
+			  }else{
+				   this.navCtrl.setRoot(TabsPage);	
+			  }
               });
           } 
         }, (err) => { 
@@ -134,7 +155,21 @@ ionViewWillEnter() {
                 this.navCtrl.push(SignupfinalPage, {user_data: user_data}); 
           }else if(result.message == 'ok') {
               this.authUserService.saveUser(result.result).then((status)=>{
-                  this.navCtrl.setRoot(TabsPage);
+				  this.authUserService.getUserLocation().then((userLocationInfo)=>{
+          if(userLocationInfo != null && userLocationInfo != undefined) {
+			  if( this.cartfrom!='')
+			  {
+				  				   this.navCtrl.push(CartPage);	
+			  }else{
+				   this.navCtrl.setRoot(TabsPage);	
+			  }
+             		  
+          }else{
+			  
+			 this.navCtrl.push(DetectlocationPage);  
+		  }     
+      });    
+                 // this.navCtrl.setRoot(TabsPage);
               });
           } 
         }, (err) => { 
@@ -150,7 +185,14 @@ ionViewWillEnter() {
   }
   logindata()
   {
-	      this.navCtrl.setRoot(TabsPage);
+	  this.authUserService.getUserLocation().then((userLocationInfo)=>{
+          if(userLocationInfo != null && userLocationInfo != undefined) {
+              this.navCtrl.setRoot(TabsPage);			  
+          }else{
+			  
+			 this.navCtrl.push(DetectlocationPage);  
+		  }     
+      });    
 	  
   }
 

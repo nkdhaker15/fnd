@@ -1,28 +1,19 @@
 <ion-content class="no-scroll">
 <div ion-fixed>
 <div class="header-user-login">
-<ion-grid>
-<ion-row >
-<ion-col text-center>
-<ion-slides   loop="true" speed="500" class="bannerstyle" pager>
-<ion-slide *ngFor="let slideitem of slideImages">
-<img src="{{imageBaseUrl}}{{slideitem.slider_image}}" style="width:80%">
-<div class="slider-caption">
-<h4 class="open_sans_semi">{{slideitem.slider_title}}</h4>
-<p class="open-sans-normal">{{slideitem.slider_desc}}</p>
-</div> 
-</ion-slide>
 
+<ion-slides   loop="true" speed="500" class="bannerstyle" >
+<ion-slide *ngFor="let slideitem of slideImages" class="clsbackground" [style.backgroundImage]="'url(' + imageBaseUrl+slideitem.slider_image + ')'" 
+>
+</ion-slide>
 </ion-slides>
-</ion-col>
-</ion-row>
-</ion-grid>
+
 </div>
 <div class="footer-user-login">
 <ion-grid >
 <ion-row>
 <ion-col text-center>
-<button ion-button type="button"  class="google" (click)="detectLocation()">
+<button ion-button type="button"  class="google" (click)="detectLocation()" style="margin-top:15px">
 <img src="assets/icon/target.png" style="width:25px;margin-right:5px">
 <span class="mt-3 open-sans-normal" >Detect my location</span>
 </button>

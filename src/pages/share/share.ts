@@ -22,7 +22,6 @@ export class SharePage {
    userInfo: any = {};
    userShareInfo: any = {};
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, private socialSharing: SocialSharing) {
-	  	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 
   }
   ionViewWillEnter() {	  	 	      
@@ -74,7 +73,6 @@ loadShare() {
   }
     
   ionViewDidLoad() {
-	  	  	      this.tabBarElement.style.display = 'none';
 
     console.log('ionViewDidLoad SharePage');
   }

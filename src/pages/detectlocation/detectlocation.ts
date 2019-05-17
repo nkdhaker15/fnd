@@ -39,18 +39,33 @@ export class DetectlocationPage {
   }
   tryGeolocation() {
     this.diagnostic.getPermissionAuthorizationStatus(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((status) => {
-      console.log("AuthorizationStatus");
-      console.log(status);
+      //console.log("AuthorizationStatus");
+      //console.log(status);
       if (status != this.diagnostic.permissionStatus.GRANTED) {
         this.diagnostic.requestRuntimePermission(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((data) => {
           console.log("getCameraAuthorizationStatus");
           console.log(data);
 		  if(data == this.diagnostic.permissionStatus.GRANTED) {
-			  this.tryGeolocationAfterPermission();
+			    this.diagnostic.isLocationEnabled().then((isEnabled) => {
+  if(!isEnabled){
+      //handle confirmation window code here and then call switchToLocationSettings
+    this.diagnostic.switchToLocationSettings();
+  }else{
+        this.tryGeolocationAfterPermission();
+  }});
+  
+			//  this.tryGeolocationAfterPermission();
 		  }
         })
       } else {
+		    this.diagnostic.isLocationEnabled().then((isEnabled) => {
+  if(!isEnabled){
+      //handle confirmation window code here and then call switchToLocationSettings
+    this.diagnostic.switchToLocationSettings();
+  }else{
         this.tryGeolocationAfterPermission();
+  }});
+       // this.tryGeolocationAfterPermission();
       }
     }, (statusError) => {
       console.log("statusError");
@@ -81,7 +96,7 @@ export class DetectlocationPage {
     this.map.setCenter(pos);*/
   }).catch((error) => {
 	  loading.dismiss();
-    console.log('Error getting location', error);
+   // console.log('Error getting location', error);
   });
 } 
  selectSearchResult(item){
@@ -92,13 +107,16 @@ export class DetectlocationPage {
  
 } 
  placeToAddress(place){
+	 console.log(place,'checkresult');
         var address: any = {};
-        place.address_components.forEach(function(c) {
+		
+		/*
+       place.address_components.forEach(function(c) {
 			let types: any = c.types; 
 			let lastType: any = types[types.length-1];
 			address[types[0]] = c;
 			address[lastType] = c;
-            /*switch(c.types[0]){
+           /* switch(c.types[0]){
                 case 'street_number':
                     address.StreetNumber = c;
                     break;
@@ -118,7 +136,7 @@ export class DetectlocationPage {
                     address.Country = c;
                     break;
                
-            }*/
+            }
         });
 		address['address']= '';
 		
@@ -129,8 +147,17 @@ export class DetectlocationPage {
 			address['address'] += address['sublocality_level_1'].long_name;
 		}else if(address['locality'] != null && address['locality'] != undefined) {
 			address['address'] += address['locality'].long_name;
+		}*/
+		if(place.fullAddress!=null && place.fullAddress!=undefined )
+		{
+		address['address']= place.fullAddress;	
+		}
+		if(place.formatted_address!=null && place.formatted_address!=undefined )
+		{
+		address['address']= place.formatted_address;	
 		}
 		
+	//	place.
         return address;
     } 
 
@@ -147,6 +174,8 @@ export class DetectlocationPage {
           lng: results[0].geometry.location.lng
       };
 	  let address: any = this.placeToAddress(results[0]);
+	  console.log(address,'myaddress');
+
 	  this.ngZone.run(()=>{
 		this.currentSelectedAddress = address['address'];  
 		
@@ -154,7 +183,7 @@ export class DetectlocationPage {
 	  
 	  this.userLocationInfo = {address: address['address'], fullAddress: results[0].formatted_address, lat: results[0].geometry.location.lat(),
           lng: results[0].geometry.location.lng()};
-	  console.log("results:: ", results);
+	  //console.log("results:: ", results);
       
 	  this.setUserLocation();
     }
@@ -200,7 +229,7 @@ export class DetectlocationPage {
 }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DetectlocationPage');
+   // console.log('ionViewDidLoad DetectlocationPage');
   }
 
 }

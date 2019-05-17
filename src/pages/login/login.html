@@ -4,7 +4,15 @@
 <ion-grid>
 <ion-row >
 <ion-navbar>
-<span class="skip-right" (click)="logindata()">SKIP</span>
+<ion-row>
+<ion-col col-12>
+<ion-buttons end class="icon-button-top" (click)="logindata()" style="display:none">
+<button ion-button icon-only  class="cartimg-box">
+SKIP
+</button>
+</ion-buttons>
+</ion-col>
+</ion-row>
 </ion-navbar>
 </ion-row>
 <ion-list style="margin-left:10px;margin-right:10px;">

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController ,Platform,AlertController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
-
+import { InAppBrowser ,InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 /*import { Geolocation } from '@ionic-native/geolocation';*/
 /*import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';*/
 
@@ -32,12 +32,52 @@ export class AftersplashPage {
   geocoder: any;
   userLocationInfo: any = {};
    slideImages: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, public apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, private authUserService: AuthUserService, private geolocation: Geolocation, private diagnostic: Diagnostic) {
+  // showdashboard:boolean=true;
+  constructor(public navCtrl: NavController, public navParams: NavParams,public statusBar: StatusBar, public apiBackendService: ApiBackendService,  public loadingCtrl: LoadingController, private authUserService: AuthUserService, private geolocation: Geolocation, private diagnostic: Diagnostic,public platform: Platform,private alertCtrl: AlertController,private iab: InAppBrowser) {
 	     statusBar.hide();
+		 platform.ready().then(() => {
 
+});
+this.updatepopup();
+  }
+  updatepopup()
+  {
+
+	  this.apiBackendService.getApiUpdate().then((data: any)=>{
+	if(data.version>1.7)
+	{
+		
+		this.confirmformat();
+	}
+});
+	  
+  }
+  
+  confirmformat()
+  {
+	  	  		      let self = this;
+
+	  let alert = this.alertCtrl.create({
+            title: 'App Update Available',
+            message: 'Please Update App by clicking ok button',
+			enableBackdropDismiss: false,
+            buttons: [
+             {
+                text: 'Ok',
+                handler: () => {
+	             this.iab.create('https://play.google.com/store/apps/details?id=com.liqourcart&hl=en','_system');
+				 //this.showdashboard =false;
+				 self.confirmformat();
+                }
+              }
+            ]
+          });
+          alert.present();
   }
  
   ionViewDidLoad() {
+	  
+	
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
@@ -48,7 +88,11 @@ export class AftersplashPage {
           
 		  		   this.geocoder = new google.maps.Geocoder();
           if(user != null && user != undefined) {
+	
+ 
+		
               this.navCtrl.setRoot(TabsPage);
+			  
           }         
           
       });
@@ -70,21 +114,36 @@ export class AftersplashPage {
 	   this.navCtrl.push(LoginPage);
   }
   detectLocation() {
+	
     this.diagnostic.getPermissionAuthorizationStatus(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((status) => {
       
       if (status != this.diagnostic.permissionStatus.GRANTED) {
         this.diagnostic.requestRuntimePermission(this.diagnostic.permission.ACCESS_FINE_LOCATION).then((data) => {
             if(data == this.diagnostic.permissionStatus.GRANTED) {
-			  this.detectLocationAfterPermission();
+				  this.diagnostic.isLocationEnabled().then((isEnabled) => {
+  if(!isEnabled){
+      //handle confirmation window code here and then call switchToLocationSettings
+    this.diagnostic.switchToLocationSettings();
+  }else{
+        this.detectLocationAfterPermission();
+  }});
+			 
 		    }
         })
       } else {
+		    this.diagnostic.isLocationEnabled().then((isEnabled) => {
+  if(!isEnabled){
+      //handle confirmation window code here and then call switchToLocationSettings
+    this.diagnostic.switchToLocationSettings();
+  }else{
         this.detectLocationAfterPermission();
+  }});
       }
     }, (statusError) => {
       console.log("statusError");
       console.log(statusError);
     });
+	  
   }
   detectLocationAfterPermission() {
     let loading = this.loadingCtrl.create({
@@ -190,4 +249,5 @@ entermanuallocation()
   {
    this.navCtrl.push(DetectlocationPage);	    
   }    
+ 
 }

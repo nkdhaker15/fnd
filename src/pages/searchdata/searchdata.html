@@ -15,16 +15,19 @@
 
 <ion-content >
 
-<ion-card style="height: 250px;color: #fff;text-align: left;box-shadow: none" *ngFor="let merchantItem of dashboardData.merchant" (click)="productListPage(merchantItem)">
-   <img src="{{dashboardData.seller_url}}{{merchantItem.seller_image}}" style="height: 150px;width: 100%;"> 
-<div class="resto-meta" style="margin-left:5px;">
-<p style="font-size: 16px;font-weight:500;">{{merchantItem.se_store_name}}</p>
-<p style="color:#ccc" class="giveMeEllipsis">{{merchantItem.seller_store_address}}...</p>
-
-<p style="margin-top:5px;"><span style="float:left;"><img src="assets/icon/time.png" style="width:16px; float:left; margin-right:5px;margin-top: 2px;"> 40-50 MINS&nbsp;&nbsp; |&nbsp;&nbsp;3.4</span>  <span  style="float:left;"> <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;float:left;margin-top: 2px;"> (500+)</span></p>
-
+<div class="page-box mb-10">
+<div class="product-home-box" *ngFor="let merchantItem of dashboardData.merchant" (click)="productListPage(merchantItem)">
+<div class="product-home-box-img"><img src="{{dashboardData.seller_url}}{{merchantItem.seller_image}}">
+<div class="overlay" *ngIf="checkrestaurentclosed(merchantItem)"><div class="rs-close">Closed</div></div>
+<div class="overlay-ex" *ngIf="getInThisArea(userLocationInfo.lat,userLocationInfo.lng,merchantItem.seller_latitude,merchantItem.seller_longitude) && !checkrestaurentclosed(merchantItem)"><div class="rs-close">Out For Delivery Area</div></div>
 
 </div>
-</ion-card>
-
+<div class="product-home-box-content">
+<h3>{{merchantItem.se_store_name}}</h3>
+<p class="giveMeEllipsis">{{merchantItem.seller_store_address}}...</p>
+<span><ion-icon name="time"></ion-icon> {{merchantItem.seller_deliver_duration}} &nbsp;&nbsp; <span *ngIf="merchantItem.seller_rate>0">|&nbsp;&nbsp;{{merchantItem.seller_rate}} <img src="assets/icon/star.png" style="width:16px;"></span></span>
+ <span   *ngIf="merchantItem.seller_rate>0">  ({{merchantItem.seller_rate_count}}+)</span>
+</div>
+</div>
+</div>
 </ion-content>

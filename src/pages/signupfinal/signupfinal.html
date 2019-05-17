@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content  padding >
-    
+    <p class="error">{{registerErrorMsg}}</p>
 <form [formGroup]="registerForm">     
     <ion-list>
       <ion-item class="p0">
@@ -33,12 +33,12 @@
       </ion-item>
       <ion-item class="p0">
         <ion-label color="lightCCC" floating>Email Address</ion-label>
-        <ion-input type="text" [formControl]="registerForm.controls['user_email']">
+        <ion-input type="email" [formControl]="registerForm.controls['user_email']">
     </ion-input>
       </ion-item>
       <ion-item class="p0">
         <ion-label color="lightCCC" floating>Password</ion-label>
-        <ion-input  type="text" [formControl]="registerForm.controls['user_password']">
+        <ion-input  type="password" [formControl]="registerForm.controls['user_password']">
     </ion-input>
       </ion-item>
       </ion-list>

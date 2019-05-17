@@ -30,7 +30,7 @@ export class ProductChildPage {
  
    ionViewWillEnter() {
 	this.productInfo = this.navParams.get('productInfo');     	 	      
-    
+    console.log(this.productInfo);
       /*this.authUserService.getUser().then((user)=>{
           this.userInfo = user;
           
@@ -42,9 +42,10 @@ export class ProductChildPage {
 
 	  this.selectedChild = child;
 	  this.selectedChildId = child.pmp_id;
+	   this.dismiss();
   }   
   selectThisItem() {
-	  this.dismiss();
+	 
   }
   dismiss() {
    

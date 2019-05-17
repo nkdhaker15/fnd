@@ -12,20 +12,24 @@
 
 </ion-header>
 
-
-<ion-content >
-<img src="assets/imgs/sharearn.jpg">
-<h5>Tell your friend about F & D</h5>
-<p class="textshare" [innerHtml]="userShareInfo.text_share_screen"></p>
-<ion-row>
-<ion-col style="text-align:center;">
-<div class="refferal-code">
- {{userShareInfo.user_share_code}}
+<ion-content>
+<div class="refer">
+<div class="refer-header">
+<h3>Invite your friends</h3>
+<p>Refer your friends to F&D <br>with your unique referral code.</p>
 </div>
-</ion-col>
-</ion-row>
-<p  ion-fixed class="fixed-bottom-button">
-<button ion-button  (click)="shareApp()" full [color]="primary"  class="normal-button50">Share & Earn</button>
-</p>
-
+<div class="refer-img">
+<img src="assets/imgs/refer-earn.png">
+</div>
+<div class="referal-code-block-content" [innerHtml]="userShareInfo.text_share_screen">
+<p >Refer a friend & we'll give you & your buddy Rs. 100 off on your next orders.</p>
+<span>Valid till 31st January 2019 TCA.</span>
+</div>
+<div class="referal-code-block">
+{{userShareInfo.user_share_code}}
+</div>
+</div>
 </ion-content>
+<ion-footer class="referal-footer">
+<button ion-button full class="button-refer01"  (click)="shareApp()">INVITE AND EARN</button>
+</ion-footer>

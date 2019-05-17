@@ -6,6 +6,8 @@ import { HomePage } from '../home/home';
 import { ExplorePage } from '../explore/explore';
 import { LoginPage } from '../login/login';
 import { DisclaimerPage } from '../disclaimer/disclaimer';
+import { Storage } from '@ionic/storage';
+import { SearchdataPage } from '../searchdata/searchdata';
 
 import { AuthUserService } from '../../providers/authUserService';
 
@@ -21,13 +23,16 @@ export class TabsPage {
   tab5Root = DisclaimerPage;
   tabBarElement: any;
   userInfo: any = {};
-
-  constructor(public statusBar: StatusBar,public navCtrl: NavController,private authUserService: AuthUserService) {
+  searchdataobj: any = {};
+   hidetab:boolean=false;
+  constructor(public statusBar: StatusBar,public navCtrl: NavController,private authUserService: AuthUserService,public storage: Storage) {
   statusBar.show();
 	   
       statusBar.overlaysWebView(false);
       statusBar.backgroundColorByHexString('#ffffff');
 statusBar.styleDefault();
+
+this.navCtrl.setRoot(HomePage);
 	  
   }
   ionViewDidLoad() {
@@ -35,9 +40,8 @@ statusBar.styleDefault();
 
   } 
   ionViewWillEnter() {
-	  	 	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 				  if (this.tabBarElement) {
-		      this.tabBarElement.style.display = 'flex';
+		      this.tabBarElement.style.display = 'none';
 				  }
 	  
       this.authUserService.getUser().then((user)=>{
@@ -67,9 +71,26 @@ statusBar.styleDefault();
 	  	   this.navCtrl.push(MyaccountPage);    
 	  }else{
 		  	   this.navCtrl.push(LoginPage);    
-	  
+	   
 		  
 	  }
+  }
+  myMethoddisclaimer()
+  {		  	 
+         this.storage.get("allow_drink_status").then( (data)=>{
+					  if(data != null) {
+						   this.searchdataobj.type = 3;
+						 this.searchdataobj.title = 'Popular Liquor Shop Near You';
+	  	                 this.searchdataobj.id = 0;
+
+						  this.navCtrl.push(SearchdataPage,{searchdataobj:this.searchdataobj}); 
+						  
+					  }else{
+										this.navCtrl.setRoot(DisclaimerPage);	  
+		
+					  }
+					  
+			});  
   }
   
 }

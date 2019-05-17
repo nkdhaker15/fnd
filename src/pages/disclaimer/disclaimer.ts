@@ -17,12 +17,10 @@ import { Storage } from '@ionic/storage';
 export class DisclaimerPage {
   tabBarElement: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
-	    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 
   }
   
   ionViewWillEnter() {	
-  this.tabBarElement.style.display = 'none';
   		this.storage.get("allow_drink_status").then( (data)=>{
 					  if(data != null) {
 						this.navCtrl.setRoot(TabsPage);	  

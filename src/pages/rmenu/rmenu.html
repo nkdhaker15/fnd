@@ -11,7 +11,7 @@
 <ion-row *ngIf="subHeaderShow && category_list.length > 1">
 
 <ion-col style="overflow-x:scroll;position:relative;padding:0px">
-<ion-slides slidesPerView="6.5" #catTabSlides class="menu-slide">
+<ion-slides slidesPerView="5" #catTabSlides class="menu-slide">
                     <ion-slide (click)="filterData(0)" >
                         <p [class.tabcat-selected]="selectedCategoryId === 0" style="font-size: 13px;padding: 10px 0px;margin: 0;color:#666;">Recommended</p>
                     </ion-slide>
@@ -46,7 +46,9 @@
 </div>
 <div class="merchent-details-content">
 <h3>{{sellerInfo.se_store_name}}</h3>
-<div class="overlay-slide " *ngIf="sellerInfo.dh_close_status"><span class="overlay-slide-text">Closed</span></div>
+<div  *ngIf="dataClosestatus" ><span class="overlay-slide-text" style="position:relative;">Closed</span></div>
+<div   *ngIf="getInThisArea(userLocationInfo.lat,userLocationInfo.lng,sellerInfo.seller_latitude,sellerInfo.seller_longitude)" ><span class="overlay-slide-text" style="position:relative;">Out Of Delivery Area</span></div>
+
 <div class="merchent-location giveMeEllipsis">{{sellerInfo.seller_store_address}}</div>
 <div class="merchent-delivery-details">
 <img src="assets/icon/clock.png" style="width:16px;margin-right:5px;"> {{sellerInfo.seller_deliver_duration}} <span *ngIf="sellerInfo.seller_rate>0">| {{sellerInfo.seller_rate}} <img src="assets/icon/star.png" style="width:16px; margin-right:5px;margin-left:5px;"> ({{sellerInfo.seller_rate_count}}+)</span>
@@ -59,34 +61,46 @@
 
 <div class="container-white" >
 <div class="media p10">
-<ion-row id="cat_div_0">
+<ion-row id="cat_div_0"  *ngIf="productList.length>0">
 <ion-col>
 <h5>Recommended</h5>
 </ion-col>
 </ion-row>
 
+<div class="pr-box">
 <ion-row>
-<ion-col col-6 class="p5 " style="margin-bottom:15px" *ngFor="let productItem of productList; let i = index"  #slidingItem>
-<img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;height:160px;margin-bottom:5px;">
-<span style="font-size:9px; color:#666;">{{productItem.brand_name}}</span>
-<p class="menu-product-title giveMeEllipsis2">{{productItem.product_name}}</p>
-<div class="product-footer">
-<div class=" pull-left " style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span><br> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
-<div style="border: 1px solid #d8d8d8; width:75px" class="pull-right" *ngIf="sellerInfo.dh_close_status == 0">
-<div class="qty-badge" *ngIf="isItemQty(productItem)">
-<ion-icon name="remove" (click)="decrement(i)" ></ion-icon>
-{{getItemQty(i)}}
-<ion-icon name="add" (click)="increment(i)" ></ion-icon>
+<ion-col col-6 class="p07" *ngFor="let productItem of productList; let i = index"  #slidingItem>
+<div class="pr-box-product">
+<div class="pr-box-product-img">
+<img src="{{product_image_path}}{{productItem.product_image1}}">
 </div>
-<div  *ngIf="productItem.child.length==0 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCartPrepare(productItem)" >ADD</div>
-<div  *ngIf="productItem.child.length==1 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCartPrepare(productItem)" >ADD</div>
-<div *ngIf="productItem.child.length>1 && !isItemQty(productItem)"    style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px; position:relative;" (click)="openProductChildModal(productItem)">ADD<span class="plus-icon">+</span></div>
+<div class="pr-box-product-content" >
+<span>{{productItem.brand_name}}</span>
 
+<div class="pro-title giveMeEllipsis2">{{productItem.product_name}} ...</div>
+<div class="pro-box-footer">
+<div class="pro-box-footer-price">
+<div class="price-new">₹{{productItem.pmp_net_price}}/<span style="font-weight:normal;color:#666;">{{productItem.child[0].unit_name}}</span>
 </div>
+<div class="price-old" *ngIf="productItem.pmb_selling_price!=productItem.pmp_net_price">₹{{productItem.pmb_selling_price}}</div>
+</div>
+<div class="pro-box-footer-qty" *ngIf="!dataClosestatus && !bind_error">
+<div class="oty-add" *ngIf="productItem.child.length==0 && !isItemQty(productItem)" (click)="addToCartPrepare(productItem)">ADD</div>
+<div class="oty-add" *ngIf="productItem.child.length==1 && !isItemQty(productItem)" (click)="addToCartPrepare(productItem)">ADD</div>
+<div class="oty-add" *ngIf="productItem.child.length>1 && !isItemQty(productItem)" (click)="openProductChildModal(productItem)">ADD <span class="plus-icon">+</span></div>
 
+<div class="oty-addpm" *ngIf="isItemQty(productItem) && !dataClosestatus && !bind_error">
+<div class="pmb" (click)="decrement(i)"><img src="assets/imgs/substract.png"></div>
+<div class="pmb-number">{{getItemQty(i)}}</div>
+<div class="pmb" (click)="increment(i)"><img src="assets/imgs/add.png"></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </ion-col>
 </ion-row>
+</div>
 </div>
 </div>
 
@@ -106,22 +120,29 @@
 <ion-row  *ngFor="let productItem of allresult[category.category_id]; let i = index" class="border-bottom-1" style="padding:10px 0px">
 <ion-col col-9>
 <span style="font-size:9px; color:#666;">{{productItem.brand_name}}</span>
-<p class="menu-product-title-full">{{productItem.product_name}}</p>
-<div style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}</span> <span style="text-decoration: line-through; color:#666;font-size:9px;">₹{{productItem.pmb_selling_price}}</span> </div>
-<div style="border: 1px solid #d8d8d8; width:75px;margin-top:10px" *ngIf="sellerInfo.dh_close_status==0">
-<div class="qty-badge" *ngIf="isItemQty(productItem)"  >
-<ion-icon name="remove" (click)="decrementCatItem(i, category.category_id)" ></ion-icon>
-{{getCatItemQty(i, category.category_id)}}
-<ion-icon name="add" (click)="incrementCatItem(i, category.category_id)" ></ion-icon>
-</div>
-<div  *ngIf="productItem.child.length==0 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.pmp_net_price, 0, '')" >ADD</div>
-<div  *ngIf="productItem.child.length==1 && !isItemQty(productItem)" style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px;"  (click)="addToCart(productItem,productItem.child[0].pmp_net_price, productItem.child[0].pmp_id, productItem.child[0].unit_name)" >ADD</div>
-<div *ngIf="productItem.child.length>1 && !isItemQty(productItem)"    style="width:100%;padding:5px; text-align:center;font-weight: bold;font-size: 13px;color: #7BC242;height: 26px; position:relative;" (click)="openProductChildModal(productItem)">ADD<span class="plus-icon">+</span></div>
+<span  style="font-size:9px; color:#666;">{{productItem.child[0].unit_name}}</span>
 
+<p class="menu-product-title-full" style="height:auto">{{productItem.product_name}}  </p>
+<div style=""><span style="font-weight:bold;font-size:13px;color:#333">₹{{productItem.pmp_net_price}}/<span style="font-weight:normal;color:#666;" >{{productItem.child[0].unit_name}}</span>
+</span> <span style="text-decoration: line-through; color:#666;font-size:9px;" *ngIf="productItem.pmb_selling_price!=productItem.pmp_net_price">₹{{productItem.pmb_selling_price}}</span> </div>
+
+<div class="pro-box-footer-qty" *ngIf="!dataClosestatus && !bind_error" style="float:left;margin-top:10px;">
+<div class="oty-add" *ngIf="productItem.child.length==0 && !isItemQty(productItem)" (click)="addToCartPrepare(productItem)">ADD</div>
+<div class="oty-add" *ngIf="productItem.child.length==1 && !isItemQty(productItem)" (click)="addToCartPrepare(productItem)">ADD</div>
+<div class="oty-add" *ngIf="productItem.child.length>1 && !isItemQty(productItem)" (click)="openProductChildModal(productItem)">ADD <span class="plus-icon">+</span></div>
+
+<div class="oty-addpm" *ngIf="isItemQty(productItem) && !dataClosestatus && !bind_error">
+<div class="pmb" (click)="decrementCatItem(i, category.category_id)"><img src="assets/imgs/substract.png"></div>
+<div class="pmb-number">{{getCatItemQty(i, category.category_id)}}</div>
+<div class="pmb" (click)="incrementCatItem(i, category.category_id)"><img src="assets/imgs/add.png"></div>
 </div>
+</div>
+
+
+
 </ion-col>
 <ion-col col-3>
-<img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;height:80px;">
+<img src="{{product_image_path}}{{productItem.product_image1}}" style="width:100%;height:80px;" *ngIf="productItem.product_image1!=''">
 </ion-col>
 </ion-row>
 </div>
@@ -132,6 +153,20 @@
 
 
 
+
+
+ <ion-row class="container-gray" style="margin-bottom: 67px !important;" *ngIf="sellerInfo.seller_fssai!=''">
+ <ion-col col-4>
+<img src="assets/imgs/fssailogo.png">
+ </ion-col>
+ 
+ <ion-col col-6>
+<p style="padding:10px;color:#9e9e9e">{{sellerInfo.seller_fssai}}</p>
+ </ion-col>
+ </ion-row>
+ 
+</ion-content>
+<ion-footer>
 <p  ion-fixed class="fixed-bottom-button" (click)="viewcart()" *ngIf="cartItems.length>0 && sellerInfo.dh_close_status == 0">
 <ion-row class="container-white border-bottom-1" style="-webkit-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
 -moz-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
@@ -150,7 +185,4 @@ box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);">
 
 </ion-row>
 </p>
-
- 
- 
-</ion-content>
+</ion-footer>

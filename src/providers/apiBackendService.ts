@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 */
 @Injectable()
 export class ApiBackendService {
-  apiUrl = 'http://shopkiee.com/project/fandd/webapi';
+  apiUrl = 'http://foodndrinks.in/webapi';
   constructor(public http: Http) {
     console.log('Hello RestProvider Provider');
   }
@@ -22,7 +22,22 @@ export class ApiBackendService {
           console.log(err);
         });
       });
-  } 
+  }
+getApiUpdate() {
+     return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/register/appversion', {}, requestOptions)
+          .subscribe(res => {
+		    let resdata: any = res;
+            resolve(JSON.parse(resdata._body));
+          }, (err: any) => {
+            resolve(this._handleError(err, true));
+          });
+      });
+  }  
  getSliders() {
 	return new Promise((resolve, reject) => {
         var headers = new Headers();
@@ -351,6 +366,20 @@ changePassword(data) {
 			  });
 		  });
     }
+	getSearchResultInfo(data) {
+		return new Promise((resolve, reject) => {
+			var headers = new Headers();
+			headers.append("Accept", 'application/json');
+			headers.append('Content-Type', 'application/json' );
+			const requestOptions = new RequestOptions({ headers: headers });
+			this.http.post(this.apiUrl+'/dashboard/getSearchresult', data, requestOptions)
+			  .subscribe(res => {
+				resolve(this._extractData(res));
+			  }, (err) => {
+				resolve(this._handleError(err, false));
+			  });
+		  });
+    }
 	getOrderInfo(data) { 
 		return new Promise((resolve, reject) => {
 			var headers = new Headers();
@@ -443,6 +472,20 @@ changePassword(data) {
         headers.append('Content-Type', 'application/json' );
         const requestOptions = new RequestOptions({ headers: headers });
         this.http.post(this.apiUrl+'/addressbook/removeaddress', data, requestOptions)
+          .subscribe(res => {
+            resolve(this._extractData(res));
+          }, (err) => {
+            resolve(this._handleError(err, false));
+          });
+      });
+    }
+	getwallethistor(data) {
+      return new Promise((resolve, reject) => {
+        var headers = new Headers();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json' );
+        const requestOptions = new RequestOptions({ headers: headers });
+        this.http.post(this.apiUrl+'/register/wallethistory', data, requestOptions)
           .subscribe(res => {
             resolve(this._extractData(res));
           }, (err) => {

@@ -1,0 +1,39 @@
+<!--
+  Generated template for the WallethistoryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Wallet History</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+<div class="wallet-box">
+<div class="wallet-box-img">
+<img src="assets/imgs/wallet.png">
+</div>
+<div class="price"><img src="assets/imgs/Indian_Rupee_symbol.png">{{user_balance}}</div>
+</div>
+<div class="wallet-hist">
+<div class="wallet-hist-header">Wallet History</div>
+<div class="wallet-hist-box" *ngFor="let wallet of wallethistory">
+<ion-row>
+<ion-col col-9>
+<h4>{{wallet.uw_remark}}</h4>
+<p>{{wallet.uw_datetime}}</p>
+</ion-col>
+<ion-col col-3>
+<div class="hprice">
+Rs. {{wallet.uw_amount}}
+</div>
+</ion-col>
+</ion-row>
+</div>
+</div>
+</ion-content>

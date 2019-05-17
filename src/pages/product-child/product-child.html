@@ -6,13 +6,13 @@
 -->
 
 
-<ion-content no-bounce style="top: 35rem;height: 30rem;">
+<ion-content no-bounce style="top: 70%;height: 30%;">
 <div class="product-pop-up-title">{{productInfo.product_name}}</div>
 <div class="product-pop-up-content">
 <p><strong>Select Quantity</strong></p>
 <ul radio-group [(ngModel)]="selectedChildId">
-<li *ngFor="let child of productInfo.child">
-   <ion-radio  class="radio radio-inline radio-blue" (click)="selectChildItem(child)"  value="{{child.pmp_id}}">  </ion-radio> &nbsp;&nbsp;{{child.unit_name}} </li>
+<li *ngFor="let child of productInfo.child" (click)="selectChildItem(child)">
+   <ion-radio  class="radio radio-inline radio-blue"  (click)="selectChildItem(child)"  value="{{child.pmp_id}}">  </ion-radio> &nbsp;&nbsp;{{child.unit_name}} ( ₹{{child.pmp_net_price}} )</li>
 </ul>
 </div>
 
@@ -23,8 +23,5 @@
  </ion-item>
  
  </ion-list>-->
-<p  ion-fixed class="fixed-bottom-button" style="padding: 15px;">
-<button ion-button  full [color]="primary" (click)="selectThisItem()" class="normal-button50">ADD ITEM</button>
-</p>
 </ion-content>
 

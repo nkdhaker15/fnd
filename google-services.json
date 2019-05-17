@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "932547603099",
+    "firebase_url": "https://food-and-drink-226310.firebaseio.com",
+    "project_id": "food-and-drink-226310",
+    "storage_bucket": "food-and-drink-226310.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932547603099:android:ffd3aa5db78a3235",
+        "android_client_info": {
+          "package_name": "com.liqourcart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932547603099-e2ptpcnq588dcfq9jupoiide35qcoctr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuUYBoZQSPZbdM7jWRmP54p6zaw0QT2co"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

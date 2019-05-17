@@ -14,6 +14,7 @@
 
 
 <ion-content>
+<form [formGroup]="addAddressForm">      
 
 <ion-row style="position: absolute;top: 15px;z-index: 999999999999999999;">
 <ion-col (click)="backButtonAction()">
@@ -26,11 +27,11 @@
 
   <div id='map' style="display:none"></div>
 
-<form [formGroup]="addAddressForm">      
 
 <ion-row padding>
 <div class="address-box">
 <h6>Set Delivery Location</h6>
+<p class="error_message" *ngIf="errormessage!=''">{{errormessage}}</p>
 <ion-item>
     <ion-label color="primary" floating>LOCATION</ion-label>
     <ion-input [formControl]="addAddressForm.controls['ab_address']"></ion-input>
@@ -75,15 +76,17 @@
   </ion-item>
 </div>
 </ion-row>
-<ion-row padding><button ion-button full (click)="addUserAddress()" class="normal-button50">Save</button></ion-row>
+
+
 
 </form>
 
-
-
-
-
- 
   
 </ion-content>
 
+
+
+ <ion-footer>
+<ion-row padding><button ion-button full (click)="addUserAddress()" class="normal-button50">Save</button></ion-row>
+
+</ion-footer>

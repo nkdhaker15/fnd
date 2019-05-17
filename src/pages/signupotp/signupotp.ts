@@ -39,7 +39,7 @@ export class SignupotpPage {
   ionViewWillEnter()
  {
     
-	this.readOtpSms();
+	//this.readOtpSms();
  }
    _onKeyup(e) {
       
@@ -63,7 +63,7 @@ export class SignupotpPage {
 	}
 };
   readOtpSms() {
-	  this.platform.ready().then((readySource) => {
+	/*  this.platform.ready().then((readySource) => {
 			 console.log('Permission check')
 				if(SMSReceive){ 
 					SMSReceive.startWatch(function() {
@@ -97,6 +97,7 @@ export class SignupotpPage {
 				   });
 			
 			});
+			*/
   }  
   verifyOtp(){
 	  console.log("this.registerForm:: ", this.registerForm.value);

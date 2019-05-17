@@ -11,7 +11,7 @@ ion-slides {
 }
 .header-user-login
 {
-height: 76%;
+height: 70%;
 background:#fff;
 }
 .slider-caption{
@@ -24,8 +24,11 @@ margin-bottom:20px;
 }
 .footer-user-login
 {
-    height: 26%;
+    height: 30%;
 	background:#fff;
+	-webkit-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
+-moz-box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
+box-shadow: 0px -10px 18px -13px rgba(0,0,0,0.4);
 }
  [ion-fixed] {
     position: relative;
@@ -109,6 +112,13 @@ padding:0px;
 .mt-3
 {
 margin-top:3px;
+}
+
+.clsbackground
+{
+background-size: cover;
+background-position: 100%;
+background-position-y: 90%;
 }
 
 

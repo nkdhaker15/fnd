@@ -29,14 +29,12 @@ loading:any;
  order = [{ trans_id: "516745"},{ trans_id: "516735"},{ trans_id: "516735"},{ trans_id: "516765"},{ trans_id: "516747"}];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public apiBackendService: ApiBackendService, private authUserService: AuthUserService,  public loadingCtrl: LoadingController, public viewCtrl: ViewController) {
-	  	  	  	      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 					  this.loading = this.loadingCtrl.create({
                 content: 'Please wait...'
               });
   }
 
   ionViewDidLoad() {
-	  	  	  	      this.tabBarElement.style.display = 'none';
     console.log('ionViewDidLoad OrdersPage');
   }
     ionViewWillEnter() {	  	 	      
@@ -76,10 +74,12 @@ loading:any;
          
               this.loading.present();
          this.apiBackendService.getOrderInfo(user_req).then((result: any) => { 
-             this.loading.dismiss();             
+             this.loading.dismiss();    
+if(result.message=='ok')
+{	
             this.userOrders = result.result;
             console.log("order history",this.userOrders); 
-
+}
             }, (err) => { 
             console.log(err); 
              this.loading.dismiss();

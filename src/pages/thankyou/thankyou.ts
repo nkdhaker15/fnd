@@ -5,6 +5,7 @@ import { Device } from '@ionic-native/device';
 
 import { ApiBackendService } from '../../providers/apiBackendService';
 import { AuthUserService } from '../../providers/authUserService';
+import { OrderprocessingPage } from '../orderprocessing/orderprocessing';
 
 import * as firebase from 'firebase';
 import { TabsPage } from '../tabs/tabs';
@@ -49,7 +50,7 @@ export class ThankyouPage {
 
   backButtonAction(){
 	  
-     this.dismiss();
+     this.navCtrl.push(OrderprocessingPage);
 	}
 	
 	dismiss() {
